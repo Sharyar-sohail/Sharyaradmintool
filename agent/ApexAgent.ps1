@@ -359,7 +359,20 @@ function Send-ApexProgress {
 }
 
 # ----------------- Main WebSocket Connection Loop -----------------
-$wsUri = [Uri]"$ServerUrl/ws/agent/$ClientId"
+# Normalize ServerUrl scheme for WebSockets (convert http/https to ws/wss)
+$cleanUrl = $ServerUrl.TrimEnd('/')
+if ($cleanUrl -match '/api$') {
+    $cleanUrl = $cleanUrl -replace '/api$', ''
+}
+if ($cleanUrl -match '^https://') {
+    $cleanUrl = $cleanUrl -replace '^https://', 'wss://'
+} elseif ($cleanUrl -match '^http://') {
+    $cleanUrl = $cleanUrl -replace '^http://', 'ws://'
+} elseif ($cleanUrl -notmatch '^wss?://') {
+    $cleanUrl = "ws://$cleanUrl"
+}
+
+$wsUri = [Uri]"$cleanUrl/ws/agent/$ClientId"
 
 while ($true) {
     try {

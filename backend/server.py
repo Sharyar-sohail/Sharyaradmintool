@@ -9,7 +9,7 @@ import json
 import os
 import time
 from typing import Any, Dict, List, Optional, Set
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -73,6 +73,26 @@ async def health_check():
         "timestamp": time.time(),
         "connected_nodes": len(node_manager._nodes),
     }
+
+
+@app.get("/api/agent/download-ps1")
+async def download_ps1_agent(server_url: Optional[str] = None):
+    """Provides downloadable PowerShell agent with optional custom server_url injection."""
+    ps1_path = os.path.join(os.path.dirname(BASE_DIR), "agent", "ApexAgent.ps1")
+    if not os.path.exists(ps1_path):
+        raise HTTPException(status_code=404, detail="Agent script not found.")
+    
+    with open(ps1_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    if server_url:
+        content = content.replace('[string]$ServerUrl = "ws://127.0.0.1:8000"', f'[string]$ServerUrl = "{server_url}"')
+        
+    return Response(
+        content=content,
+        media_type="application/octet-stream",
+        headers={"Content-Disposition": "attachment; filename=ApexAgent.ps1"}
+    )
 
 
 @app.get("/api/catalog")

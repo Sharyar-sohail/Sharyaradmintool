@@ -52,7 +52,79 @@ st.sidebar.markdown("*Autonomous Remote IT Doctor & Deep Remediation*")
 DEFAULT_API = os.getenv("APEX_API_URL", "http://127.0.0.1:8000/api")
 API_BASE = st.sidebar.text_input("Commander API Endpoint", value=DEFAULT_API).rstrip("/")
 
+# Compute default WebSocket URL from API endpoint
+clean_base = API_BASE.replace("/api", "").rstrip("/")
+if clean_base.startswith("https://"):
+    DEFAULT_WS = clean_base.replace("https://", "wss://")
+elif clean_base.startswith("http://"):
+    DEFAULT_WS = clean_base.replace("http://", "ws://")
+else:
+    DEFAULT_WS = f"ws://{clean_base}"
+
 refresh_rate = st.sidebar.slider("Auto-Refresh Rate (seconds)", 2, 10, 4)
+
+
+def get_ps1_script_content(target_ws_url: str) -> str:
+    """Loads ApexAgent.ps1 and injects the specified target WebSocket URL."""
+    agent_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "agent", "ApexAgent.ps1")
+    content = ""
+    if os.path.exists(agent_path):
+        with open(agent_path, "r", encoding="utf-8") as f:
+            content = f.read()
+    else:
+        try:
+            r = requests.get(f"{API_BASE}/agent/download-ps1", timeout=3)
+            if r.status_code == 200:
+                content = r.text
+        except Exception:
+            pass
+
+    if content and target_ws_url:
+        content = content.replace('[string]$ServerUrl = "ws://127.0.0.1:8000"', f'[string]$ServerUrl = "{target_ws_url}"')
+    return content
+
+
+def render_agent_deployment_card(default_ws_url: str, expanded: bool = False):
+    """Renders the downloadable PowerShell Agent banner with instructions."""
+    with st.expander("📥 Connect New Client Machine (Download PowerShell Agent)", expanded=expanded):
+        st.markdown("### 🚀 Client Agent Deployment")
+        st.markdown(
+            "Download this standalone, zero-dependency PowerShell script and run it as an **Administrator** on any Windows PC to establish a live, secure telemetry and remediation link back to this Commander."
+        )
+
+        dcol1, dcol2 = st.columns([2, 1])
+        with dcol1:
+            custom_ws = st.text_input(
+                "Target Commander WebSocket URL:",
+                value=default_ws_url,
+                help="The WebSocket URL the agent will connect back to. Examples: ws://192.168.1.100:8000 or wss://commander.yourdomain.com",
+            )
+        with dcol2:
+            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            script_data = get_ps1_script_content(custom_ws)
+            st.download_button(
+                label="📥 Download Agent Script (ApexAgent.ps1)",
+                data=script_data,
+                file_name="ApexAgent.ps1",
+                mime="application/x-powershell",
+                use_container_width=True,
+            )
+
+        st.markdown("---")
+        col_step1, col_step2, col_step3 = st.columns(3)
+        with col_step1:
+            st.markdown("**1. Download Script**")
+            st.caption("Click the download button above to get the customized `ApexAgent.ps1`.")
+        with col_step2:
+            st.markdown("**2. Run as Administrator**")
+            st.caption("Right-click `ApexAgent.ps1` > 'Run with PowerShell', or run in an elevated PowerShell terminal.")
+        with col_step3:
+            st.markdown("**3. Live Auto-Sync**")
+            st.caption("Agent connects via WebSocket, executes Master Scan, and streams live telemetry to this dashboard.")
+
+        st.markdown("**Or Execute Directly via PowerShell Admin One-Liner:**")
+        one_liner = f'powershell.exe -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri \'{API_BASE}/agent/download-ps1?server_url={custom_ws}\' -OutFile ApexAgent.ps1; .\\ApexAgent.ps1"'
+        st.code(one_liner, language="powershell")
 
 
 def fetch_nodes():
@@ -98,13 +170,10 @@ st.sidebar.metric("Total Critical Flaws", crit_issues)
 # Main Dashboard View
 if not selected_client_id:
     st.title("⚡ ApexSys Master Control Center")
-    st.info("Awaiting endpoint connections on `ws://127.0.0.1:8000/ws/agent/{client_id}`.")
-    st.markdown("""
-    To connect a machine:
-    - **PowerShell (Zero-Footprint)**: `powershell -ExecutionPolicy Bypass -File agent/ApexAgent.ps1`
-    - **Python Agent**: `python agent/apex_agent.py`
-    """)
+    st.info("No active client machine connected yet. Deploy the PowerShell agent below to establish a live connection.")
+    render_agent_deployment_card(DEFAULT_WS, expanded=True)
 else:
+    render_agent_deployment_card(DEFAULT_WS, expanded=False)
     node_data = fetch_node_detail(selected_client_id)
     if not node_data:
         st.error("Failed to fetch node details from server.")
