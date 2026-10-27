@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexSys Autonomous Remote IT Commander</title>
+  <link rel="stylesheet" href="/static/css/apex.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Futuristic Command Bar -->
+  <header class="apex-header">
+    <div class="logo-container">
+      <div class="logo-symbol">▲</div>
+      <div class="brand-text">
+        <h1>APEXSYS COMMANDER</h1>
+        <span>Autonomous Remote IT Doctor & Deep Remediation Suite</span>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="ws-indicator">
+        <div id="ws-dot" class="dot"></div>
+        <span id="ws-label">INITIALIZING...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="dashboard-container">
+
+    <!-- Left Column: Fleet PC Nodes -->
+    <aside class="fleet-sidebar">
+      <div class="apex-panel" style="padding: 16px;">
+        <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--neon-cyan); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span>MANAGED ENDPOINTS</span>
+          <span style="font-size: 0.72rem; color: #a0aec0;">FLEET</span>
+        </h3>
+        <div id="fleet-list" class="fleet-list">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Column: Active Node Commander Deck -->
+    <section class="commander-content">
+
+      <!-- Host Hardware & OS Specs Banner -->
+      <div class="apex-panel specs-banner">
+        <div class="specs-title">
+          <h2>
+            <span id="node-title">Detecting Host...</span>
+            <span id="node-admin" class="admin-tag">ADMIN PRIVILEGE</span>
+          </h2>
+        </div>
+        <div class="specs-details">
+          <div>OS: <strong id="node-os">--</strong></div>
+          <div>CPU: <strong id="node-cpu">--</strong></div>
+          <div>RAM: <strong id="node-ram">--</strong></div>
+          <div>IP: <strong id="node-ip">--</strong></div>
+        </div>
+      </div>
+
+      <!-- Verification Delta Banner (Shown after repairs) -->
+      <div id="verification-delta-banner" style="display: none;"></div>
+
+      <!-- Health Score & Category Diagnostic Radar -->
+      <div class="health-radar-grid">
+        <!-- Holistic Score Circle -->
+        <div class="apex-panel circular-score-container">
+          <div id="score-circle" class="score-circle">
+            <div class="score-inner">
+              <span id="score-val" class="score-val">100</span>
+              <span class="score-lbl">HEALTH SCORE</span>
+            </div>
+          </div>
+          <p style="font-size: 0.78rem; color: #a0aec0; margin-top: 14px;">Holistic System Vitality Index</p>
+        </div>
+
+        <!-- 5 Key Diagnostic Categories -->
+        <div class="apex-panel category-bars-panel">
+          <div class="cat-row">
+            <div class="cat-header">
+              <span>Hardware & SMART Health</span>
+              <span id="cat-hw-val" style="font-family: var(--font-mono); color: var(--neon-green);">100%</span>
+            </div>
+            <div class="cat-track">
+              <div id="cat-hw-fill" class="cat-fill" style="width: 100%; background: var(--neon-green);"></div>
+            </div>
+          </div>
+
+          <div class="cat-row">
+            <div class="cat-header">
+              <span>OS & Component Store Integrity (DISM/SFC)</span>
+              <span id="cat-os-val" style="font-family: var(--font-mono); color: var(--neon-green);">100%</span>
+            </div>
+            <div class="cat-track">
+              <div id="cat-os-fill" class="cat-fill" style="width: 100%; background: var(--neon-green);"></div>
+            </div>
+          </div>
+
+          <div class="cat-row">
+            <div class="cat-header">
+              <span>Storage & Deep Cache Optimization</span>
+              <span id="cat-storage-val" style="font-family: var(--font-mono); color: var(--neon-green);">100%</span>
+            </div>
+            <div class="cat-track">
+              <div id="cat-storage-fill" class="cat-fill" style="width: 100%; background: var(--neon-green);"></div>
+            </div>
+          </div>
+
+          <div class="cat-row">
+            <div class="cat-header">
+              <span>Drivers & Device Manager Stability</span>
+              <span id="cat-drivers-val" style="font-family: var(--font-mono); color: var(--neon-green);">100%</span>
+            </div>
+            <div class="cat-track">
+              <div id="cat-drivers-fill" class="cat-fill" style="width: 100%; background: var(--neon-green);"></div>
+            </div>
+          </div>
+
+          <div class="cat-row">
+            <div class="cat-header">
+              <span>Security, Registry & Network Stack</span>
+              <span id="cat-sec-val" style="font-family: var(--font-mono); color: var(--neon-green);">100%</span>
+            </div>
+            <div class="cat-track">
+              <div id="cat-sec-fill" class="cat-fill" style="width: 100%; background: var(--neon-green);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Action Controls -->
+      <div class="apex-panel action-deck">
+        <button id="btn-fix-all" class="btn-fix-all">
+          <span>⚡ ONE-CLICK FIX ALL</span>
+        </button>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <button id="btn-master-scan" class="btn-scan">
+            🔍 RE-RUN MASTER SCAN
+          </button>
+          <button id="btn-self-destruct" class="btn-destruct">
+            💥 SECURE SELF-DESTRUCT
+          </button>
+        </div>
+      </div>
+
+      <!-- Real-time Remediation Progress Bar -->
+      <div id="remediation-progress-bar" class="apex-panel progress-bar-container">
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700;">
+          <span id="progress-action-label" style="color: var(--neon-cyan);">Executing Remediation...</span>
+          <span id="progress-pct-label" style="font-family: var(--font-mono); color: var(--neon-green);">0%</span>
+        </div>
+        <div class="prog-track">
+          <div id="progress-fill" class="prog-fill"></div>
+        </div>
+      </div>
+
+      <!-- Real-Time Telemetry Metrics -->
+      <div class="telemetry-grid">
+        <div class="apex-panel tele-card">
+          <span class="tele-title">CPU Utilization</span>
+          <span id="tele-cpu" class="tele-val">0%</span>
+        </div>
+        <div class="apex-panel tele-card">
+          <span class="tele-title">Physical RAM Load</span>
+          <span id="tele-ram" class="tele-val">0%</span>
+        </div>
+        <div class="apex-panel tele-card">
+          <span class="tele-title">System Disk Fill</span>
+          <span id="tele-disk" class="tele-val">0%</span>
+        </div>
+        <div class="apex-panel tele-card">
+          <span class="tele-title">Gateway Latency</span>
+          <span id="tele-lat" class="tele-val">0ms</span>
+        </div>
+      </div>
+
+      <!-- Diagnosed Issues Triage -->
+      <div class="apex-panel issues-panel">
+        <div class="issues-header">
+          <h3 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Diagnostic Issues & Intelligent Remediation</h3>
+          <span id="issues-count-badge" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--neon-green);">
+            Scanning...
+          </span>
+        </div>
+        <div id="issues-list">
+          <div style="padding: 20px; text-align: center; color: #a0aec0;">Loading diagnostic scan results...</div>
+        </div>
+      </div>
+
+      <!-- Interactive Streaming Terminal -->
+      <div class="apex-panel terminal-panel">
+        <div class="terminal-header">
+          <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--neon-cyan);">
+            LIVE AGENT EXECUTION TERMINAL
+          </h4>
+          <button id="btn-clear-term" style="background: none; border: 1px solid rgba(255,255,255,0.2); color: #a0aec0; padding: 4px 10px; border-radius: 4px; font-size: 0.72rem; cursor: pointer;">
+            Clear Terminal
+          </button>
+        </div>
+        <div id="terminal-box" class="terminal-box">
+          <div class="term-line stdout"><span class="term-tag">[SYSTEM]</span> Connected to ApexSys telemetry channel. Awaiting agent logs...</div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="/static/js/apex_dash.js"></script>
+</body>
+</html>
