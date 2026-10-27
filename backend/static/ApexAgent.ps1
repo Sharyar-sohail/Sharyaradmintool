@@ -1,17 +1,18 @@
 <#
 .SYNOPSIS
-    ApexSys Native Windows IT Commander & GitHub Serverless Sync Agent
+    ApexSys Native Windows IT Commander & Multi-User GitHub State Sync Agent
 .DESCRIPTION
-    Zero-dependency pure PowerShell 5.1+ agent. Gathers deep hardware diagnostics,
-    OS integrity, storage bloat, and system telemetry, writes them to status.json,
-    and automatically pushes the status to GitHub so Streamlit Community Cloud
-    can display real-time machine telemetry with ZERO paid servers or open ports.
+    Zero-dependency pure PowerShell 5.1+ agent with multi-user session isolation.
+    Gathers deep hardware diagnostics, OS integrity, storage bloat, and system telemetry,
+    writes them to clients/{AGENT_TOKEN}/status.json, and automatically pushes to GitHub.
+    Upon exit, marks session as OFFLINE to prevent stale or hanging states.
 .EXAMPLE
-    .\ApexAgent.ps1
-    .\ApexAgent.ps1 -Continuous -IntervalSeconds 60
+    .\ApexAgent.ps1 -AgentToken "APEX-A1B2C3D4"
+    .\ApexAgent.ps1 -Continuous 1 -IntervalSeconds 60
 #>
 
 param(
+    [string]$AgentToken = "",
     [string]$RepoOwner = "SharyarSoahil",
     [string]$RepoName = "Sharyaradmintool",
     [string]$Branch = "main",
@@ -25,17 +26,30 @@ param(
 $isAutoElevate = if ($AutoElevate -is [bool]) { $AutoElevate } else { "$AutoElevate" -match '^(true|1)$' }
 $isContinuous = if ($Continuous -is [bool]) { $Continuous } else { "$Continuous" -match '^(true|1)$' }
 
+# Token Management: Resolve or generate unique session token
+$tokenStore = Join-Path $env:TEMP "apex_agent_session_token.txt"
+if (-not $AgentToken) {
+    if (Test-Path $tokenStore) {
+        $saved = (Get-Content $tokenStore -Raw -ErrorAction SilentlyContinue)
+        if ($saved) { $AgentToken = $saved.Trim() }
+    }
+}
+if (-not $AgentToken) {
+    $AgentToken = "APEX-" + ([Guid]::NewGuid().ToString().Substring(0,8).ToUpper())
+    Set-Content -Path $tokenStore -Value $AgentToken -Force
+}
+
 # Enforce TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Check Administrator Elevation
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin -and $isAutoElevate) {
-    Write-Warning "[ApexSys Agent] Administrative elevation required for full DISM/SFC hardware access. Elevating..."
+    Write-Warning "[ApexSys Agent] Administrative elevation required for full hardware/OS diagnostic depth. Elevating..."
     $scriptPath = $MyInvocation.MyCommand.Definition
     if (-not $scriptPath) { $scriptPath = "$PSScriptRoot\ApexAgent.ps1" }
     
-    $argList = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`" -RepoOwner `"$RepoOwner`" -RepoName `"$RepoName`" -Branch `"$Branch`""
+    $argList = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`" -AgentToken `"$AgentToken`" -RepoOwner `"$RepoOwner`" -RepoName `"$RepoName`" -Branch `"$Branch`""
     if ($GitHubToken) { $argList += " -GitHubToken `"$GitHubToken`"" }
     if ($isContinuous) { $argList += " -Continuous 1 -IntervalSeconds $IntervalSeconds" }
     
@@ -45,10 +59,14 @@ if (-not $isAdmin -and $isAutoElevate) {
 
 Clear-Host
 Write-Host "=========================================================================" -ForegroundColor Cyan
-Write-Host "   APEXSYS AUTONOMOUS IT COMMANDER - GITHUB SERVERLESS SYNC AGENT" -ForegroundColor Green
-Write-Host "   Target Repo : $RepoOwner/$RepoName ($Branch)" -ForegroundColor Yellow
-Write-Host "   Elevated    : $isAdmin (Administrator)" -ForegroundColor Yellow
-Write-Host "   Mode        : $(if ($isContinuous) { 'Continuous Loop (' + $IntervalSeconds + 's)' } else { 'Single Run' })" -ForegroundColor Yellow
+Write-Host "   APEXSYS AUTONOMOUS IT COMMANDER - MULTI-USER ISOLATED AGENT" -ForegroundColor Green
+Write-Host "   SESSION TOKEN : $AgentToken" -ForegroundColor Magenta
+Write-Host "   Target Repo   : $RepoOwner/$RepoName ($Branch)" -ForegroundColor Yellow
+Write-Host "   Elevated      : $isAdmin (Administrator)" -ForegroundColor Yellow
+Write-Host "   Mode          : $(if ($isContinuous) { 'Continuous Loop (' + $IntervalSeconds + 's)' } else { 'Single Run' })" -ForegroundColor Yellow
+Write-Host "=========================================================================" -ForegroundColor Cyan
+Write-Host ">> LINKING TOKEN: Enter '$AgentToken' in your Streamlit dashboard" -ForegroundColor Green
+Write-Host "   Each administrator sees ONLY their linked machine's diagnostics." -ForegroundColor Green
 Write-Host "=========================================================================" -ForegroundColor Cyan
 
 # ----------------- Deep Diagnostic Collector -----------------
@@ -288,6 +306,7 @@ function Collect-ApexDiagnostics {
 
     return [ordered]@{
         client_id = $env:COMPUTERNAME
+        agent_token = $AgentToken
         timestamp = $nowUtc
         last_synced = $nowLocal
         status = "ONLINE"
@@ -353,10 +372,14 @@ function Collect-ApexDiagnostics {
 
 # ----------------- GitHub Sync Engine -----------------
 function Push-ApexStatusToGitHub {
-    param([string]$StatusFilePath)
+    param(
+        [string]$StatusFilePath,
+        [string]$RelativeRepoPath,
+        [string]$CommitMessage = ""
+    )
 
     Write-Host ""
-    Write-Host "[*] Initiating GitHub State Sync for '$StatusFilePath'..." -ForegroundColor Cyan
+    Write-Host "[*] Initiating GitHub State Sync for '$RelativeRepoPath'..." -ForegroundColor Cyan
 
     $pushed = $false
 
@@ -365,9 +388,12 @@ function Push-ApexStatusToGitHub {
     if ($hasGit -and (Test-Path ".git")) {
         try {
             Write-Host "  -> Attempting sync via local Git CLI..." -ForegroundColor Gray
-            git add $StatusFilePath
-            $ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
-            git commit -m "ApexSys Telemetry Sync: $ts" | Out-Null
+            git add $RelativeRepoPath
+            if (-not $CommitMessage) {
+                $ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+                $CommitMessage = "ApexSys Telemetry Sync [$AgentToken]: $ts"
+            }
+            git commit -m $CommitMessage | Out-Null
             git pull --rebase origin $Branch | Out-Null
 
             if ($GitHubToken) {
@@ -392,7 +418,7 @@ function Push-ApexStatusToGitHub {
     if (-not $pushed -and $GitHubToken) {
         try {
             Write-Host "  -> Attempting sync via direct GitHub REST API..." -ForegroundColor Gray
-            $apiUrl = "https://api.github.com/repos/" + $RepoOwner + "/" + $RepoName + "/contents/status.json"
+            $apiUrl = "https://api.github.com/repos/" + $RepoOwner + "/" + $RepoName + "/contents/" + $RelativeRepoPath
             $headers = @{
                 "Authorization" = ("token " + $GitHubToken)
                 "User-Agent" = "ApexSys-Agent-PowerShell"
@@ -411,9 +437,11 @@ function Push-ApexStatusToGitHub {
             $fileBytes = [System.IO.File]::ReadAllBytes($StatusFilePath)
             $base64Content = [Convert]::ToBase64String($fileBytes)
 
-            $commitMsg = "ApexSys Telemetry Update: " + (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+            if (-not $CommitMessage) {
+                $CommitMessage = "ApexSys Telemetry Update [$AgentToken]: " + (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+            }
             $body = @{
-                message = $commitMsg
+                message = $CommitMessage
                 content = $base64Content
                 branch = $Branch
             }
@@ -430,30 +458,58 @@ function Push-ApexStatusToGitHub {
     }
 
     if ($pushed) {
-        Write-Host "[SUCCESS] Telemetry synchronized to GitHub repository!" -ForegroundColor Green
+        Write-Host "[SUCCESS] Telemetry synchronized to '$RelativeRepoPath' on GitHub!" -ForegroundColor Green
         Write-Host "          Streamlit dashboard will reflect this update instantly." -ForegroundColor Cyan
     } else {
-        Write-Error "[ERROR] Could not push status.json to GitHub. Please verify git credentials or GitHub token."
+        Write-Error "[ERROR] Could not push $RelativeRepoPath to GitHub. Please verify git credentials or GitHub token."
     }
 }
 
-# ----------------- Execution Controller -----------------
-$statusFile = Join-Path (Get-Location) "status.json"
+# ----------------- Execution Controller & Lifecycle Cleanup -----------------
+$clientDir = Join-Path (Get-Location) "clients\$AgentToken"
+if (-not (Test-Path $clientDir)) {
+    New-Item -ItemType Directory -Path $clientDir -Force | Out-Null
+}
+$statusFile = Join-Path $clientDir "status.json"
+$relativeRepoPath = "clients/$AgentToken/status.json"
 
-do {
-    $diagData = Collect-ApexDiagnostics
-    $jsonOutput = $diagData | ConvertTo-Json -Depth 6
-    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-    [System.IO.File]::WriteAllText($statusFile, $jsonOutput, $utf8NoBom)
-    $scoreVal = $diagData.health_score
-    Write-Host "[OK] Updated local $statusFile (Health Score: $scoreVal)" -ForegroundColor Green
+try {
+    do {
+        $diagData = Collect-ApexDiagnostics
+        $diagData.status = "ONLINE"
+        $jsonOutput = $diagData | ConvertTo-Json -Depth 6
+        $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+        [System.IO.File]::WriteAllText($statusFile, $jsonOutput, $utf8NoBom)
+        $scoreVal = $diagData.health_score
+        Write-Host "[OK] Scoped status written: $statusFile (Health Score: $scoreVal%)" -ForegroundColor Green
 
-    Push-ApexStatusToGitHub -StatusFilePath $statusFile
+        Push-ApexStatusToGitHub -StatusFilePath $statusFile -RelativeRepoPath $relativeRepoPath
 
-    if ($isContinuous) {
-        Write-Host ""
-        $waitMsg = "Waiting " + $IntervalSeconds + " seconds for next telemetry cycle (Press Ctrl+C to stop)..."
-        Write-Host $waitMsg -ForegroundColor Yellow
-        Start-Sleep -Seconds $IntervalSeconds
+        if ($isContinuous) {
+            Write-Host ""
+            $waitMsg = "Waiting " + $IntervalSeconds + " seconds for next telemetry cycle (Press Ctrl+C to stop)..."
+            Write-Host $waitMsg -ForegroundColor Yellow
+            Start-Sleep -Seconds $IntervalSeconds
+        }
+    } while ($isContinuous)
+} finally {
+    # Automatic Process Termination & Cleanup (Ctrl+C, exit, close)
+    Write-Host ""
+    Write-Host "[!] Shutdown signal received. Publishing OFFLINE state for '$AgentToken' to GitHub..." -ForegroundColor Yellow
+    try {
+        if (Test-Path $statusFile) {
+            $offlineContent = Get-Content $statusFile -Raw | ConvertFrom-Json
+            $offlineContent.status = "OFFLINE"
+            $offlineContent.last_synced = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+            $offlineContent.timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            $jsonOutput = $offlineContent | ConvertTo-Json -Depth 6
+            $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+            [System.IO.File]::WriteAllText($statusFile, $jsonOutput, $utf8NoBom)
+
+            Push-ApexStatusToGitHub -StatusFilePath $statusFile -RelativeRepoPath $relativeRepoPath -CommitMessage "ApexSys Session Terminated [$AgentToken]: OFFLINE"
+            Write-Host "[OK] Session cleanly marked OFFLINE on GitHub. Zero hanging processes." -ForegroundColor Green
+        }
+    } catch {
+        Write-Warning ("Failed to publish exit state: " + $_)
     }
-} while ($isContinuous)
+}

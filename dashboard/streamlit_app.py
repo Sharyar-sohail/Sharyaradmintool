@@ -1,13 +1,13 @@
 """
-ApexSys Executive Command Dashboard (GitHub Serverless State Sync)
-Fetches live telemetry and diagnostic reports directly from the GitHub repository
-(via raw content or GitHub API), displaying holistic health scores, categorical
-diagnostics, and issue resolutions with ZERO paid servers or open ports.
+ApexSys Executive Command Dashboard - Multi-User Session Isolation Architecture
+Each user/administrator links to an exclusive Agent Token. Telemetry is scoped
+to clients/{AGENT_TOKEN}/status.json with zero cross-tenant data mixing.
 """
 
 import datetime
 import json
 import os
+import random
 import time
 import pandas as pd
 import plotly.express as px
@@ -50,7 +50,18 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
     }
-    .sync-badge {
+    .token-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 14px;
+        font-size: 0.85rem;
+        font-family: monospace;
+        font-weight: 800;
+        background: rgba(0, 243, 255, 0.15);
+        color: #00f3ff;
+        border: 1px solid #00f3ff;
+    }
+    .status-badge-online {
         display: inline-block;
         padding: 4px 12px;
         border-radius: 12px;
@@ -60,18 +71,99 @@ st.markdown("""
         color: #00ff88;
         border: 1px solid #00ff88;
     }
+    .status-badge-offline {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: rgba(255, 51, 102, 0.15);
+        color: #ff3366;
+        border: 1px solid #ff3366;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 # ----------------- Configuration & Parameters -----------------
-st.sidebar.markdown("## ⚡ **APEXSYS COMMANDER**")
-st.sidebar.markdown("*100% Serverless GitHub State Sync Engine*")
+from dashboard.fetcher import fetch_isolated_status, get_customized_agent_script
 
 DEFAULT_OWNER = os.getenv("GITHUB_REPO_OWNER", "SharyarSoahil")
 DEFAULT_REPO = os.getenv("GITHUB_REPO_NAME", "Sharyaradmintool")
 DEFAULT_BRANCH = os.getenv("GITHUB_BRANCH", "main")
 DEFAULT_TOKEN = os.getenv("GITHUB_TOKEN", "")
 
+# ----------------- Multi-User Session Token Resolution -----------------
+# Check URL query params for ?token=
+query_token = st.query_params.get("token")
+if query_token and "agent_token" not in st.session_state:
+    st.session_state["agent_token"] = str(query_token).strip().upper()
+
+# Generate temporary suggestion token if not in session
+if "suggested_token" not in st.session_state:
+    rand_hex = "".join(random.choices("0123456789ABCDEF", k=8))
+    st.session_state["suggested_token"] = f"APEX-{rand_hex}"
+
+
+# ----------------- SESSION GATEWAY SCREEN -----------------
+current_token = st.session_state.get("agent_token", "").strip().upper()
+
+if not current_token:
+    st.markdown("## ⚡ **APEXSYS COMMANDER**")
+    st.markdown("### 🔒 Secure Multi-User Session Gateway")
+    st.info("ApexSys enforces strict session isolation. Please authenticate with your unique Agent Token to access your private machine telemetry.")
+
+    col_gate1, col_gate2 = st.columns(2)
+
+    with col_gate1:
+        st.markdown("#### 🔑 Connect Existing Agent Token")
+        st.markdown("Enter the session token displayed on your client PC terminal or saved from a prior run:")
+        input_token = st.text_input("Agent Token", placeholder="e.g. APEX-A1B2C3D4", key="login_token_input")
+        if st.button("🚀 Connect Private Session", use_container_width=True):
+            if input_token.strip():
+                clean_t = input_token.strip().upper()
+                st.session_state["agent_token"] = clean_t
+                st.query_params["token"] = clean_t
+                st.rerun()
+            else:
+                st.error("Please enter a valid token.")
+
+        st.markdown("---")
+        st.caption("Quick Demo Test: Enter `APEX-DEMO01` to view an active verified diagnostic report.")
+
+    with col_gate2:
+        st.markdown("#### ⚡ Generate New Token & Deploy Agent")
+        st.markdown("Deploy a new client machine with a dynamically generated, pre-linked session token:")
+        new_token = st.session_state["suggested_token"]
+        st.code(new_token, language="text")
+
+        prelinked_script = get_customized_agent_script(new_token, DEFAULT_OWNER, DEFAULT_REPO, DEFAULT_BRANCH)
+        st.download_button(
+            label=f"📥 Download Pre-Linked Agent ({new_token})",
+            data=prelinked_script,
+            file_name=f"ApexAgent_{new_token}.ps1",
+            mime="application/x-powershell",
+            use_container_width=True,
+        )
+
+        if st.button(f"Launch Session with {new_token}", use_container_width=True):
+            st.session_state["agent_token"] = new_token
+            st.query_params["token"] = new_token
+            st.rerun()
+
+    st.stop()
+
+
+# ----------------- ACTIVE ISOLATED SESSION VIEW -----------------
+st.sidebar.markdown("## ⚡ **APEXSYS COMMANDER**")
+st.sidebar.markdown(f"**Session:** <span class='token-badge'>{current_token}</span>", unsafe_allow_html=True)
+
+if st.sidebar.button("🔒 Disconnect / Switch Token", use_container_width=True):
+    del st.session_state["agent_token"]
+    if "token" in st.query_params:
+        del st.query_params["token"]
+    st.rerun()
+
+st.sidebar.markdown("---")
 with st.sidebar.expander("⚙️ Repository Settings", expanded=False):
     repo_owner = st.text_input("GitHub Owner", value=DEFAULT_OWNER)
     repo_name = st.text_input("GitHub Repository", value=DEFAULT_REPO)
@@ -81,130 +173,57 @@ with st.sidebar.expander("⚙️ Repository Settings", expanded=False):
 refresh_rate = st.sidebar.slider("Auto-Refresh Rate (seconds)", min_value=5, max_value=60, value=15)
 manual_refresh = st.sidebar.button("🔄 Refresh Telemetry Now", use_container_width=True)
 
+# Fetch isolated telemetry
+status_data, fetch_source = fetch_isolated_status(current_token, repo_owner, repo_name, branch, github_token)
 
-# ----------------- Data Fetcher Engine -----------------
-def fetch_status_from_github(owner: str, repo: str, branch_name: str, token: str = ""):
-    """
-    Fetches status.json using cache-busted raw GitHub URL or GitHub API fallback.
-    """
-    cache_buster = int(time.time())
-    raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch_name}/status.json?t={cache_buster}"
-    headers = {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Pragma": "no-cache",
-        "Expires": "0",
-    }
-    if token:
-        headers["Authorization"] = f"token {token}"
+# Direct Share Link
+share_url = f"?token={current_token}"
+st.sidebar.caption(f"Direct Session Link: `{share_url}`")
 
-    # Try Raw URL
-    try:
-        res = requests.get(raw_url, headers=headers, timeout=5)
-        if res.status_code == 200 and res.content.strip():
-            clean_str = res.content.decode("utf-8-sig")
-            return json.loads(clean_str), "GitHub Raw"
-    except Exception:
-        pass
-
-    # Fallback to GitHub REST API
-    try:
-        api_url = f"https://api.github.com/repos/{owner}/{repo}/contents/status.json?ref={branch_name}"
-        res = requests.get(api_url, headers=headers, timeout=5)
-        if res.status_code == 200:
-            data = res.json()
-            if "content" in data:
-                import base64
-                raw_bytes = base64.b64decode(data["content"])
-                decoded = raw_bytes.decode("utf-8-sig")
-                return json.loads(decoded), "GitHub REST API"
-    except Exception:
-        pass
-
-    # Local fallback
-    local_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "status.json")
-    if os.path.exists(local_path):
-        try:
-            with open(local_path, "r", encoding="utf-8-sig") as f:
-                return json.load(f), "Local File"
-        except Exception:
-            pass
-
-    return None, "Unavailable"
-
-
-# ----------------- Load Agent Script for Download -----------------
-def get_customized_agent_script(owner: str, repo: str, branch_name: str, token: str) -> str:
-    script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "agent", "ApexAgent.ps1")
-    content = ""
-    if os.path.exists(script_path):
-        with open(script_path, "r", encoding="utf-8") as f:
-            content = f.read()
-    else:
-        # Fetch from GitHub raw
-        try:
-            r = requests.get(f"https://raw.githubusercontent.com/{owner}/{repo}/{branch_name}/agent/ApexAgent.ps1", timeout=5)
-            if r.status_code == 200:
-                content = r.text
-        except Exception:
-            pass
-
-    # Inject configured parameters
-    if content:
-        content = content.replace('[string]$RepoOwner = "SharyarSoahil"', f'[string]$RepoOwner = "{owner}"')
-        content = content.replace('[string]$RepoName = "Sharyaradmintool"', f'[string]$RepoName = "{repo}"')
-        content = content.replace('[string]$Branch = "main"', f'[string]$Branch = "{branch_name}"')
-        if token:
-            content = content.replace('[string]$GitHubToken = $env:GITHUB_TOKEN', f'[string]$GitHubToken = "{token}"')
-    return content
-
-
-# Fetch telemetry state
-status_data, fetch_source = fetch_status_from_github(repo_owner, repo_name, branch, github_token)
-
-# ----------------- Top Deployment & Download Section -----------------
-with st.expander("📥 Deploy & Run PowerShell Agent on Client PC", expanded=(status_data is None)):
-    st.markdown("### 🚀 Serverless IT Commander Deployment")
+# ----------------- Top Deployment & Script Card -----------------
+with st.expander(f"📥 PowerShell Agent Deployment for Token [{current_token}]", expanded=(status_data is None)):
+    st.markdown("### 🚀 Client Agent Deployment")
     st.markdown(
-        "Run this standalone PowerShell script as an **Administrator** on any Windows machine. "
-        "It performs a multi-layer diagnostic scan (SMART drives, DISM/SFC integrity, Event Log BSODs, yellow-bang devices) "
-        "and automatically pushes `status.json` back to this repository."
+        f"This agent script is **pre-bound specifically to Token `{current_token}`**. "
+        f"All diagnostic metrics will be saved exclusively to `clients/{current_token}/status.json` on GitHub."
     )
 
     dcol1, dcol2 = st.columns([2, 1])
     with dcol1:
-        st.markdown("**1. Download the pre-configured script:**")
-        script_code = get_customized_agent_script(repo_owner, repo_name, branch, github_token)
+        agent_script_code = get_customized_agent_script(current_token, repo_owner, repo_name, branch)
         st.download_button(
-            label="📥 Download Agent Script (ApexAgent.ps1)",
-            data=script_code,
-            file_name="ApexAgent.ps1",
+            label=f"📥 Download Linked Agent ({current_token})",
+            data=agent_script_code,
+            file_name=f"ApexAgent_{current_token}.ps1",
             mime="application/x-powershell",
             use_container_width=True,
         )
     with dcol2:
-        st.markdown("**Execution Modes:**")
-        st.markdown("- **Single Scan & Push**: `.\\ApexAgent.ps1`")
-        st.markdown("- **Continuous Sync (60s loop)**: `.\\ApexAgent.ps1 -Continuous 1`")
+        st.markdown("**Run on Client PC (Admin):**")
+        st.markdown(f"- `.\\ApexAgent.ps1 -AgentToken {current_token}`")
+        st.markdown(f"- Continuous: `.\\ApexAgent.ps1 -AgentToken {current_token} -Continuous 1`")
 
     st.markdown("---")
-    st.markdown("**Or Execute Directly via PowerShell Admin One-Liner (Zero-Install):**")
+    st.markdown("**PowerShell Admin Instant One-Liner (Zero-Install):**")
     one_liner = (
         f'powershell.exe -ExecutionPolicy Bypass -Command '
         f'"Invoke-WebRequest -Uri \'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/agent/ApexAgent.ps1\' -OutFile ApexAgent.ps1; '
-        f'.\\ApexAgent.ps1"'
+        f'.\\ApexAgent.ps1 -AgentToken {current_token}"'
     )
     st.code(one_liner, language="powershell")
 
 
-# ----------------- Main Dashboard Rendering -----------------
+# ----------------- Status Data Validation -----------------
 if not status_data:
-    st.warning("⏳ No diagnostic data found yet in `status.json`. Run the agent on your PC to initiate the first sync!")
-    st.info("Once the agent executes `Push-ApexStatusToGitHub`, this dashboard will automatically update with complete machine diagnostics.")
+    st.warning(f"⏳ Waiting for Agent `{current_token}` to publish its initial diagnostic scan...")
+    st.info(f"Run `ApexAgent.ps1 -AgentToken {current_token}` on your client PC. As soon as the scan completes, your private dashboard will activate automatically.")
     time.sleep(refresh_rate)
     st.rerun()
+    st.stop()
 
-# Extract fields safely
+# Extract fields
 client_id = status_data.get("client_id", "Unknown PC")
+agent_status = status_data.get("status", "ONLINE").upper()
 health_score = status_data.get("health_score", 100)
 cat_scores = status_data.get("category_scores", {})
 sys_info = status_data.get("system_info", {})
@@ -214,12 +233,10 @@ issues = status_data.get("issues", [])
 last_synced = status_data.get("last_synced", "Unknown")
 
 # Calculate sync latency
-sync_badge_color = "#00ff88"
 age_text = "Just now"
 try:
     ts_str = status_data.get("timestamp")
     if ts_str:
-        # ISO parse
         clean_ts = ts_str.replace("Z", "+00:00")
         sync_time = datetime.datetime.fromisoformat(clean_ts)
         now_time = datetime.datetime.now(datetime.timezone.utc)
@@ -230,29 +247,37 @@ try:
             age_text = f"{diff_sec // 60}m ago"
         else:
             age_text = f"{diff_sec // 3600}h ago"
-            sync_badge_color = "#ffaa00"
 except Exception:
     pass
 
 # Top Machine Banner
-col_h1, col_h2 = st.columns([3, 1])
+col_h1, col_h2 = st.columns([3, 2])
 with col_h1:
     admin_pill = "👑 Elevated Administrator" if sys_info.get("is_admin") else "⚠️ Standard User"
     st.markdown(f"## 🖥️ **{sys_info.get('hostname', client_id)}**")
     st.caption(f"{sys_info.get('os_name')} ({sys_info.get('architecture')}) | IP: {sys_info.get('ip_address')} | {admin_pill}")
+
 with col_h2:
+    status_badge_html = (
+        f"<span class='status-badge-online'>● ONLINE (Synced: {age_text})</span>"
+        if agent_status == "ONLINE"
+        else f"<span class='status-badge-offline'>■ TERMINATED / OFFLINE ({last_synced})</span>"
+    )
     st.markdown(f"""
-    <div style="text-align: right; padding-top: 10px;">
-        <span class="sync-badge" style="color: {sync_badge_color}; border-color: {sync_badge_color};">
-            ● GITHUB SYNC: {age_text}
-        </span><br>
-        <span style="font-size: 0.75rem; color: #a0aec0;">Source: {fetch_source}</span>
+    <div style="text-align: right; padding-top: 6px;">
+        {status_badge_html}
+        <span class="token-badge" style="margin-left: 8px;">TOKEN: {current_token}</span><br>
+        <span style="font-size: 0.75rem; color: #a0aec0;">Feed: {fetch_source}</span>
     </div>
     """, unsafe_allow_html=True)
 
+# Offline Banner Alert
+if agent_status == "OFFLINE":
+    st.error(f"⚠️ AGENT TERMINATED: Client process cleanly exited at {last_synced}. Showing last recorded diagnostic state.")
+
 st.markdown("---")
 
-# Health Score Gauge & Categorical Radar Section
+# Health Score Gauge & Categorical Breakdown
 col_gauge, col_bars = st.columns([1, 2])
 
 with col_gauge:
@@ -307,7 +332,7 @@ with col_bars:
     st.plotly_chart(fig_bar, use_container_width=True)
 
 # Live Telemetry Metrics
-st.markdown("### 📈 Live Telemetry Snapshot")
+st.markdown("### 📈 Real-Time Telemetry Snapshot")
 tcol1, tcol2, tcol3, tcol4 = st.columns(4)
 with tcol1:
     st.metric("CPU Utilization", f"{telemetry.get('cpu_percent', 0)}%", f"{telemetry.get('cpu_freq_mhz', 0)} MHz")
@@ -321,7 +346,7 @@ with tcol4:
 # Detected Issues Triage
 st.markdown(f"### 📋 Actionable Diagnostic Issues ({len(issues)})")
 if not issues:
-    st.success("✓ ALL SYSTEMS VERIFIED: No hardware failures, component store damage, or system errors detected.")
+    st.success("✓ ALL SYSTEMS VERIFIED: Zero hardware faults, component store damage, or system errors detected.")
 else:
     for idx, iss in enumerate(issues, 1):
         sev = iss.get("severity", "INFO")
@@ -331,7 +356,7 @@ else:
             <strong style="color: #fff;">[{iss.get('category')}] {iss.get('title')}</strong> 
             <span style="color: {color}; font-size: 0.8rem; font-weight: 700;">({sev})</span><br>
             <span style="color: #cbd5e0; font-size: 0.85rem;">{iss.get('description')}</span><br>
-            <span style="color: var(--neon-cyan); font-family: monospace; font-size: 0.78rem;">Suggested Fix: {iss.get('fix_id')}</span>
+            <span style="color: var(--neon-cyan); font-family: monospace; font-size: 0.78rem;">Fix Directive: {iss.get('fix_id')}</span>
         </div>
         """, unsafe_allow_html=True)
 
