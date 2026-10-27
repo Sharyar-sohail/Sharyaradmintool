@@ -1,5 +1,5 @@
 """
-ApexSys Executive Command Dashboard - Ultra-Powerful Windows Repair, Optimization & Administration Suite
+Sharyar Admin Tool - Autonomous AI Windows Updating, Repair & Multi-User Administration Suite
 Strict Multi-User Session Isolation Architecture with GitHub-based zero-cost state syncing.
 Each user/administrator links to an exclusive Agent Token. Telemetry is scoped exclusively
 to clients/{AGENT_TOKEN}/status.json and commands.json with zero cross-tenant data mixing.
@@ -9,16 +9,40 @@ import datetime
 import json
 import os
 import random
+import sys
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
+# Ensure both repository root and dashboard directory are present in sys.path
+_current_dir = Path(__file__).resolve().parent
+_repo_root = _current_dir.parent
+for _p in [str(_repo_root), str(_current_dir)]:
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+try:
+    from dashboard.fetcher import (
+        fetch_isolated_status,
+        fetch_isolated_commands,
+        send_isolated_command,
+        get_customized_agent_script,
+    )
+except (ImportError, ModuleNotFoundError):
+    from fetcher import (
+        fetch_isolated_status,
+        fetch_isolated_commands,
+        send_isolated_command,
+        get_customized_agent_script,
+    )
+
 # Configure Streamlit page
 st.set_page_config(
-    page_title="ApexSys Windows Repair & Admin Suite",
+    page_title="Sharyar Admin Tool - Autonomous AI IT Commander",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -82,6 +106,14 @@ st.markdown("""
         color: #ff3366;
         border: 1px solid #ff3366;
     }
+    .ai-hero-card {
+        background: linear-gradient(135deg, rgba(16, 28, 54, 0.95), rgba(7, 14, 28, 0.95));
+        border: 1px solid #00f3ff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
+        margin-bottom: 20px;
+    }
     .terminal-box {
         background-color: #04060a;
         color: #00ff88;
@@ -95,34 +127,15 @@ st.markdown("""
         white-space: pre-wrap;
         box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
     }
+    .share-card {
+        background: rgba(13, 19, 33, 0.9);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        border-radius: 10px;
+        padding: 16px;
+        margin-top: 10px;
+    }
 </style>
 """, unsafe_allow_html=True)
-
-# ----------------- Configuration & State Fetchers -----------------
-import sys
-from pathlib import Path
-
-# Ensure both repository root and dashboard directory are present in sys.path
-_current_dir = Path(__file__).resolve().parent
-_repo_root = _current_dir.parent
-for _p in [str(_repo_root), str(_current_dir)]:
-    if _p not in sys.path:
-        sys.path.insert(0, _p)
-
-try:
-    from dashboard.fetcher import (
-        fetch_isolated_status,
-        fetch_isolated_commands,
-        send_isolated_command,
-        get_customized_agent_script,
-    )
-except (ImportError, ModuleNotFoundError):
-    from fetcher import (
-        fetch_isolated_status,
-        fetch_isolated_commands,
-        send_isolated_command,
-        get_customized_agent_script,
-    )
 
 DEFAULT_OWNER = os.getenv("GITHUB_REPO_OWNER", "SharyarSoahil")
 DEFAULT_REPO = os.getenv("GITHUB_REPO_NAME", "Sharyaradmintool")
@@ -142,48 +155,48 @@ if "suggested_token" not in st.session_state:
 current_token = st.session_state.get("agent_token", "").strip().upper()
 
 if not current_token:
-    st.markdown("## ⚡ **APEXSYS ENTERPRISE WINDOWS REPAIR & ADMIN SUITE**")
-    st.markdown("### 🔒 Zero-Contamination Multi-User Session Gateway")
-    st.info("ApexSys enforces strict multi-tenant isolation. Telemetry and remote maintenance queues are scoped strictly to your unique Agent Token with zero cross-tenant mixing.")
+    st.markdown("## ⚡ **شریار ایڈمن ٹول (SHARYAR ADMIN TOOL)**")
+    st.markdown("### 🤖 Autonomous AI Windows Updating, Repair & IT Commander Suite")
+    st.info("سسٹم میں سخت ملٹی یوزر سیشن آئسولیشن نافذ ہے۔ اپنا یونیک ایجنٹ سیشن ٹوکن درج کریں تاکہ آپ کا کنٹرول سینٹر فعال ہو سکے:")
 
     col_gate1, col_gate2 = st.columns(2)
 
     with col_gate1:
-        st.markdown("#### 🔑 Connect Existing Client Machine")
-        st.markdown("Enter the unique Session Token generated when launching the agent on your client machine:")
-        input_token = st.text_input("Agent Session Token", placeholder="e.g. APEX-A1B2C3D4", key="login_token_input")
-        if st.button("🚀 Access Isolated Session", use_container_width=True):
+        st.markdown("#### 🔑 موجودہ کلائنٹ مشین سے جڑیں (Connect Client Token)")
+        st.markdown("اپنے کلائنٹ کمپیوٹر پر چلنے والے اسکرپٹ سے سیشن ٹوکن حاصل کر کے یہاں داخل کریں:")
+        input_token = st.text_input("Session Token (ایجنٹ ٹوکن)", placeholder="مثلاً APEX-A1B2C3D4", key="login_token_input")
+        if st.button("🚀 نجی سیشن کھولیں (Open Private Session)", use_container_width=True):
             if input_token.strip():
                 clean_t = input_token.strip().upper()
                 st.session_state["agent_token"] = clean_t
                 st.query_params["token"] = clean_t
                 st.rerun()
             else:
-                st.error("Please enter a valid session token.")
+                st.error("براہ کرم ایک درست ٹوکن درج کریں۔")
 
         st.markdown("---")
-        st.caption("Quick Test: Click below to load the pre-verified demo workstation telemetry:")
-        if st.button("🧪 Launch Verified Demo Machine (APEX-DEMO01)", use_container_width=True):
+        st.caption("فوری ٹیسٹنگ کے لیے ڈیمو مشین لوڈ کریں:")
+        if st.button("🧪 ویریفائیڈ ڈیمو مشین کھولیں (APEX-DEMO01)", use_container_width=True):
             st.session_state["agent_token"] = "APEX-DEMO01"
             st.query_params["token"] = "APEX-DEMO01"
             st.rerun()
 
     with col_gate2:
-        st.markdown("#### ⚡ Generate New Token & Deploy Agent")
-        st.markdown("Provision a new target system with a freshly generated, pre-linked session token:")
+        st.markdown("#### ⚡ نیا ٹوکن بنائیں اور ایجنٹ ڈاؤنلوڈ کریں (Deploy Agent)")
+        st.markdown("کسی بھی نئے ونڈوز کمپیوٹر کو کنیکٹ کرنے کے لیے پہلے سے جڑا ہوا ایجنٹ اسکرپٹ ڈاؤنلوڈ کریں:")
         new_token = st.session_state["suggested_token"]
         st.code(new_token, language="text")
 
         prelinked_script = get_customized_agent_script(new_token, DEFAULT_OWNER, DEFAULT_REPO, DEFAULT_BRANCH)
         st.download_button(
-            label=f"📥 Download Pre-Bound Agent ({new_token})",
+            label=f"📥 ڈاؤنلوڈ شریار ایجنٹ اسکرپٹ ({new_token})",
             data=prelinked_script,
-            file_name=f"ApexAgent_{new_token}.ps1",
+            file_name=f"SharyarAgent_{new_token}.ps1",
             mime="application/x-powershell",
             use_container_width=True,
         )
 
-        if st.button(f"Launch Session with {new_token}", use_container_width=True):
+        if st.button(f"سیشن شروع کریں ({new_token})", use_container_width=True):
             st.session_state["agent_token"] = new_token
             st.query_params["token"] = new_token
             st.rerun()
@@ -192,24 +205,24 @@ if not current_token:
 
 
 # ----------------- ACTIVE ISOLATED SESSION VIEW -----------------
-st.sidebar.markdown("## ⚡ **APEXSYS COMMANDER**")
-st.sidebar.markdown(f"**Linked Machine:** <span class='token-badge'>{current_token}</span>", unsafe_allow_html=True)
+st.sidebar.markdown("## ⚡ **شریار ایڈمن ٹول**")
+st.sidebar.markdown(f"**منسلک مشین:** <span class='token-badge'>{current_token}</span>", unsafe_allow_html=True)
 
-if st.sidebar.button("🔒 Switch Agent / Disconnect", use_container_width=True):
+if st.sidebar.button("🔒 سیشن بند کریں / ٹوکن تبدیل کریں", use_container_width=True):
     del st.session_state["agent_token"]
     if "token" in st.query_params:
         del st.query_params["token"]
     st.rerun()
 
 st.sidebar.markdown("---")
-with st.sidebar.expander("⚙️ Repository & Auth Settings", expanded=False):
+with st.sidebar.expander("⚙️ ریپوزٹری اور اجازت نامہ ترتیبات", expanded=False):
     repo_owner = st.text_input("GitHub Owner", value=DEFAULT_OWNER)
     repo_name = st.text_input("GitHub Repository", value=DEFAULT_REPO)
     branch = st.text_input("Branch", value=DEFAULT_BRANCH)
-    github_token = st.text_input("Personal Access Token (Optional)", value=DEFAULT_TOKEN, type="password")
+    github_token = st.text_input("Personal Access Token (اختیاری)", value=DEFAULT_TOKEN, type="password")
 
-refresh_rate = st.sidebar.slider("Auto-Refresh Rate (seconds)", min_value=5, max_value=60, value=15)
-if st.sidebar.button("🔄 Refresh Telemetry Now", use_container_width=True):
+refresh_rate = st.sidebar.slider("آٹو ریفریش کا وقت (سیکنڈز)", min_value=5, max_value=60, value=15)
+if st.sidebar.button("🔄 ابھی ٹیلی میٹری تازہ کریں", use_container_width=True):
     st.rerun()
 
 # Fetch isolated telemetry
@@ -217,45 +230,45 @@ status_data, fetch_source = fetch_isolated_status(current_token, repo_owner, rep
 
 # Shareable URL
 share_url = f"?token={current_token}"
-st.sidebar.caption(f"Direct Session Link: `{share_url}`")
+st.sidebar.caption(f"براہِ راست سیشن لنک: `{share_url}`")
 
 # ----------------- Top Deployment & Script Card -----------------
-with st.expander(f"📥 PowerShell Agent Deployment & One-Liner [{current_token}]", expanded=(status_data is None)):
-    st.markdown("### 🚀 Client Agent Deployment")
+with st.expander(f"📥 کلائنٹ پی سی انسٹالیشن اور ون لائنر اسکرپٹ [{current_token}]", expanded=(status_data is None)):
+    st.markdown("### 🚀 شریار آئی ٹی ٹول ایجنٹ انسٹالیشن")
     st.markdown(
-        f"This agent script is **pre-bound specifically to Token `{current_token}`**. "
-        f"All diagnostic metrics and commands are scoped exclusively to `clients/{current_token}/` on GitHub."
+        f"یہ اسکرپٹ خصوصی طور پر ٹوکن `{current_token}` کے ساتھ منسلک ہے۔ "
+        f"تمام ڈائیگنوسٹکس اور ریموٹ احکامات `clients/{current_token}/` پر گٹ ہب کے ذریعے خودکار سنک ہوں گے۔"
     )
 
     dcol1, dcol2 = st.columns([2, 1])
     with dcol1:
         agent_script_code = get_customized_agent_script(current_token, repo_owner, repo_name, branch)
         st.download_button(
-            label=f"📥 Download Linked Agent ({current_token})",
+            label=f"📥 ڈاؤنلوڈ شریار ایجنٹ ({current_token})",
             data=agent_script_code,
-            file_name=f"ApexAgent_{current_token}.ps1",
+            file_name=f"SharyarAgent_{current_token}.ps1",
             mime="application/x-powershell",
             use_container_width=True,
         )
     with dcol2:
-        st.markdown("**Run on Client PC (Admin):**")
-        st.markdown(f"- Single scan: `.\\ApexAgent.ps1 -AgentToken {current_token}`")
-        st.markdown(f"- Continuous loop: `.\\ApexAgent.ps1 -AgentToken {current_token} -Continuous 1`")
+        st.markdown("**کلائنٹ پی سی پر رن کریں (Admin PowerShell):**")
+        st.markdown(f"- سنگل اسکین: `.\\SharyarAgent.ps1 -AgentToken {current_token}`")
+        st.markdown(f"- مسلسل نگرانی: `.\\SharyarAgent.ps1 -AgentToken {current_token} -Continuous 1`")
 
     st.markdown("---")
-    st.markdown("**Zero-Install Admin One-Liner (Run directly in PowerShell as Admin):**")
+    st.markdown("**پاور شیل ایڈمن انسٹنٹ ون لائنر (بغیر کسی پیشگی ڈاؤنلوڈ کے براہ راست چلائیں):**")
     one_liner = (
         f'powershell.exe -ExecutionPolicy Bypass -Command '
-        f'"Invoke-WebRequest -Uri \'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/agent/ApexAgent.ps1\' -OutFile ApexAgent.ps1; '
-        f'.\\ApexAgent.ps1 -AgentToken {current_token}"'
+        f'"Invoke-WebRequest -Uri \'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/agent/ApexAgent.ps1\' -OutFile SharyarAgent.ps1; '
+        f'.\\SharyarAgent.ps1 -AgentToken {current_token}"'
     )
     st.code(one_liner, language="powershell")
 
 
 # ----------------- Status Data Validation -----------------
 if not status_data:
-    st.warning(f"⏳ Waiting for Agent `{current_token}` to publish its initial diagnostic scan...")
-    st.info(f"Run `ApexAgent.ps1 -AgentToken {current_token}` on your client PC. Once completed, your private command dashboard will activate automatically.")
+    st.warning(f"⏳ کلائنٹ ایجنٹ `{current_token}` کے پہلے اسکین کا انتظار کیا جا رہا ہے...")
+    st.info(f"اپنے کمپیوٹر پر ایجنٹ چلائیں۔ اسکین مکمل ہوتے ہی آپ کا ڈیش بورڈ لائیو فعال ہو جائے گا۔")
     time.sleep(refresh_rate)
     st.rerun()
     st.stop()
@@ -272,7 +285,7 @@ issues = status_data.get("issues", [])
 last_synced = status_data.get("last_synced", "Unknown")
 
 # Calculate sync latency
-age_text = "Just now"
+age_text = "ابھی"
 try:
     ts_str = status_data.get("timestamp")
     if ts_str:
@@ -281,37 +294,67 @@ try:
         now_time = datetime.datetime.now(datetime.timezone.utc)
         diff_sec = int((now_time - sync_time).total_seconds())
         if diff_sec < 60:
-            age_text = f"{diff_sec}s ago"
+            age_text = f"{diff_sec}s پہلے"
         elif diff_sec < 3600:
-            age_text = f"{diff_sec // 60}m ago"
+            age_text = f"{diff_sec // 60}m پہلے"
         else:
-            age_text = f"{diff_sec // 3600}h ago"
+            age_text = f"{diff_sec // 3600}h پہلے"
 except Exception:
     pass
 
 # Top Machine Banner
 col_h1, col_h2 = st.columns([3, 2])
 with col_h1:
-    admin_pill = "👑 Elevated Administrator" if sys_info.get("is_admin") else "⚠️ Standard User"
+    admin_pill = "👑 ایلیویٹڈ ایڈمنسٹریٹر" if sys_info.get("is_admin") else "⚠️ اسٹینڈرڈ یوزر"
     st.markdown(f"## 🖥️ **{sys_info.get('hostname', client_id)}**")
     st.caption(f"{sys_info.get('os_name')} (Build {sys_info.get('os_build')}, {sys_info.get('architecture')}) | IP: {sys_info.get('ip_address')} | {admin_pill}")
 
 with col_h2:
     status_badge_html = (
-        f"<span class='status-badge-online'>● ONLINE (Synced: {age_text})</span>"
+        f"<span class='status-badge-online'>● آن لائن (سنک: {age_text})</span>"
         if agent_status == "ONLINE"
-        else f"<span class='status-badge-offline'>■ TERMINATED / OFFLINE ({last_synced})</span>"
+        else f"<span class='status-badge-offline'>■ بند / آف لائن ({last_synced})</span>"
     )
     st.markdown(f"""
     <div style="text-align: right; padding-top: 6px;">
         {status_badge_html}
-        <span class="token-badge" style="margin-left: 8px;">TOKEN: {current_token}</span><br>
-        <span style="font-size: 0.75rem; color: #a0aec0;">Feed: {fetch_source}</span>
+        <span class="token-badge" style="margin-left: 8px;">ٹوکن: {current_token}</span><br>
+        <span style="font-size: 0.75rem; color: #a0aec0;">شریار ایڈمن فیڈ: {fetch_source}</span>
     </div>
     """, unsafe_allow_html=True)
 
 if agent_status == "OFFLINE":
-    st.error(f"⚠️ CLIENT AGENT TERMINATED: Process cleanly exited at {last_synced}. Showing last recorded diagnostic state.")
+    st.error(f"⚠️ کلائنٹ ایجنٹ آف لائن ہے: آخری سیشن وقت {last_synced} پر ختم ہوا۔ آخری محفوظ شدہ رپورٹ دکھائی جا رہی ہے۔")
+
+# ----------------- 🤖 SHARYAR AI AUTONOMOUS UPDATER HERO CARD -----------------
+st.markdown("""
+<div class="ai-hero-card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h3 style="color: #00f3ff; margin-bottom: 4px;">🤖 شریار AI آٹونومس اپ ڈیٹ اور سیلف ہیلنگ سسٹم</h3>
+            <p style="color: #cbd5e0; margin: 0; font-size: 0.9rem;">
+                ایک کلک میں خودکار اے آئی انجن ونڈوز ڈیفینڈر سگنیچرز اپ ڈیٹ کرے گا، تمام تھرڈ پارٹی سافٹ ویئرز اپ گریڈ کرے گا، 
+                کرپٹ سسٹم فائلز (SFC/DISM) ٹھیک کرے گا، اور سارا کباڑ کیشے صاف کر کے انٹرنیٹ اسٹیک بحال کرے گا۔
+            </p>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+ai_btn_col1, ai_btn_col2 = st.columns([3, 1])
+with ai_btn_col1:
+    if st.button("🚀 لائیو شریار AI سسٹم اپ ڈیٹ اور ہیلنگ چلائیں (Run AI Auto-Update & Heal)", key="btn_ai_smart_update", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "AI_SMART_UPDATE", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast("شریار AI اپ ڈیٹ کمانڈ بھیج دی گئی!")
+            st.success(f"✓ AI Autonomous Pipeline Queued: {msg}")
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+with ai_btn_col2:
+    if st.button("📤 شیئر ہیلتھ رپورٹ (Share)", key="btn_quick_share", use_container_width=True):
+        st.toast("رپورٹ شیئر سیکشن پر جائیں")
 
 st.markdown("---")
 
@@ -319,14 +362,14 @@ st.markdown("---")
 col_gauge, col_bars = st.columns([1, 2])
 
 with col_gauge:
-    st.markdown("### Holistic Vitality Index")
+    st.markdown("### 📊 مجموعی سسٹم وائٹلٹی اسکور")
     gauge_color = "#00ff88" if health_score >= 80 else "#ffaa00" if health_score >= 50 else "#ff3366"
 
     fig_gauge = go.Figure(go.Indicator(
         mode="gauge+number",
         value=health_score,
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "System Health Score", 'font': {'size': 18, 'color': "#ffffff"}},
+        title={'text': "Health Score", 'font': {'size': 18, 'color': "#ffffff"}},
         number={'font': {'size': 48, 'color': gauge_color}, 'suffix': "%"},
         gauge={
             'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "#718096"},
@@ -345,7 +388,7 @@ with col_gauge:
     st.plotly_chart(fig_gauge, use_container_width=True)
 
 with col_bars:
-    st.markdown("### Categorical Breakdown")
+    st.markdown("### 📈 کیٹیگری بریک ڈاؤن")
     cats = list(cat_scores.keys()) if cat_scores else ["Hardware", "Operating System", "Storage", "Drivers", "Security"]
     scores = [cat_scores.get(c, 100) for c in cats]
 
@@ -370,16 +413,39 @@ with col_bars:
     st.plotly_chart(fig_bar, use_container_width=True)
 
 # Live Telemetry Metrics
-st.markdown("### 📈 Live Telemetry Snapshot")
+st.markdown("### ⚡ لائیو پی سی ٹیلی میٹری")
 tcol1, tcol2, tcol3, tcol4 = st.columns(4)
 with tcol1:
-    st.metric("CPU Utilization", f"{telemetry.get('cpu_percent', 0)}%", f"{telemetry.get('cpu_freq_mhz', 0)} MHz")
+    st.metric("سی پی یو لوڈ (CPU)", f"{telemetry.get('cpu_percent', 0)}%", f"{telemetry.get('cpu_freq_mhz', 0)} MHz")
 with tcol2:
-    st.metric("RAM Utilization", f"{telemetry.get('ram_percent', 0)}%", f"{telemetry.get('ram_used_gb', 0)} / {sys_info.get('total_ram_gb', 0)} GB")
+    st.metric("ریم کا استعمال (RAM)", f"{telemetry.get('ram_percent', 0)}%", f"{telemetry.get('ram_used_gb', 0)} / {sys_info.get('total_ram_gb', 0)} GB")
 with tcol3:
-    st.metric("System Disk (C:)", f"{telemetry.get('disk_percent', 0)}% Fill")
+    st.metric("سسٹم ڈرائیو فل (C:)", f"{telemetry.get('disk_percent', 0)}% Fill")
 with tcol4:
-    st.metric("Gateway Latency", f"{telemetry.get('net_latency_ms', 0)} ms")
+    st.metric("انٹرنیٹ پنگ لیٹنسی", f"{telemetry.get('net_latency_ms', 0)} ms")
+
+# ----------------- 🧠 SHARYAR AI DOCTOR DIAGNOSTIC ADVISOR -----------------
+st.markdown("### 🧠 شریار AI ڈاکٹر کی تجاویز (AI System Health Advisor)")
+ai_advices = []
+if health_score >= 90:
+    ai_advices.append("🟢 **بہترین حالت**: تمام اہم ونڈوز سروسز اور سیکیورٹی سسٹمز بالکل ٹھیک کام کر رہے ہیں۔")
+elif health_score >= 70:
+    ai_advices.append("🟡 **توجہ درکار**: سسٹم میں کچھ ڈرائیورز یا فالتو کیشے موجود ہیں۔ تجویز ہے کہ 'AI Auto-Update' چلائیں۔")
+else:
+    ai_advices.append("🔴 **فوری ریپیئر درکار**: سسٹم میں سنگین مسائل یا کرپشن دیکھی گئی ہے۔ فوری طور پر ریپیئر چلائیں۔")
+
+# Check Disk
+if telemetry.get('disk_percent', 0) > 80:
+    ai_advices.append(f"⚠️ **اسٹوریج دباؤ**: سی ڈرائیو {telemetry.get('disk_percent')}% پر ہے۔ تجویز ہے کہ فالتو کیشے فائلز صاف کریں۔")
+# Check Antivirus
+av_info = diag.get("antivirus", {})
+if not av_info.get("realtime_protection", True):
+    ai_advices.append("🚨 **سیکیورٹی الرٹ**: مائیکروسافٹ ڈیفینڈر کی ریل ٹائم پروٹیکشن بند ہے، اسے فوراً آن کریں۔")
+if av_info.get("quick_scan_age_days", 0) > 3:
+    ai_advices.append(f"🛡️ **اسکین الرٹ**: آخری وائرس اسکین {av_info.get('quick_scan_age_days')} دن پہلے ہوا تھا۔ نیا اسکین چلائیں۔")
+
+for adv in ai_advices:
+    st.markdown(f"- {adv}")
 
 st.markdown("---")
 
@@ -387,21 +453,22 @@ st.markdown("---")
 cmd_data, cmd_source = fetch_isolated_commands(current_token, repo_owner, repo_name, branch, github_token)
 
 # ----------------- ENTERPRISE CONTROL TABS -----------------
-tab_issues, tab_av, tab_pkg, tab_svc, tab_stor, tab_diag, tab_term = st.tabs([
-    "📋 Actionable Issues",
-    "🛡️ Antivirus & Threats",
-    "📦 Software (winget)",
-    "⚙️ Services & Startup",
-    "🛠️ Storage & Network",
-    "🔍 Deep Audits (Hardware/OS)",
-    "💻 Live Terminal Console",
+tab_issues, tab_av, tab_pkg, tab_svc, tab_stor, tab_diag, tab_term, tab_share = st.tabs([
+    "📋 ایکشن ایبل مسائل",
+    "🛡️ اینٹی وائرس اور خطرات",
+    "📦 سافٹ ویئر مینیجر (winget)",
+    "⚙️ سروسز اور اسٹارٹ اپ",
+    "🛠️ اسٹوریج اور نیٹ ورک",
+    "🔍 ہارڈ ویئر و ڈرائیورز",
+    "💻 لائیو ٹرمینل لاگ",
+    "📤 شیئر اور رپورٹ سینٹر",
 ])
 
 # ----------------- TAB 1: Actionable Issues -----------------
 with tab_issues:
-    st.markdown(f"### 📋 Actionable Diagnostic Issues ({len(issues)})")
+    st.markdown(f"### 📋 حل طلب مسائل ({len(issues)})")
     if not issues:
-        st.success("✓ ALL SYSTEMS VERIFIED: Zero hardware faults, component store damage, or virus threats detected.")
+        st.success("✓ تمام سسٹمز بالکل درست ہیں: کوئی ہارڈ ویئر فالٹ، وائرس یا کرپشن نہیں ملی۔")
     else:
         for idx, iss in enumerate(issues, 1):
             sev = iss.get("severity", "INFO")
@@ -420,10 +487,10 @@ with tab_issues:
                 """, unsafe_allow_html=True)
             with col_iss_btn:
                 if fix_id:
-                    if st.button("⚡ Remediate", key=f"fix_btn_{idx}_{fix_id}", use_container_width=True):
+                    if st.button("⚡ خودکار مرمت", key=f"fix_btn_{idx}_{fix_id}", use_container_width=True):
                         ok, msg = send_isolated_command(current_token, fix_id, {}, repo_owner, repo_name, branch, github_token)
                         if ok:
-                            st.toast(f"Remediation directive {fix_id} dispatched!")
+                            st.toast(f"ریپیئر کمانڈ بھیج دی گئی: {fix_id}")
                             st.success(f"Dispatched {fix_id}")
                             time.sleep(1)
                             st.rerun()
@@ -432,7 +499,7 @@ with tab_issues:
 
 # ----------------- TAB 2: Antivirus & Threat Defense -----------------
 with tab_av:
-    st.markdown("### 🛡️ Microsoft Defender & Threat Defense")
+    st.markdown("### 🛡️ مائیکروسافٹ ڈیفینڈر اور وائرس تحفظ")
     av_data = diag.get("antivirus", {})
     av_enabled = av_data.get("enabled", False)
     av_realtime = av_data.get("realtime_protection", False)
@@ -445,72 +512,55 @@ with tab_av:
     # Status Cards
     av_c1, av_c2, av_c3 = st.columns(3)
     with av_c1:
-        rt_badge = "🟢 ACTIVE / PROTECTED" if av_realtime else "🔴 DISABLED"
-        st.metric("Real-Time Protection", rt_badge)
+        rt_badge = "🟢 محفوظ / فعال (ACTIVE)" if av_realtime else "🔴 غیر فعال (DISABLED)"
+        st.metric("ریل ٹائم تحفظ", rt_badge)
     with av_c2:
-        st.metric("Signature Version", av_sig, f"Updated: {av_update}")
+        st.metric("سگنیچر ورژن", av_sig, f"اپ ڈیٹ: {av_update}")
     with av_c3:
-        scan_txt = f"{av_scan_age} days ago" if av_scan_age >= 0 else "Never"
-        st.metric("Last Quick Scan", scan_txt)
+        scan_txt = f"{av_scan_age} دن پہلے" if av_scan_age >= 0 else "کبھی نہیں"
+        st.metric("آخری کوئیک اسکین", scan_txt)
 
-    # Antivirus Action Triggers
-    st.markdown("#### ⚡ Antivirus Actions")
+    st.markdown("#### ⚡ اینٹی وائرس ایکشن بٹنز")
     btn_col1, btn_col2, btn_col3 = st.columns(3)
     with btn_col1:
-        if st.button("🛡️ Run Quick Virus Scan", key="btn_av_quick", use_container_width=True):
+        if st.button("🛡️ فوری وائرس اسکین چلائیں (Quick Scan)", key="btn_av_quick", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "RUN_VIRUS_SCAN", {}, repo_owner, repo_name, branch, github_token)
-            if ok:
-                st.toast("Quick virus scan queued!")
-                st.success(msg)
-                time.sleep(1)
-                st.rerun()
-            else:
-                st.error(msg)
+            if ok: st.toast("کوئیک اسکین شروع ہو گیا!"); st.success(msg); time.sleep(1); st.rerun()
+            else: st.error(msg)
     with btn_col2:
-        if st.button("🔬 Run Full System Scan", key="btn_av_full", use_container_width=True):
+        if st.button("🔬 مکمل سسٹم اسکین چلائیں (Full Scan)", key="btn_av_full", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "RUN_FULL_VIRUS_SCAN", {}, repo_owner, repo_name, branch, github_token)
-            if ok:
-                st.toast("Full scan queued!")
-                st.success(msg)
-                time.sleep(1)
-                st.rerun()
-            else:
-                st.error(msg)
+            if ok: st.toast("مکمل اسکین شروع ہو گیا!"); st.success(msg); time.sleep(1); st.rerun()
+            else: st.error(msg)
     with btn_col3:
-        if st.button("🔄 Update Virus Definitions", key="btn_av_update", use_container_width=True):
+        if st.button("🔄 وائرس سگنیچرز اپ ڈیٹ کریں", key="btn_av_update", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "UPDATE_VIRUS_SIGNATURES", {}, repo_owner, repo_name, branch, github_token)
-            if ok:
-                st.toast("Definition update queued!")
-                st.success(msg)
-                time.sleep(1)
-                st.rerun()
-            else:
-                st.error(msg)
+            if ok: st.toast("سگنیچرز اپ ڈیٹ شروع!"); st.success(msg); time.sleep(1); st.rerun()
+            else: st.error(msg)
 
     st.markdown("---")
-    st.markdown(f"#### 🚨 Threat Detection History ({len(threats)} total, {active_threats_count} active)")
+    st.markdown(f"#### 🚨 پکڑے گئے خطرات کی ہسٹری ({len(threats)} کل، {active_threats_count} ایکٹو)")
     if not threats:
-        st.info("No malware or virus threats recorded by Microsoft Defender.")
+        st.info("کمپیوٹر میں کوئی وائرس یا مالویئر خطرہ موجود نہیں ہے۔")
     else:
         df_th = pd.DataFrame(threats)
         st.dataframe(df_th, use_container_width=True)
 
 # ----------------- TAB 3: Software & winget Packaging -----------------
 with tab_pkg:
-    st.markdown("### 📦 Software & Package Management (winget)")
+    st.markdown("### 📦 سافٹ ویئر اور پیکیج مینیجر (winget)")
     soft_data = diag.get("software", {})
     winget_ok = soft_data.get("winget_available", False)
     installed_apps = soft_data.get("installed_apps", [])
     total_apps_count = soft_data.get("installed_count", len(installed_apps))
 
     if not winget_ok:
-        st.warning("⚠️ Windows Package Manager (`winget.exe`) was not detected on this machine. Remote installations require winget or App Installer.")
+        st.warning("⚠️ کلائنٹ مشین پر ونڈوز پیکیج مینیجر (`winget.exe`) موجود نہیں ملا۔")
 
-    st.markdown("#### ⚡ 1-Click Essential IT Admin Utilities")
-    st.caption("Deploy verified enterprise utilities silently via Windows Package Manager:")
+    st.markdown("#### ⚡ ضروری آئی ٹی ٹولز کی فوری انسٹالیشن (1-Click Installers)")
     pcol1, pcol2, pcol3 = st.columns(3)
     with pcol1:
-        if st.button("📥 Install 7-Zip (7zip.7zip)", key="pkg_7zip", use_container_width=True):
+        if st.button("📥 Install 7-Zip", key="pkg_7zip", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "WINGET_INSTALL", {"package_id": "7zip.7zip"}, repo_owner, repo_name, branch, github_token)
             if ok: st.toast("Installing 7-Zip..."); st.success(msg); time.sleep(1); st.rerun()
         if st.button("📥 Install Google Chrome", key="pkg_chrome", use_container_width=True):
@@ -529,169 +579,168 @@ with tab_pkg:
             if ok: st.toast("Installing Notepad++..."); st.success(msg); time.sleep(1); st.rerun()
         if st.button("🚀 Upgrade All Software", key="pkg_upg_all", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "WINGET_UPGRADE_ALL", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("Upgrading all packages..."); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("تمام سافٹ ویئرز اپ گریڈ ہو رہے ہیں..."); st.success(msg); time.sleep(1); st.rerun()
 
     st.markdown("---")
-    st.markdown("#### 🎯 Custom Package Management")
+    st.markdown("#### 🎯 کسٹم سافٹ ویئر انسٹالیشن اور اَن انسٹالیشن")
     c_pkg1, c_pkg2 = st.columns(2)
     with c_pkg1:
-        st.markdown("**Remote Install by Package ID:**")
-        custom_install_id = st.text_input("Package ID to Install", placeholder="e.g. Mozilla.Firefox, Zoom.Zoom", key="in_pkg_install")
-        if st.button("Install Package", key="btn_custom_install"):
+        st.markdown("**پیکیج ID سے انسٹال کریں:**")
+        custom_install_id = st.text_input("Package ID", placeholder="مثلاً Mozilla.Firefox, Zoom.Zoom", key="in_pkg_install")
+        if st.button("انسٹال کریں (Install)", key="btn_custom_install"):
             if custom_install_id.strip():
                 ok, msg = send_isolated_command(current_token, "WINGET_INSTALL", {"package_id": custom_install_id.strip()}, repo_owner, repo_name, branch, github_token)
                 if ok: st.toast(f"Installing {custom_install_id}..."); st.success(msg); time.sleep(1); st.rerun()
                 else: st.error(msg)
     with c_pkg2:
-        st.markdown("**Remote Uninstall by Package ID:**")
-        custom_uninstall_id = st.text_input("Package ID to Uninstall", placeholder="e.g. 7zip.7zip", key="in_pkg_uninstall")
-        if st.button("Uninstall Package", key="btn_custom_uninstall"):
+        st.markdown("**پیکیج ID سے ڈیلیٹ کریں:**")
+        custom_uninstall_id = st.text_input("Package ID to Remove", placeholder="مثلاً 7zip.7zip", key="in_pkg_uninstall")
+        if st.button("اَن انسٹال کریں (Uninstall)", key="btn_custom_uninstall"):
             if custom_uninstall_id.strip():
                 ok, msg = send_isolated_command(current_token, "WINGET_UNINSTALL", {"package_id": custom_uninstall_id.strip()}, repo_owner, repo_name, branch, github_token)
                 if ok: st.toast(f"Uninstalling {custom_uninstall_id}..."); st.success(msg); time.sleep(1); st.rerun()
                 else: st.error(msg)
 
     st.markdown("---")
-    st.markdown(f"#### 📋 Installed Software Inventory ({total_apps_count} detected)")
+    st.markdown(f"#### 📋 انسٹال شدہ سافٹ ویئرز کی لسٹ ({total_apps_count} ملے)")
     if installed_apps:
         df_apps = pd.DataFrame(installed_apps)
         st.dataframe(df_apps, use_container_width=True)
 
 # ----------------- TAB 4: Services & Startup Control -----------------
 with tab_svc:
-    st.markdown("### ⚙️ Windows Services & Startup Program Control")
+    st.markdown("### ⚙️ ونڈوز سروسز اور اسٹارٹ اپ کنٹرول")
     svc_data = diag.get("services", {})
     crit_services = svc_data.get("critical_services", [])
     startup_items = svc_data.get("startup_items", [])
 
-    st.markdown("#### 🔄 Critical Windows Services")
+    st.markdown("#### 🔄 اہم ونڈوز سروسز کی لائیو مانیٹرنگ")
     if crit_services:
         df_svc = pd.DataFrame(crit_services)
         st.dataframe(df_svc[["name", "display_name", "status", "start_type"]], use_container_width=True)
 
-    st.markdown("#### ⚡ Service Remote Controller")
+    st.markdown("#### ⚡ سروس ریموٹ کنٹرولر")
     scol1, scol2, scol3 = st.columns([2, 1, 1])
     with scol1:
         selected_svc = st.selectbox(
-            "Select Service to Manage",
+            "سروس منتخب کریں",
             options=[s.get("name") for s in crit_services] if crit_services else ["wuauserv", "Spooler", "BITS", "WinDefend", "Dhcp", "Dnscache"]
         )
     with scol2:
-        if st.button("🔄 Restart Service", key="btn_restart_svc", use_container_width=True):
+        if st.button("🔄 ری اسٹارٹ کریں", key="btn_restart_svc", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "SERVICE_RESTART", {"service_name": selected_svc}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast(f"Restarting {selected_svc}..."); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast(f"{selected_svc} ری اسٹارٹ ہو رہی ہے..."); st.success(msg); time.sleep(1); st.rerun()
     with scol3:
-        if st.button("▶️ Start / ⏹️ Stop", key="btn_toggle_svc", use_container_width=True):
-            # Check current status
+        if st.button("▶️ شروع / ⏹️ بند کریں", key="btn_toggle_svc", use_container_width=True):
             curr_s = next((s.get("status") for s in crit_services if s.get("name") == selected_svc), "Running")
             target_act = "SERVICE_STOP" if curr_s == "Running" else "SERVICE_START"
             ok, msg = send_isolated_command(current_token, target_act, {"service_name": selected_svc}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast(f"Executing {target_act} on {selected_svc}..."); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast(f"{target_act} بھیج دیا گیا..."); st.success(msg); time.sleep(1); st.rerun()
 
     st.markdown("---")
-    st.markdown(f"#### 🚀 Startup Applications ({len(startup_items)} items audited)")
+    st.markdown(f"#### 🚀 کمپیوٹر اسٹارٹ اپ پروگرامز ({len(startup_items)} آئٹمز)")
     if startup_items:
         df_start = pd.DataFrame(startup_items)
         st.dataframe(df_start[["name", "command", "location", "user"]], use_container_width=True)
 
 # ----------------- TAB 5: Storage & Network Optimization -----------------
 with tab_stor:
-    st.markdown("### 🛠️ Storage & Deep Cache Optimization")
+    st.markdown("### 🛠️ اسٹوریج اور ڈیپ کیشے کلین اپ")
     stor_data = diag.get("storage", {})
     total_junk = stor_data.get("temp_junk_mb", 0)
     junk_bd = stor_data.get("junk_breakdown", {})
 
-    st.metric("Total Deep Junk Bloat", f"{total_junk} MB", f"{round(total_junk/1024, 2)} GB")
+    st.metric("بیکار کیشے اور کباڑ فائلز", f"{total_junk} MB", f"{round(total_junk/1024, 2)} GB")
 
     jcol1, jcol2, jcol3, jcol4, jcol5 = st.columns(5)
-    with jcol1: st.metric("User Temp", f"{junk_bd.get('user_temp_mb', 0)} MB")
-    with jcol2: st.metric("Windows Temp", f"{junk_bd.get('win_temp_mb', 0)} MB")
-    with jcol3: st.metric("Prefetch", f"{junk_bd.get('prefetch_mb', 0)} MB")
-    with jcol4: st.metric("SoftwareDist", f"{junk_bd.get('softwaredist_mb', 0)} MB")
-    with jcol5: st.metric("WER / Dumps", f"{junk_bd.get('wer_dumps_mb', 0)} MB")
+    with jcol1: st.metric("یوزر ٹیمپ", f"{junk_bd.get('user_temp_mb', 0)} MB")
+    with jcol2: st.metric("ونڈوز ٹیمپ", f"{junk_bd.get('win_temp_mb', 0)} MB")
+    with jcol3: st.metric("پریفچ", f"{junk_bd.get('prefetch_mb', 0)} MB")
+    with jcol4: st.metric("اپ ڈیٹ کیشے", f"{junk_bd.get('softwaredist_mb', 0)} MB")
+    with jcol5: st.metric("کریش ڈمپس", f"{junk_bd.get('wer_dumps_mb', 0)} MB")
 
-    st.markdown("#### ⚡ Storage Maintenance Actions")
+    st.markdown("#### ⚡ کلین اپ ایکشن بٹنز")
     cl_col1, cl_col2, cl_col3, cl_col4 = st.columns(4)
     with cl_col1:
-        if st.button("🧹 Clean All Deep Junk", key="btn_cl_all", use_container_width=True):
+        if st.button("🧹 تمام کباڑ صاف کریں (Clean All)", key="btn_cl_all", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "CLEAN_ALL_JUNK", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("Clean All Junk queued!"); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("مکمل کلین اپ کمانڈ بھیج دی گئی!"); st.success(msg); time.sleep(1); st.rerun()
     with cl_col2:
-        if st.button("🗂️ Purge Temp Files", key="btn_cl_temp", use_container_width=True):
+        if st.button("🗂️ ٹیمپ فائلز خالی کریں", key="btn_cl_temp", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "CLEAN_TEMP", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("Temp purge queued!"); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("ٹیمپ کلین اپ شروع!"); st.success(msg); time.sleep(1); st.rerun()
     with cl_col3:
-        if st.button("⚡ Purge Prefetch", key="btn_cl_prefetch", use_container_width=True):
+        if st.button("⚡ پریفچ صاف کریں", key="btn_cl_prefetch", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "CLEAN_PREFETCH", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("Prefetch purge queued!"); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("پریفچ کلین شروع!"); st.success(msg); time.sleep(1); st.rerun()
     with cl_col4:
-        if st.button("📦 Purge Update Cache", key="btn_cl_softwaredist", use_container_width=True):
+        if st.button("📦 ونڈوز اپ ڈیٹ کیشے صاف کریں", key="btn_cl_softwaredist", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "CLEAN_SOFTWAREDIST", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("Update cache purge queued!"); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("اپ ڈیٹ کیشے صفائی شروع!"); st.success(msg); time.sleep(1); st.rerun()
 
     st.markdown("---")
-    st.markdown("### 🌐 Network Stack Troubleshooting")
+    st.markdown("### 🌐 انٹرنیٹ اور نیٹ ورک ٹربل شوٹنگ")
     net_data = diag.get("network", {})
-    st.markdown(f"- **Primary IP**: `{net_data.get('primary_ip', 'Unknown')}`")
-    st.markdown(f"- **DNS Resolution Latency**: `{net_data.get('dns_latency_ms', 0)} ms`")
+    st.markdown(f"- **پرائمری آئی پی**: `{net_data.get('primary_ip', 'Unknown')}`")
+    st.markdown(f"- **ڈی این ایس لیٹنسی**: `{net_data.get('dns_latency_ms', 0)} ms`")
 
-    if st.button("🌐 Flush DNS & Reset TCP/IP Stack", key="btn_reset_network", use_container_width=True):
+    if st.button("🌐 فلش DNS اور TCP/IP نیٹ ورک ری سیٹ کریں", key="btn_reset_network", use_container_width=True):
         ok, msg = send_isolated_command(current_token, "RESET_NETWORK", {}, repo_owner, repo_name, branch, github_token)
-        if ok: st.toast("Network stack reset queued!"); st.success(msg); time.sleep(1); st.rerun()
+        if ok: st.toast("نیٹ ورک ری سیٹ کمانڈ بھیج دی گئی!"); st.success(msg); time.sleep(1); st.rerun()
 
     adapters = net_data.get("adapters", [])
     if adapters:
-        st.markdown("#### Active Network Adapters")
+        st.markdown("#### نیٹ ورک کارڈز (Adapters)")
         st.dataframe(pd.DataFrame(adapters)[["name", "status", "link_speed", "mac", "description"]], use_container_width=True)
 
 # ----------------- TAB 6: Deep Audits (Hardware & OS) -----------------
 with tab_diag:
-    st.markdown("### 🔍 Hardware SMART & OS Integrity Diagnostics")
+    st.markdown("### 🔍 ہارڈ ویئر SMART اسٹیٹس اور ونڈوز انٹیگریٹی")
     hw_data = diag.get("hardware", {})
     os_data = diag.get("os_integrity", {})
 
-    st.markdown(f"**Processor**: `{sys_info.get('cpu_model')}` ({sys_info.get('cpu_cores')} cores) | Current Clock: `{hw_data.get('cpu_curr_mhz')} MHz`")
+    st.markdown(f"**پروسیسر**: `{sys_info.get('cpu_model')}` ({sys_info.get('cpu_cores')} Cores) | Clock: `{hw_data.get('cpu_curr_mhz')} MHz`")
 
     drives = hw_data.get("smart_drives", [])
     if drives:
-        st.markdown("#### Physical Drives (SMART Status)")
+        st.markdown("#### فزیکل ہارڈ ڈرائیوز / SSDs (SMART Status)")
         st.dataframe(pd.DataFrame(drives)[["device_id", "model", "media_type", "size_gb", "health_status", "operational_status", "bad_sectors"]], use_container_width=True)
 
     failing_devs = hw_data.get("failing_devices", [])
     if failing_devs:
-        st.markdown("#### Failing or Missing Hardware Devices (Yellow-Bangs)")
+        st.markdown("#### خراب یا مسنگ ہارڈ ویئر ڈرائیورز (Yellow-Bangs)")
         st.dataframe(pd.DataFrame(failing_devs)[["name", "code", "status", "error_desc"]], use_container_width=True)
     else:
-        st.info("No failing PnP devices flagged in Device Manager.")
+        st.info("ڈیوائس مینیجر میں کوئی خراب ڈرائیور موجود نہیں ہے۔")
 
-    st.markdown("#### Windows Component Store & Servicing Logs")
+    st.markdown("#### ونڈوز کمپوننٹ اسٹور اور سسٹم فائلز")
     st.markdown(f"- **DISM Component Store**: `{os_data.get('dism_status')}`")
-    st.markdown(f"- **SFC Corrupted Binaries**: `{'Corrupted Binaries Flagged' if os_data.get('sfc_corrupted') else 'Clean / Intact'}`")
-    st.markdown(f"- **CBS Error Count**: `{os_data.get('cbs_error_count', 0)} logged errors`")
+    st.markdown(f"- **SFC کرپٹ فائلز**: `{'کرپٹ فائلز کا پتا چلا' if os_data.get('sfc_corrupted') else 'تمام سسٹم فائلز بالکل درست ہیں'}`")
+    st.markdown(f"- **CBS Servicing لاگ ایررز**: `{os_data.get('cbs_error_count', 0)} ایررز`")
 
     st.markdown("---")
-    st.markdown("#### ⚡ OS Integrity Repairs")
+    st.markdown("#### ⚡ انٹیگریٹی ریپیئر بٹنز")
     os_b1, os_b2, os_b3 = st.columns(3)
     with os_b1:
-        if st.button("🛠️ Run SFC System File Repair", key="btn_sfc_tab", use_container_width=True):
+        if st.button("🛠️ SFC سسٹم فائل ریپیئر چلائیں", key="btn_sfc_tab", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "RUN_SFC_REPAIR", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("SFC Repair queued!"); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("SFC Repair شروع ہو گیا!"); st.success(msg); time.sleep(1); st.rerun()
     with os_b2:
-        if st.button("🏥 Run DISM RestoreHealth", key="btn_dism_tab", use_container_width=True):
+        if st.button("🏥 DISM RestoreHealth چلائیں", key="btn_dism_tab", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "RUN_DISM_RESTORE", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("DISM RestoreHealth queued!"); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("DISM RestoreHealth شروع ہو گیا!"); st.success(msg); time.sleep(1); st.rerun()
     with os_b3:
-        if st.button("🧹 Clean Component Store", key="btn_clean_comp_tab", use_container_width=True):
+        if st.button("🧹 کمپوننٹ اسٹور صاف کریں", key="btn_clean_comp_tab", use_container_width=True):
             ok, msg = send_isolated_command(current_token, "CLEAN_COMPONENT_STORE", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("Component cleanup queued!"); st.success(msg); time.sleep(1); st.rerun()
+            if ok: st.toast("Component cleanup شروع ہو گیا!"); st.success(msg); time.sleep(1); st.rerun()
 
 # ----------------- TAB 7: Live Terminal Console -----------------
 with tab_term:
-    st.markdown("### 💻 Live Remote Execution Terminal")
-    st.caption(f"Real-time command dispatch and ANSI execution logs for Agent `{current_token}`.")
+    st.markdown("### 💻 لائیو ریموٹ ایگزیکیوشن ٹرمینل لاگ")
+    st.caption(f"کلائنٹ پی سی `{current_token}` کے اصل ٹرمینل کا لائیو آؤٹ پٹ:")
 
     if not cmd_data:
-        st.info("No remote directives have been executed yet in this session. Trigger an action from any tab to view the streaming execution log.")
+        st.info("اس سیشن میں ابھی تک کوئی ریموٹ کمانڈ نہیں چلائی گئی۔ کسی بھی ٹیب سے بٹن دبا کر لائیو لاگ چیک کریں۔")
     else:
         cmd_id = cmd_data.get("command_id", "UNKNOWN")
         cmd_act = cmd_data.get("action", "UNKNOWN")
@@ -705,31 +754,141 @@ with tab_term:
         t_stat_color = "#00ff88" if cmd_stat == "COMPLETED" else "#ffaa00"
         st.markdown(f"""
         <div style="background: rgba(13, 19, 33, 0.9); padding: 14px 18px; border-radius: 8px; border: 1px solid rgba(0, 243, 255, 0.25); margin-bottom: 12px;">
-            <strong>Command ID:</strong> <code>{cmd_id}</code> | 
-            <strong>Action:</strong> <code>{cmd_act}</code> | 
-            <strong>Status:</strong> <span style="color: {t_stat_color}; font-weight: 800;">{cmd_stat}</span><br>
-            <span style="font-size: 0.8rem; color: #a0aec0;">Requested: {cmd_req} | Completed: {cmd_comp}</span><br>
+            <strong>کمانڈ ID:</strong> <code>{cmd_id}</code> | 
+            <strong>ایکشن:</strong> <code>{cmd_act}</code> | 
+            <strong>حالت:</strong> <span style="color: {t_stat_color}; font-weight: 800;">{cmd_stat}</span><br>
+            <span style="font-size: 0.8rem; color: #a0aec0;">طلب کردہ وقت: {cmd_req} | مکمل وقت: {cmd_comp}</span><br>
             <span style="color: #00f3ff; font-weight: 600;">{cmd_res}</span>
-            {f"<span style='color: #00ff88; margin-left: 10px;'>[Freed: {freed} MB]</span>" if freed else ""}
+            {f"<span style='color: #00ff88; margin-left: 10px;'>[خالی شدہ جگہ: {freed} MB]</span>" if freed else ""}
         </div>
         """, unsafe_allow_html=True)
 
         if cmd_out:
-            st.markdown("#### 🖥️ Agent Terminal Output Stream")
+            st.markdown("#### 🖥️ لائیو ایجنٹ آؤٹ پٹ اسٹریم")
             st.markdown(f'<div class="terminal-box">{cmd_out}</div>', unsafe_allow_html=True)
         elif cmd_stat == "PENDING":
-            st.warning("⏳ Directive is in queue. The client agent will pick it up on its next cycle...")
+            st.warning("⏳ کمانڈ کیو میں ہے۔ کلائنٹ ایجنٹ اگلے چند سیکنڈ میں اسے پکڑ کر چلائے گا...")
 
     st.markdown("---")
-    st.markdown("#### ⚠️ Zero-Footprint Self-Destruct Protocol")
-    st.caption("Instructs the client agent to securely purge its temporary diagnostic logs, wipe local state, and terminate.")
-    if st.button("💣 Execute Agent Self-Destruct", key="btn_self_destruct"):
+    st.markdown("#### ⚠️ زیرو فوٹ پرنٹ سیلف ڈسٹرکٹ پروٹوکول (Zero-Footprint Self-Destruct)")
+    st.caption("کلائنٹ پی سی سے ایجنٹ کی تمام عارضی فائلز، ٹوکنز اور لاگز کو مٹا کر سیشن بند کر دے گا۔")
+    if st.button("💣 ایجنٹ سیلف ڈسٹرکٹ چلائیں (Execute Self-Destruct)", key="btn_self_destruct"):
         ok, msg = send_isolated_command(current_token, "SELF_DESTRUCT", {}, repo_owner, repo_name, branch, github_token)
         if ok:
             st.toast("Self-Destruct directive dispatched!")
-            st.warning("Self-Destruct directive staged. The client agent will wipe local state and terminate.")
+            st.warning("سیلف ڈسٹرکٹ کمانڈ بھیج دی گئی۔ ایجنٹ کلین اپ کر کے بند ہو جائے گا۔")
             time.sleep(1)
             st.rerun()
+
+# ----------------- TAB 8: Share & Report Center (شیئر اور رپورٹ سینٹر) -----------------
+with tab_share:
+    st.markdown("### 📤 شیئر اور ایگزیکٹو ہیلتھ رپورٹ سینٹر (Share & Report Center)")
+    st.markdown(
+        "یہاں سے آپ اس پی سی کی مکمل ہیلتھ سمری کلائنٹس، مینیجرز یا واٹس ایپ پر شیئر کر سکتے ہیں اور مکمل تفصیلی رپورٹ ڈاؤنلوڈ کر سکتے ہیں۔"
+    )
+
+    # 1. Direct Session Link
+    st.markdown("#### 🔗 براہِ راست سیشن شیئرنگ لنک")
+    full_share_url = f"?token={current_token}"
+    st.code(full_share_url, language="text")
+    st.caption("یہ لنک کسی بھی براؤزر میں کھول کر اس پی سی کا ڈیش بورڈ دیکھا جا سکتا ہے۔")
+
+    # 2. Formatted WhatsApp / Email Summary
+    st.markdown("#### 📱 واٹس ایپ اور ای میل کے لیے ریڈی میڈ فارمیٹڈ سمری")
+    whatsapp_summary = f"""🖥️ شریار آئی ٹی ٹول - سسٹم ہیلتھ اور اے آئی اپ ڈیٹ رپورٹ
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+مشین کا نام : {sys_info.get('hostname', client_id)}
+سیشن ٹوکن   : {current_token}
+حالت        : {agent_status} (ہیلتھ اسکور: {health_score}%)
+آپریٹنگ سسٹم: {sys_info.get('os_name')} ({sys_info.get('architecture')})
+پروسیسر     : {sys_info.get('cpu_model')} (لوڈ: {telemetry.get('cpu_percent', 0)}%)
+ریم میموری  : {telemetry.get('ram_used_gb', 0)} GB / {sys_info.get('total_ram_gb', 0)} GB ({telemetry.get('ram_percent', 0)}%)
+سسٹم ڈرائیو : C: ڈرائیو {telemetry.get('disk_percent', 0)}% بھری ہوئی ہے
+اینٹی وائرس : Microsoft Defender ({'فعال / محفوظ' if diag.get('antivirus', {}).get('realtime_protection') else 'غیر فعال'})
+فالتو کیشے  : {diag.get('storage', {}).get('temp_junk_mb', 0)} MB کباڑ فائلز
+مسائل       : {len(issues)} ایکشن ایبل ایشوز
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+مینیجڈ بائی : شریار ایڈمن ٹول (Sharyar Admin Tool - AI Updating Suite)
+لائیو ڈیش بورڈ: https://sharyaradmintool.streamlit.app/?token={current_token}"""
+
+    st.text_area("کاپی کرنے کے لیے ٹیکسٹ (Copy & Share):", value=whatsapp_summary, height=220)
+
+    # 3. Downloadable Markdown Executive Report
+    st.markdown("#### 📥 مکمل تفصیلی پی ڈی ایف / مارک ڈاؤن آڈٹ رپورٹ ڈاؤنلوڈ کریں")
+    report_md = f"""# ⚡ SHARYAR ADMIN TOOL - EXECUTIVE HEALTH & AUDIT REPORT
+**Target Workstation**: `{sys_info.get('hostname', client_id)}`  
+**Session Token**: `{current_token}`  
+**Audit Timestamp**: `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`  
+**Overall Vitality Score**: `{health_score}%`  
+
+---
+
+## 1. System Specifications
+- **Operating System**: {sys_info.get('os_name')} (Build {sys_info.get('os_build')})
+- **Architecture**: {sys_info.get('architecture')}
+- **Processor**: {sys_info.get('cpu_model')} ({sys_info.get('cpu_cores')} Logical Cores)
+- **Physical Memory**: {sys_info.get('total_ram_gb')} GB RAM
+- **Primary IP Address**: {sys_info.get('ip_address')}
+- **Elevation Privileges**: {'Administrator (Elevated)' if sys_info.get('is_admin') else 'Standard User'}
+
+---
+
+## 2. Real-Time Telemetry Snapshot
+- **CPU Load**: {telemetry.get('cpu_percent')}% ({telemetry.get('cpu_freq_mhz')} MHz)
+- **RAM Utilization**: {telemetry.get('ram_percent')}% ({telemetry.get('ram_used_gb')} / {sys_info.get('total_ram_gb')} GB)
+- **Primary Storage (C:)**: {telemetry.get('disk_percent')}% fill
+- **Gateway/DNS Latency**: {telemetry.get('net_latency_ms')} ms
+
+---
+
+## 3. Microsoft Defender & Threat Telemetry
+- **Real-Time Protection**: {'ACTIVE / SECURED' if diag.get('antivirus', {}).get('realtime_protection') else 'DISABLED / VULNERABLE'}
+- **Antivirus Definition Version**: {diag.get('antivirus', {}).get('signature_version')}
+- **Last Definition Update**: {diag.get('antivirus', {}).get('last_signature_update')}
+- **Active Threats Detected**: {diag.get('antivirus', {}).get('active_threats_count', 0)}
+
+---
+
+## 4. Operating System Integrity
+- **DISM Component Store**: {diag.get('os_integrity', {}).get('dism_status')}
+- **SFC System Binaries**: {'Corrupted files flagged' if diag.get('os_integrity', {}).get('sfc_corrupted') else 'Clean / Intact'}
+- **CBS Log Servicing Errors**: {diag.get('os_integrity', {}).get('cbs_error_count', 0)}
+
+---
+
+## 5. Storage Bloat Breakdown
+- **User Temp (%TEMP%)**: {diag.get('storage', {}).get('junk_breakdown', {}).get('user_temp_mb', 0)} MB
+- **Windows Temp**: {diag.get('storage', {}).get('junk_breakdown', {}).get('win_temp_mb', 0)} MB
+- **Prefetch Cache**: {diag.get('storage', {}).get('junk_breakdown', {}).get('prefetch_mb', 0)} MB
+- **SoftwareDistribution (Updates)**: {diag.get('storage', {}).get('junk_breakdown', {}).get('softwaredist_mb', 0)} MB
+- **Total Recoverable Space**: {diag.get('storage', {}).get('temp_junk_mb', 0)} MB
+
+---
+
+## 6. Actionable Diagnostic Issues
+{chr(10).join([f"- **[{i.get('category')}] {i.get('title')}** ({i.get('severity')}): {i.get('description')} (Fix Directive: `{i.get('fix_id')}`)" for i in issues]) if issues else "Zero hardware faults, malware, or component corruption detected."}
+
+---
+*Report Generated autonomously by Sharyar Admin Tool - Autonomous AI Updating & Repair Suite.*
+"""
+
+    down_col1, down_col2 = st.columns(2)
+    with down_col1:
+        st.download_button(
+            label="📥 ڈاؤنلوڈ مکمل آڈٹ رپورٹ (Markdown)",
+            data=report_md,
+            file_name=f"SharyarAuditReport_{sys_info.get('hostname', client_id)}_{current_token}.md",
+            mime="text/markdown",
+            use_container_width=True,
+        )
+    with down_col2:
+        st.download_button(
+            label="📥 ڈاؤنلوڈ را ڈیٹا (JSON Telemetry)",
+            data=json.dumps(status_data, indent=2),
+            file_name=f"SharyarTelemetry_{current_token}.json",
+            mime="application/json",
+            use_container_width=True,
+        )
 
 # ----------------- Auto-Refresh Loop -----------------
 time.sleep(refresh_rate)

@@ -1,10 +1,10 @@
-# ApexSys: Autonomous Remote IT Commander & Deep Remediation Suite
-### *The Ultimate Enterprise-Grade IT Administration & Self-Healing Platform*
+# Sharyar Admin Tool: Autonomous AI Remote IT Commander & Deep Remediation Suite
+### *The Ultimate AI-Powered Enterprise Windows Updating, Repair & Self-Healing Platform*
 
 ---
 
 ## ⚡ Overview
-**ApexSys** is an enterprise-grade remote IT administration platform pairing a central real-time command dashboard with high-throughput client agents (Python & pure PowerShell 5.1+). Built to act as an autonomous **"Master IT Doctor"**, it performs multi-layered hardware diagnostics, component store self-healing, OS integrity repairs, and one-click remediation across enterprise Windows endpoints.
+**Sharyar Admin Tool** (also known as **Sharyar IT Tool** / **شریار ایڈمن ٹول**) is an enterprise-grade autonomous AI remote IT administration platform pairing a real-time web command dashboard with zero-dependency PowerShell client agents. Built to act as an autonomous **"AI Master IT Doctor"**, it performs multi-layered hardware diagnostics, component store self-healing, Microsoft Defender live antivirus scanning, winget CLI package management, deep storage purging, and one-click AI autonomous system updates across Windows endpoints without requiring any paid cloud servers or database infrastructure.
 
 ---
 
