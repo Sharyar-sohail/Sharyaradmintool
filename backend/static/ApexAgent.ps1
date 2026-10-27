@@ -443,7 +443,8 @@ $statusFile = Join-Path (Get-Location) "status.json"
 do {
     $diagData = Collect-ApexDiagnostics
     $jsonOutput = $diagData | ConvertTo-Json -Depth 6
-    [System.IO.File]::WriteAllText($statusFile, $jsonOutput, [System.Text.Encoding]::UTF8)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($statusFile, $jsonOutput, $utf8NoBom)
     $scoreVal = $diagData.health_score
     Write-Host "[OK] Updated local $statusFile (Health Score: $scoreVal)" -ForegroundColor Green
 

@@ -100,8 +100,9 @@ def fetch_status_from_github(owner: str, repo: str, branch_name: str, token: str
     # Try Raw URL
     try:
         res = requests.get(raw_url, headers=headers, timeout=5)
-        if res.status_code == 200 and res.text.strip():
-            return json.loads(res.text), "GitHub Raw"
+        if res.status_code == 200 and res.content.strip():
+            clean_str = res.content.decode("utf-8-sig")
+            return json.loads(clean_str), "GitHub Raw"
     except Exception:
         pass
 
@@ -113,7 +114,8 @@ def fetch_status_from_github(owner: str, repo: str, branch_name: str, token: str
             data = res.json()
             if "content" in data:
                 import base64
-                decoded = base64.b64decode(data["content"]).decode("utf-8")
+                raw_bytes = base64.b64decode(data["content"])
+                decoded = raw_bytes.decode("utf-8-sig")
                 return json.loads(decoded), "GitHub REST API"
     except Exception:
         pass
@@ -122,7 +124,7 @@ def fetch_status_from_github(owner: str, repo: str, branch_name: str, token: str
     local_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "status.json")
     if os.path.exists(local_path):
         try:
-            with open(local_path, "r", encoding="utf-8") as f:
+            with open(local_path, "r", encoding="utf-8-sig") as f:
                 return json.load(f), "Local File"
         except Exception:
             pass
