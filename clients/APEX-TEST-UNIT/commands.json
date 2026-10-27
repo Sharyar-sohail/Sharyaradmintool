@@ -1,12 +1,12 @@
 {
-  "command_id": "CMD-1793102167-E336",
+  "command_id": "CMD-1793102426-F205",
   "agent_token": "APEX-TEST-UNIT",
   "action": "CLEAN_ALL_JUNK",
   "parameters": {
     "test_mode": true
   },
   "status": "PENDING",
-  "requested_at": "2026-10-27 16:56:07",
+  "requested_at": "2026-10-27 17:00:26",
   "completed_at": null,
   "result": null
 }
