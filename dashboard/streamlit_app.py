@@ -4,6 +4,7 @@ Provides executive fleet analytics, historical telemetry charts, issue drills,
 and remote remediation triggers.
 """
 
+import os
 import time
 import requests
 import streamlit as st
@@ -43,7 +44,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-API_BASE = "http://127.0.0.1:8000/api"
+# Sidebar
+st.sidebar.markdown("## ⚡ **APEXSYS COMMANDER**")
+st.sidebar.markdown("*Autonomous Remote IT Doctor & Deep Remediation*")
+
+# API Server Configuration
+DEFAULT_API = os.getenv("APEX_API_URL", "http://127.0.0.1:8000/api")
+API_BASE = st.sidebar.text_input("Commander API Endpoint", value=DEFAULT_API).rstrip("/")
+
+refresh_rate = st.sidebar.slider("Auto-Refresh Rate (seconds)", 2, 10, 4)
 
 
 def fetch_nodes():
@@ -66,11 +75,6 @@ def fetch_node_detail(client_id):
     return None
 
 
-# Sidebar
-st.sidebar.markdown("## ⚡ **APEXSYS COMMANDER**")
-st.sidebar.markdown("*Autonomous Remote IT Doctor & Deep Remediation*")
-
-refresh_rate = st.sidebar.slider("Auto-Refresh Rate (seconds)", 2, 10, 4)
 nodes = fetch_nodes()
 
 if not nodes:
