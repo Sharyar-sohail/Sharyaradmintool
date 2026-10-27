@@ -99,12 +99,30 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ----------------- Configuration & State Fetchers -----------------
-from dashboard.fetcher import (
-    fetch_isolated_status,
-    fetch_isolated_commands,
-    send_isolated_command,
-    get_customized_agent_script,
-)
+import sys
+from pathlib import Path
+
+# Ensure both repository root and dashboard directory are present in sys.path
+_current_dir = Path(__file__).resolve().parent
+_repo_root = _current_dir.parent
+for _p in [str(_repo_root), str(_current_dir)]:
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+try:
+    from dashboard.fetcher import (
+        fetch_isolated_status,
+        fetch_isolated_commands,
+        send_isolated_command,
+        get_customized_agent_script,
+    )
+except (ImportError, ModuleNotFoundError):
+    from fetcher import (
+        fetch_isolated_status,
+        fetch_isolated_commands,
+        send_isolated_command,
+        get_customized_agent_script,
+    )
 
 DEFAULT_OWNER = os.getenv("GITHUB_REPO_OWNER", "SharyarSoahil")
 DEFAULT_REPO = os.getenv("GITHUB_REPO_NAME", "Sharyaradmintool")
