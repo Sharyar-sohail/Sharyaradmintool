@@ -51,9 +51,10 @@
   - `FIX_POWER_OPTIMIZE`: Restores High Performance power plan profile.
   - `FIX_ALL`: Sequences the complete multi-phase remediation pipeline.
 
-### 4. Verification Scan & Zero-Footprint Self-Destruct
-- **Verification Scan**: Re-runs diagnostics post-repair to verify resolution and calculate improvement deltas (e.g., `+34% Health Improvement, 0 Critical Errors Remaining`).
-- **Secure Self-Destruct**: Executes DoD 5220.22-M 3-pass file overwrites (zeros, ones, random bytes) to erase logs and agent binaries, leaving zero forensic trace.
+### 4. Multi-User Session Isolation & Token-Based Linkage
+- **Per-User Scoped Payloads**: Each client machine runs with a unique Session Token (e.g., `APEX-A1B2C3D4`). Telemetry is scoped exclusively to `clients/{AGENT_TOKEN}/status.json` on GitHub.
+- **Zero Cross-Tenant Data Leakage**: Administrators authenticate via their private token on the Streamlit dashboard or via direct URL (`?token=APEX-A1B2C3D4`). Sessions are strictly isolated in `st.session_state`.
+- **Automatic Lifecycle Termination**: When the PowerShell agent terminates (Ctrl+C, terminal exit, or window close), it automatically updates its GitHub status to `OFFLINE` and exits cleanly without hanging background processes.
 
 ---
 
