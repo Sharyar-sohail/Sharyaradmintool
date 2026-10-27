@@ -1,12 +1,12 @@
 {
-  "command_id": "CMD-1793103194-3AE9",
+  "command_id": "CMD-1793103236-6ABD",
   "agent_token": "APEX-TEST-UNIT",
-  "action": "WINGET_INSTALL",
+  "action": "CLEAN_ALL_JUNK",
   "parameters": {
-    "package_id": "7zip.7zip"
+    "test_mode": true
   },
   "status": "PENDING",
-  "requested_at": "2026-10-27 17:13:14",
+  "requested_at": "2026-10-27 17:13:56",
   "completed_at": null,
   "result": null
 }
