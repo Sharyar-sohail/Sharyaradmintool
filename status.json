@@ -1,13 +1,13 @@
 ﻿{
     "client_id":  "DESKTOP-RS9M43V",
-    "timestamp":  "2026-10-27T11:33:15Z",
-    "last_synced":  "2026-10-27 16:33:15",
+    "timestamp":  "2026-10-27T11:36:30Z",
+    "last_synced":  "2026-10-27 16:36:30",
     "status":  "ONLINE",
-    "health_score":  30,
+    "health_score":  90,
     "category_scores":  {
-                            "Hardware":  0,
-                            "Operating System":  0,
-                            "Storage":  0,
+                            "Hardware":  100,
+                            "Operating System":  100,
+                            "Storage":  100,
                             "Drivers":  50,
                             "Security":  100
                         },
@@ -24,9 +24,9 @@
                         "ip_address":  "192.168.1.37"
                     },
     "telemetry":  {
-                      "cpu_percent":  27.8,
-                      "ram_percent":  76,
-                      "ram_used_gb":  18.2,
+                      "cpu_percent":  18.9,
+                      "ram_percent":  75.8,
+                      "ram_used_gb":  18.16,
                       "disk_percent":  86.6,
                       "net_latency_ms":  12,
                       "cpu_freq_mhz":  3201
