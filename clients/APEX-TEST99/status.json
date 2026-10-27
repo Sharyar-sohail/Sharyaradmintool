@@ -1,9 +1,9 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-TEST99",
-    "timestamp":  "2026-10-27T11:44:35Z",
-    "last_synced":  "2026-10-27 16:44:35",
-    "status":  "ONLINE",
+    "timestamp":  "2026-10-27T11:44:39Z",
+    "last_synced":  "2026-10-27 16:44:39",
+    "status":  "OFFLINE",
     "health_score":  90,
     "category_scores":  {
                             "Hardware":  100,
