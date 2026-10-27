@@ -1,0 +1,152 @@
+{
+    "client_id":  "DESKTOP-RS9M43V",
+    "agent_token":  "APEX-TEST-LOCAL",
+    "timestamp":  "2026-10-27T11:59:37Z",
+    "last_synced":  "2026-10-27 16:59:37",
+    "status":  "ONLINE",
+    "health_score":  90,
+    "category_scores":  {
+                            "Hardware":  100,
+                            "Operating System":  100,
+                            "Storage":  100,
+                            "Drivers":  50,
+                            "Security":  100
+                        },
+    "system_info":  {
+                        "hostname":  "DESKTOP-RS9M43V",
+                        "os_name":  "Microsoft Windows 10 Pro",
+                        "os_version":  "10.0.19045",
+                        "os_build":  "19045",
+                        "architecture":  "64-bit",
+                        "cpu_model":  "Intel(R) Xeon(R) CPU E5-1650 0 @ 3.20GHz",
+                        "cpu_cores":  12,
+                        "total_ram_gb":  24,
+                        "is_admin":  false,
+                        "ip_address":  "192.168.1.37",
+                        "working_dir":  "D:\\sharyar\\online master pc"
+                    },
+    "telemetry":  {
+                      "cpu_percent":  11,
+                      "ram_percent":  93.5,
+                      "ram_used_gb":  22.4,
+                      "disk_percent":  89.3,
+                      "net_latency_ms":  30.6,
+                      "cpu_freq_mhz":  3201
+                  },
+    "diagnostics":  {
+                        "hardware":  {
+                                         "smart_drives":  [
+                                                              {
+                                                                  "is_healthy":  true,
+                                                                  "operational_status":  "OK",
+                                                                  "device_id":  "0",
+                                                                  "model":  "KINGSTON SUV400S37240G",
+                                                                  "health_status":  "Healthy",
+                                                                  "size_gb":  223.6,
+                                                                  "bad_sectors":  0,
+                                                                  "media_type":  "SSD"
+                                                              }
+                                                          ],
+                                         "cpu_max_mhz":  3201,
+                                         "smart_failures":  [
+
+                                                            ],
+                                         "failing_devices":  [
+                                                                 {
+                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D6B\u0026SUBSYS_04971028\u0026REV_05\\4\u0026BEF05A1\u00260\u00260088",
+                                                                     "status":  "Error",
+                                                                     "code":  28,
+                                                                     "name":  "SAS Controller",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
+                                                                 },
+                                                                 {
+                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D3A\u0026SUBSYS_04971028\u0026REV_05\\3\u002611583659\u00260\u0026B0",
+                                                                     "status":  "Error",
+                                                                     "code":  28,
+                                                                     "name":  "PCI Simple Communications Controller",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
+                                                                 },
+                                                                 {
+                                                                     "device_id":  "USB\\VID_0000\u0026PID_0002\\6\u00261409469F\u00260\u00263",
+                                                                     "status":  "Error",
+                                                                     "code":  43,
+                                                                     "name":  "Unknown USB Device (Device Descriptor Request Failed)",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 43)"
+                                                                 }
+                                                             ],
+                                         "cpu_curr_mhz":  3201,
+                                         "cpu_throttled":  false
+                                     },
+                        "os_integrity":  {
+                                             "cbs_error_count":  0,
+                                             "sfc_corrupted":  false,
+                                             "dism_status":  "Healthy",
+                                             "corrupted_files_count":  0,
+                                             "dism_corrupted":  false
+                                         },
+                        "network":  {
+                                        "adapters":  [
+                                                         {
+                                                             "link_speed":  "1 Gbps",
+                                                             "status":  "Up",
+                                                             "description":  "Intel(R) 82579LM Gigabit Network Connection",
+                                                             "name":  "Ethernet",
+                                                             "mac":  "90-B1-1C-A4-69-8B"
+                                                         }
+                                                     ],
+                                        "dns_latency_ms":  30.6,
+                                        "primary_ip":  "192.168.1.37"
+                                    },
+                        "storage":  {
+                                        "partitions":  [
+                                                           {
+                                                               "total_gb":  174,
+                                                               "free_pct":  10.7,
+                                                               "letter":  "C",
+                                                               "free_gb":  18.6
+                                                           },
+                                                           {
+                                                               "total_gb":  48.8,
+                                                               "free_pct":  11.5,
+                                                               "letter":  "D",
+                                                               "free_gb":  5.6
+                                                           }
+                                                       ],
+                                        "temp_junk_mb":  137.1,
+                                        "junk_breakdown":  {
+                                                               "user_temp_mb":  133.7,
+                                                               "prefetch_mb":  0,
+                                                               "win_temp_mb":  1.1,
+                                                               "softwaredist_mb":  2.3
+                                                           }
+                                    },
+                        "security":  {
+                                         "critical_errors_count":  0,
+                                         "latest_bsod_code":  null,
+                                         "bsod_events_count":  0
+                                     }
+                    },
+    "issues":  [
+                   {
+                       "fix_id":  "ACTION_RESCAN_DEVICES",
+                       "title":  "Driver Error: SAS Controller",
+                       "category":  "Drivers",
+                       "description":  "Driver Configuration Fault (Code 28) (Status: Error)",
+                       "severity":  "WARNING"
+                   },
+                   {
+                       "fix_id":  "ACTION_RESCAN_DEVICES",
+                       "title":  "Driver Error: PCI Simple Communications Controller",
+                       "category":  "Drivers",
+                       "description":  "Driver Configuration Fault (Code 28) (Status: Error)",
+                       "severity":  "WARNING"
+                   },
+                   {
+                       "fix_id":  "ACTION_RESCAN_DEVICES",
+                       "title":  "Driver Error: Unknown USB Device (Device Descriptor Request Failed)",
+                       "category":  "Drivers",
+                       "description":  "Driver Configuration Fault (Code 43) (Status: Error)",
+                       "severity":  "WARNING"
+                   }
+               ]
+}
