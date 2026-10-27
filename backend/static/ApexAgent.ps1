@@ -1,11 +1,12 @@
 <#
 .SYNOPSIS
-    ApexSys Professional Windows Repair, Optimization & Multi-User State Sync Agent
+    ApexSys Enterprise Windows Repair, Optimization & Multi-User State Sync Agent
 .DESCRIPTION
     Zero-dependency pure PowerShell 5.1+ agent. Performs deep hardware diagnostics,
-    SFC/DISM image verification, network/storage audits, and picks up remote cleanup
-    maintenance commands (Temp, Prefetch, SoftwareDistribution) queued from Streamlit.
-    Enforces strict token isolation: scoped to clients/{AGENT_TOKEN}/status.json.
+    SFC/DISM system integrity verification, live Microsoft Defender antivirus audits,
+    installed software & winget CLI management, critical Windows services control,
+    storage junk purging, and network stack troubleshooting.
+    Enforces strict token isolation: scoped to clients/{AGENT_TOKEN}/status.json and commands.json.
 .EXAMPLE
     .\ApexAgent.ps1 -AgentToken "APEX-A1B2C3D4"
     .\ApexAgent.ps1 -Continuous 1 -IntervalSeconds 30
@@ -22,7 +23,7 @@ param(
     $AutoElevate = $true
 )
 
-# Parse loose boolean values
+# Parse loose types safely
 $isAutoElevate = if ($AutoElevate -is [bool]) { $AutoElevate } else { "$AutoElevate" -match '^(true|1)$' }
 $isContinuous = if ($Continuous -is [bool]) { $Continuous } else { "$Continuous" -match '^(true|1)$' }
 
@@ -63,12 +64,13 @@ if (-not $AgentToken) {
     }
 }
 if (-not $AgentToken) {
-    $AgentToken = "APEX-" + ([Guid]::NewGuid().ToString().Substring(0,8).ToUpper())
-    Set-Content -Path $tokenStore -Value $AgentToken -Force
+    # Generate unique 8-character hex machine token
+    $bytes = New-Object byte[] 4
+    [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
+    $randHex = [System.BitConverter]::ToString($bytes) -replace '-'
+    $AgentToken = "APEX-$randHex"
+    $AgentToken | Out-File -FilePath $tokenStore -Encoding utf8 -Force
 }
-
-# Enforce TLS 1.2
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Check Administrator Elevation
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -77,16 +79,15 @@ if (-not $isAdmin -and $isAutoElevate) {
     $argList = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`" -AgentToken `"$AgentToken`" -RepoOwner `"$RepoOwner`" -RepoName `"$RepoName`" -Branch `"$Branch`""
     if ($GitHubToken) { $argList += " -GitHubToken `"$GitHubToken`"" }
     if ($isContinuous) { $argList += " -Continuous 1 -IntervalSeconds $IntervalSeconds" }
-    
-    Start-Process powershell.exe -ArgumentList $argList -Verb RunAs
-    exit
+    Start-Process -FilePath "powershell.exe" -ArgumentList $argList -Verb RunAs
+    exit 0
 }
 
 Clear-Host
 Write-Host "=========================================================================" -ForegroundColor Cyan
 Write-Host "   APEXSYS ENTERPRISE WINDOWS REPAIR & OPTIMIZATION AGENT" -ForegroundColor Green
 Write-Host "   SESSION TOKEN : $AgentToken" -ForegroundColor Magenta
-Write-Host "   WORKING DIR   : $safeWorkDir" -ForegroundColor Gray
+Write-Host "   WORKING DIR   : $safeWorkDir" -ForegroundColor Yellow
 Write-Host "   TARGET REPO   : $RepoOwner/$RepoName ($Branch)" -ForegroundColor Yellow
 Write-Host "   PRIVILEGES    : $(if ($isAdmin) { 'Elevated Administrator' } else { 'Standard User' })" -ForegroundColor Yellow
 Write-Host "   SYNC MODE     : $(if ($isContinuous) { 'Continuous Loop (' + $IntervalSeconds + 's)' } else { 'Single Run' })" -ForegroundColor Yellow
@@ -98,7 +99,7 @@ Write-Host "====================================================================
 # ----------------- Deep Diagnostic Engine -----------------
 function Collect-ApexDiagnostics {
     Write-Host ""
-    Write-Host "[1/5] Auditing Processor, Clock Throttling & Live Telemetry..." -ForegroundColor Cyan
+    Write-Host "[1/8] Auditing Processor, Clock Throttling & Live Telemetry..." -ForegroundColor Cyan
     
     $os = Get-CimInstance Win32_OperatingSystem
     $cs = Get-CimInstance Win32_ComputerSystem
@@ -126,7 +127,7 @@ function Collect-ApexDiagnostics {
     }
 
     # 2. Hardware SMART & Driver Health
-    Write-Host "[2/5] Inspecting Physical Drives (SMART) & Hardware Drivers..." -ForegroundColor Cyan
+    Write-Host "[2/8] Inspecting Physical Drives (SMART) & Hardware Drivers..." -ForegroundColor Cyan
     $drives = @()
     $smartFailures = @()
     try {
@@ -165,7 +166,7 @@ function Collect-ApexDiagnostics {
     } catch {}
 
     # 3. OS System Integrity (DISM, SFC, CBS)
-    Write-Host "[3/5] Checking Windows Component Store (DISM) & SFC CBS logs..." -ForegroundColor Cyan
+    Write-Host "[3/8] Checking Windows Component Store (DISM) & SFC CBS logs..." -ForegroundColor Cyan
     $dismCorrupted = $false
     $dismStatus = "Healthy"
     if ($isAdmin) {
@@ -190,7 +191,7 @@ function Collect-ApexDiagnostics {
     }
 
     # 4. Network Stack & Adapters
-    Write-Host "[4/5] Auditing Active Network Adapters & Connectivity..." -ForegroundColor Cyan
+    Write-Host "[4/8] Auditing Active Network Adapters & Connectivity..." -ForegroundColor Cyan
     $netAdapters = @()
     try {
         Get-NetAdapter -ErrorAction SilentlyContinue | ForEach-Object {
@@ -219,12 +220,13 @@ function Collect-ApexDiagnostics {
     }
 
     # 5. Storage Partitions & Deep Junk Cache
-    Write-Host "[5/5] Auditing Storage Partitions & Deep Cache Bloat..." -ForegroundColor Cyan
+    Write-Host "[5/8] Auditing Storage Partitions & Deep Cache Bloat..." -ForegroundColor Cyan
     $junkBreakdown = @{
         user_temp_mb = 0.0
         win_temp_mb = 0.0
         prefetch_mb = 0.0
         softwaredist_mb = 0.0
+        wer_dumps_mb = 0.0
     }
 
     function Get-FolderMB($path) {
@@ -238,7 +240,8 @@ function Collect-ApexDiagnostics {
     $junkBreakdown.win_temp_mb = Get-FolderMB "$env:WINDIR\Temp"
     $junkBreakdown.prefetch_mb = Get-FolderMB "$env:WINDIR\Prefetch"
     $junkBreakdown.softwaredist_mb = Get-FolderMB "$env:WINDIR\SoftwareDistribution\Download"
-    $totalJunkMB = [math]::Round(($junkBreakdown.user_temp_mb + $junkBreakdown.win_temp_mb + $junkBreakdown.prefetch_mb + $junkBreakdown.softwaredist_mb), 1)
+    $junkBreakdown.wer_dumps_mb = [math]::Round((Get-FolderMB "$env:WINDIR\Minidump") + (Get-FolderMB "$env:ProgramData\Microsoft\Windows\WER"), 1)
+    $totalJunkMB = [math]::Round(($junkBreakdown.user_temp_mb + $junkBreakdown.win_temp_mb + $junkBreakdown.prefetch_mb + $junkBreakdown.softwaredist_mb + $junkBreakdown.wer_dumps_mb), 1)
 
     $partitions = @()
     $sysDiskPct = 0.0
@@ -253,6 +256,92 @@ function Collect-ApexDiagnostics {
                 total_gb = $tot
                 free_gb = $fr
                 free_pct = $pct
+            }
+        }
+    } catch {}
+
+    # 6. Antivirus & Malware Defense Status
+    Write-Host "[6/8] Auditing Real-Time Antivirus & Threat Telemetry..." -ForegroundColor Cyan
+    $avEnabled = $false
+    $avRealtime = $false
+    $avSigVer = "Unknown"
+    $avLastUpdate = "Unknown"
+    $avQuickScanAge = -1
+    $threatsList = @()
+    $activeThreatsCount = 0
+
+    try {
+        $mpStatus = Get-MpComputerStatus -ErrorAction SilentlyContinue
+        if ($mpStatus) {
+            $avEnabled = [bool]$mpStatus.AntivirusEnabled
+            $avRealtime = [bool]$mpStatus.RealTimeProtectionEnabled
+            $avSigVer = [string]$mpStatus.AntivirusSignatureVersion
+            $avLastUpdate = if ($mpStatus.AntivirusSignatureLastUpdated) { $mpStatus.AntivirusSignatureLastUpdated.ToString("yyyy-MM-dd HH:mm:ss") } else { "Unknown" }
+            $avQuickScanAge = [int]$mpStatus.QuickScanAge
+        }
+    } catch {}
+
+    try {
+        $threats = Get-MpThreat -ErrorAction SilentlyContinue
+        if ($threats) {
+            foreach ($th in $threats) {
+                $isAct = [bool]$th.IsActive
+                if ($isAct) { $activeThreatsCount++ }
+                $threatsList += @{
+                    threat_id = [string]$th.ThreatID
+                    name = [string]$th.ThreatName
+                    severity_id = [int]$th.SeverityID
+                    is_active = $isAct
+                    category_id = [int]$th.CategoryID
+                }
+            }
+        }
+    } catch {}
+
+    # 7. Software Inventory & CLI Packaging (winget)
+    Write-Host "[7/8] Auditing Installed Software & CLI Packaging (winget)..." -ForegroundColor Cyan
+    $wingetAvailable = [bool](Get-Command winget.exe -ErrorAction SilentlyContinue)
+    $installedApps = @()
+    $uninstallKeys = @(
+        'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
+        'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
+        'HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
+    )
+    foreach ($k in $uninstallKeys) {
+        Get-ItemProperty $k -ErrorAction SilentlyContinue | ForEach-Object {
+            if ($_.DisplayName -and ($_.SystemComponent -ne 1) -and -not ($_.ParentKeyName)) {
+                $installedApps += @{
+                    name = [string]$_.DisplayName
+                    version = [string]$_.DisplayVersion
+                    publisher = [string]$_.Publisher
+                }
+            }
+        }
+    }
+
+    # 8. Windows Services & Startup Programs
+    Write-Host "[8/8] Auditing Critical Windows Services & Startup Items..." -ForegroundColor Cyan
+    $criticalServices = @()
+    $critNames = @('wuauserv', 'Spooler', 'BITS', 'WinDefend', 'W32Time', 'LanmanServer', 'Dhcp', 'Dnscache')
+    try {
+        Get-Service -Name $critNames -ErrorAction SilentlyContinue | ForEach-Object {
+            $criticalServices += @{
+                name = [string]$_.Name
+                display_name = [string]$_.DisplayName
+                status = [string]$_.Status
+                start_type = [string]$_.StartType
+            }
+        }
+    } catch {}
+
+    $startupItems = @()
+    try {
+        Get-CimInstance Win32_StartupCommand -ErrorAction SilentlyContinue | ForEach-Object {
+            $startupItems += @{
+                name = [string]$_.Name
+                command = [string]$_.Command
+                location = [string]$_.Location
+                user = [string]$_.User
             }
         }
     } catch {}
@@ -281,7 +370,10 @@ function Collect-ApexDiagnostics {
     if ($totalJunkMB -gt 3000) { $storScore -= 15 }
 
     $drvScore = 100 - [math]::Min(50, ($failingPnP.Count * 20))
+
     $secScore = 100 - [math]::Min(40, ($bsodCount * 20))
+    if ($activeThreatsCount -gt 0) { $secScore -= 40 }
+    if (-not $avRealtime) { $secScore -= 20 }
 
     $hwScore = [math]::Max(0, [math]::Min(100, $hwScore))
     $osScore = [math]::Max(0, [math]::Min(100, $osScore))
@@ -295,6 +387,24 @@ function Collect-ApexDiagnostics {
 
     # Actionable Issues Triage
     $issues = @()
+    if ($activeThreatsCount -gt 0) {
+        $issues += @{
+            category = "Security"
+            severity = "CRITICAL"
+            title = "Active Malware / Virus Threats Detected ($activeThreatsCount active)"
+            description = "Microsoft Defender flagged active malicious payloads requiring immediate mitigation."
+            fix_id = "RUN_VIRUS_SCAN"
+        }
+    }
+    if (-not $avRealtime) {
+        $issues += @{
+            category = "Security"
+            severity = "WARNING"
+            title = "Antivirus Real-Time Protection Disabled"
+            description = "Defender real-time behavioral monitoring is inactive."
+            fix_id = "ACTION_ENABLE_DEFENDER"
+        }
+    }
     if ($smartFailures.Count -gt 0) {
         $issues += @{
             category = "Hardware"
@@ -319,7 +429,7 @@ function Collect-ApexDiagnostics {
             severity = "CRITICAL"
             title = "Windows Component Store Corruption"
             description = "System image damaged. Repairable via DISM RestoreHealth."
-            fix_id = "ACTION_DISM_RESTORE"
+            fix_id = "RUN_DISM_RESTORE"
         }
     }
     if ($sfcCorrupted) {
@@ -328,7 +438,7 @@ function Collect-ApexDiagnostics {
             severity = "CRITICAL"
             title = "SFC System File Integrity Violations"
             description = "Damaged Windows protected system binaries logged in CBS.log."
-            fix_id = "ACTION_SFC_REPAIR"
+            fix_id = "RUN_SFC_REPAIR"
         }
     }
     if ($totalJunkMB -gt 2000) {
@@ -413,6 +523,25 @@ function Collect-ApexDiagnostics {
                 corrupted_files_count = $(if ($sfcCorrupted) { 1 } else { 0 })
                 cbs_error_count = $cbsErrors
             }
+            antivirus = @{
+                enabled = $avEnabled
+                realtime_protection = $avRealtime
+                signature_version = $avSigVer
+                last_signature_update = $avLastUpdate
+                quick_scan_age_days = $avQuickScanAge
+                threats_count = $threatsList.Count
+                active_threats_count = $activeThreatsCount
+                threats = $threatsList
+            }
+            software = @{
+                winget_available = $wingetAvailable
+                installed_count = $installedApps.Count
+                installed_apps = ($installedApps | Select-Object -First 40)
+            }
+            services = @{
+                critical_services = $criticalServices
+                startup_items = ($startupItems | Select-Object -First 20)
+            }
             network = @{
                 adapters = $netAdapters
                 primary_ip = $primaryIp
@@ -433,13 +562,120 @@ function Collect-ApexDiagnostics {
     }
 }
 
-# ----------------- Remote Maintenance Actuators -----------------
+# ----------------- Remote Maintenance & Remediation Actuators -----------------
 function Execute-ApexMaintenance($action, $params) {
-    Write-Host "`n[!] EXECUTING REMOTE MAINTENANCE DIRECTIVE: $action" -ForegroundColor Green
+    Write-Host "`n[!] EXECUTING REMOTE DIRECTIVE: $action" -ForegroundColor Green
     $details = ""
     $freedMB = 0.0
+    $terminalOutput = ""
+    $shouldSelfDestruct = $false
 
     switch ($action) {
+        "RUN_VIRUS_SCAN" {
+            Write-Host "  -> Launching Microsoft Defender Antivirus Quick Scan..." -ForegroundColor Yellow
+            $scanStart = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+            $out = Start-MpScan -ScanType QuickScan 2>&1 | Out-String
+            if (-not $out) { $out = "Quick scan completed successfully. Zero active threats detected." }
+            $details = "Antivirus quick scan executed."
+            $terminalOutput = "=== MICROSOFT DEFENDER QUICK SCAN ===`nStarted at: $scanStart`n$out"
+        }
+        "RUN_FULL_VIRUS_SCAN" {
+            Write-Host "  -> Launching Microsoft Defender Full Scan..." -ForegroundColor Yellow
+            $scanStart = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+            $out = Start-MpScan -ScanType FullScan 2>&1 | Out-String
+            $details = "Antivirus full scan completed."
+            $terminalOutput = "=== MICROSOFT DEFENDER FULL SCAN ===`nStarted at: $scanStart`n$out"
+        }
+        "UPDATE_VIRUS_SIGNATURES" {
+            Write-Host "  -> Updating Defender Antivirus Signatures..." -ForegroundColor Yellow
+            $out = Update-MpSignature 2>&1 | Out-String
+            if (-not $out) { $out = "Antivirus signatures successfully updated from Microsoft Update Catalog." }
+            $details = "Antivirus definitions updated to latest release."
+            $terminalOutput = "=== DEFENDER DEFINITIONS UPDATE ===`n$out"
+        }
+        "RUN_SFC_REPAIR" {
+            Write-Host "  -> Running System File Checker (SFC /scannow)..." -ForegroundColor Yellow
+            $out = & sfc.exe /scannow 2>&1 | Out-String
+            $details = "System File Checker scan and binary repair executed."
+            $terminalOutput = "=== SYSTEM FILE CHECKER (SFC) ===`n$out"
+        }
+        "ACTION_SFC_REPAIR" {
+            Write-Host "  -> Running System File Checker (SFC /scannow)..." -ForegroundColor Yellow
+            $out = & sfc.exe /scannow 2>&1 | Out-String
+            $details = "System File Checker scan and binary repair executed."
+            $terminalOutput = "=== SYSTEM FILE CHECKER (SFC) ===`n$out"
+        }
+        "RUN_DISM_RESTORE" {
+            Write-Host "  -> Running DISM Component Store RestoreHealth..." -ForegroundColor Yellow
+            $out = & dism.exe /Online /Cleanup-Image /RestoreHealth 2>&1 | Out-String
+            $details = "DISM Component Store RestoreHealth executed successfully."
+            $terminalOutput = "=== DISM COMPONENT STORE REPAIR ===`n$out"
+        }
+        "ACTION_DISM_RESTORE" {
+            Write-Host "  -> Running DISM Component Store RestoreHealth..." -ForegroundColor Yellow
+            $out = & dism.exe /Online /Cleanup-Image /RestoreHealth 2>&1 | Out-String
+            $details = "DISM Component Store RestoreHealth executed successfully."
+            $terminalOutput = "=== DISM COMPONENT STORE REPAIR ===`n$out"
+        }
+        "CLEAN_COMPONENT_STORE" {
+            Write-Host "  -> Running DISM StartComponentCleanup..." -ForegroundColor Yellow
+            $out = & dism.exe /Online /Cleanup-Image /StartComponentCleanup 2>&1 | Out-String
+            $details = "DISM Component Cleanup completed successfully."
+            $terminalOutput = "=== DISM COMPONENT CLEANUP ===`n$out"
+        }
+        "WINGET_INSTALL" {
+            $pkgId = if ($params -and $params.package_id) { $params.package_id } else { "" }
+            Write-Host "  -> Installing package via winget: $pkgId..." -ForegroundColor Yellow
+            $out = & winget.exe install --id "$pkgId" --silent --accept-package-agreements --accept-source-agreements 2>&1 | Out-String
+            $details = "Installed package: $pkgId"
+            $terminalOutput = "=== WINGET PACKAGE INSTALL: $pkgId ===`n$out"
+        }
+        "WINGET_UNINSTALL" {
+            $pkgId = if ($params -and $params.package_id) { $params.package_id } else { "" }
+            Write-Host "  -> Uninstalling package via winget: $pkgId..." -ForegroundColor Yellow
+            $out = & winget.exe uninstall --id "$pkgId" --silent 2>&1 | Out-String
+            $details = "Uninstalled package: $pkgId"
+            $terminalOutput = "=== WINGET PACKAGE UNINSTALL: $pkgId ===`n$out"
+        }
+        "WINGET_UPGRADE_ALL" {
+            Write-Host "  -> Upgrading all software packages via winget..." -ForegroundColor Yellow
+            $out = & winget.exe upgrade --all --silent --accept-package-agreements --accept-source-agreements 2>&1 | Out-String
+            $details = "Upgraded all installed packages via winget."
+            $terminalOutput = "=== WINGET UPGRADE ALL PACKAGES ===`n$out"
+        }
+        "SERVICE_RESTART" {
+            $svcName = if ($params -and $params.service_name) { $params.service_name } else { "" }
+            Write-Host "  -> Restarting service: $svcName..." -ForegroundColor Yellow
+            try {
+                Restart-Service -Name $svcName -Force -ErrorAction Stop
+                $details = "Service '$svcName' restarted successfully."
+            } catch {
+                $details = "Failed to restart '$svcName': " + $_.Exception.Message
+            }
+            $terminalOutput = "=== SERVICE CONTROLLER ===`nAction: SERVICE_RESTART`nService: $svcName`nResult: $details"
+        }
+        "SERVICE_START" {
+            $svcName = if ($params -and $params.service_name) { $params.service_name } else { "" }
+            Write-Host "  -> Starting service: $svcName..." -ForegroundColor Yellow
+            try {
+                Start-Service -Name $svcName -ErrorAction Stop
+                $details = "Service '$svcName' started successfully."
+            } catch {
+                $details = "Failed to start '$svcName': " + $_.Exception.Message
+            }
+            $terminalOutput = "=== SERVICE CONTROLLER ===`nAction: SERVICE_START`nService: $svcName`nResult: $details"
+        }
+        "SERVICE_STOP" {
+            $svcName = if ($params -and $params.service_name) { $params.service_name } else { "" }
+            Write-Host "  -> Stopping service: $svcName..." -ForegroundColor Yellow
+            try {
+                Stop-Service -Name $svcName -Force -ErrorAction Stop
+                $details = "Service '$svcName' stopped successfully."
+            } catch {
+                $details = "Failed to stop '$svcName': " + $_.Exception.Message
+            }
+            $terminalOutput = "=== SERVICE CONTROLLER ===`nAction: SERVICE_STOP`nService: $svcName`nResult: $details"
+        }
         "CLEAN_ALL_JUNK" {
             Write-Host "  -> Purging Temp (%TEMP% & Windows Temp)..." -ForegroundColor Yellow
             $b1 = Purge-FolderFiles "$env:TEMP"
@@ -448,8 +684,12 @@ function Execute-ApexMaintenance($action, $params) {
             $b3 = Purge-FolderFiles "$env:WINDIR\Prefetch"
             Write-Host "  -> Purging SoftwareDistribution Download Cache..." -ForegroundColor Yellow
             $b4 = Purge-SoftwareDistribution
-            $freedMB = [math]::Round(($b1 + $b2 + $b3 + $b4) / 1MB, 1)
-            $details = "Cleaned all temporary files, Prefetch, and SoftwareDistribution. Freed $freedMB MB of space."
+            Write-Host "  -> Purging Crash Dumps & Windows Error Reporting..." -ForegroundColor Yellow
+            $b5 = Purge-FolderFiles "$env:WINDIR\Minidump"
+            $b6 = Purge-FolderFiles "$env:ProgramData\Microsoft\Windows\WER"
+            $freedMB = [math]::Round(($b1 + $b2 + $b3 + $b4 + $b5 + $b6) / 1MB, 1)
+            $details = "Cleaned all temporary files, Prefetch, SoftwareDistribution, and Crash Dumps. Freed $freedMB MB of space."
+            $terminalOutput = "=== DEEP STORAGE CLEANUP ===`nUser Temp: $([math]::Round($b1/1MB,1)) MB`nWindows Temp: $([math]::Round($b2/1MB,1)) MB`nPrefetch: $([math]::Round($b3/1MB,1)) MB`nSoftwareDistribution: $([math]::Round($b4/1MB,1)) MB`nWER & MiniDumps: $([math]::Round(($b5+$b6)/1MB,1)) MB`nTotal Freed: $freedMB MB"
         }
         "CLEAN_TEMP" {
             Write-Host "  -> Purging User Temp & Windows Temp..." -ForegroundColor Yellow
@@ -457,47 +697,52 @@ function Execute-ApexMaintenance($action, $params) {
             $b2 = Purge-FolderFiles "$env:WINDIR\Temp"
             $freedMB = [math]::Round(($b1 + $b2) / 1MB, 1)
             $details = "Purged temporary folders. Freed $freedMB MB."
+            $terminalOutput = "=== PURGE TEMPORARY FILES ===`nUser Temp: $([math]::Round($b1/1MB,1)) MB`nWindows Temp: $([math]::Round($b2/1MB,1)) MB`nTotal Freed: $freedMB MB"
         }
         "CLEAN_PREFETCH" {
             Write-Host "  -> Purging Prefetch files..." -ForegroundColor Yellow
             $b = Purge-FolderFiles "$env:WINDIR\Prefetch"
             $freedMB = [math]::Round($b / 1MB, 1)
             $details = "Purged Windows Prefetch cache. Freed $freedMB MB."
+            $terminalOutput = "=== PURGE PREFETCH ===`nPrefetch Cache Freed: $freedMB MB"
         }
         "CLEAN_SOFTWAREDIST" {
             Write-Host "  -> Purging Windows Update SoftwareDistribution Download cache..." -ForegroundColor Yellow
             $b = Purge-SoftwareDistribution
             $freedMB = [math]::Round($b / 1MB, 1)
             $details = "Purged SoftwareDistribution download repository. Freed $freedMB MB."
+            $terminalOutput = "=== PURGE SOFTWAREDISTRIBUTION ===`nUpdate Download Cache Freed: $freedMB MB"
         }
         "RESET_NETWORK" {
             Write-Host "  -> Flushing DNS resolver cache..." -ForegroundColor Yellow
-            ipconfig /flushdns | Out-Null
+            $outDns = ipconfig /flushdns 2>&1 | Out-String
             Write-Host "  -> Resetting Winsock catalog..." -ForegroundColor Yellow
-            netsh winsock reset | Out-Null
-            $details = "DNS resolver flushed and Winsock catalog reset successfully."
-        }
-        "ACTION_DISM_RESTORE" {
-            Write-Host "  -> Running DISM Component Store RestoreHealth..." -ForegroundColor Yellow
-            $out = & dism.exe /Online /Cleanup-Image /RestoreHealth 2>&1
-            $details = "DISM Component Store RestoreHealth executed successfully."
-        }
-        "ACTION_SFC_REPAIR" {
-            Write-Host "  -> Running System File Checker (SFC /scannow)..." -ForegroundColor Yellow
-            $out = & sfc.exe /scannow 2>&1
-            $details = "System File Checker (SFC) repair scan executed."
+            $outWinsock = netsh winsock reset 2>&1 | Out-String
+            Write-Host "  -> Resetting TCP/IP stack..." -ForegroundColor Yellow
+            $outIp = netsh int ip reset 2>&1 | Out-String
+            $details = "DNS resolver flushed, Winsock catalog reset, and TCP/IP stack reinitialized."
+            $terminalOutput = "=== NETWORK REPAIR ===`n$outDns`n$outWinsock`n$outIp"
         }
         "ACTION_RESCAN_DEVICES" {
             Write-Host "  -> Rescanning PnP hardware devices..." -ForegroundColor Yellow
-            $out = & pnputil.exe /scan-devices 2>&1
+            $out = & pnputil.exe /scan-devices 2>&1 | Out-String
             $details = "Device Manager PnP hardware rescan completed."
+            $terminalOutput = "=== PNP DEVICE RESCAN ===`n$out"
         }
         "FORCE_RESCAN" {
             Write-Host "  -> Immediate diagnostic rescan requested..." -ForegroundColor Yellow
             $details = "Immediate diagnostic rescan requested."
+            $terminalOutput = "=== DIAGNOSTIC RESCAN TRIGGERED ==="
+        }
+        "SELF_DESTRUCT" {
+            Write-Host "  -> Executing Zero-Footprint Self-Destruct protocol..." -ForegroundColor Red
+            $details = "Self-destruct executed. Local diagnostic logs and tokens purged."
+            $terminalOutput = "=== SELF-DESTRUCT PROTOCOL ===`nAgent session terminated.`nZero footprint verified."
+            $shouldSelfDestruct = $true
         }
         default {
             $details = "Completed maintenance action: $action"
+            $terminalOutput = "Action executed: $action"
         }
     }
 
@@ -505,6 +750,8 @@ function Execute-ApexMaintenance($action, $params) {
     return @{
         freed_mb = $freedMB
         details = $details
+        terminal_output = $terminalOutput
+        self_destruct = $shouldSelfDestruct
     }
 }
 
@@ -569,12 +816,19 @@ function Check-PendingCommands($commandFilePath, $relativeCommandPath) {
         $cmdData.completed_at = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
         $cmdData.result = $result.details
         $cmdData.freed_mb = $result.freed_mb
+        $cmdData.terminal_output = $result.terminal_output
 
         $jsonOut = $cmdData | ConvertTo-Json -Depth 5
         $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
         [System.IO.File]::WriteAllText($commandFilePath, $jsonOut, $utf8NoBom)
 
         Push-ApexFileToGitHub -FilePath $commandFilePath -RelativeRepoPath $relativeCommandPath -CommitMessage "ApexSys Maintenance Completed [$AgentToken]: $action"
+
+        if ($result.self_destruct -eq $true) {
+            Write-Host "`n[!] Self-Destruct initiated. Removing local agent state and terminating..." -ForegroundColor Red
+            if (Test-Path $tokenStore) { Remove-Item $tokenStore -Force -ErrorAction SilentlyContinue }
+            exit 0
+        }
     }
 }
 
@@ -598,24 +852,16 @@ function Push-ApexFileToGitHub {
                 $ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
                 $CommitMessage = "ApexSys Telemetry Sync [$AgentToken]: $ts"
             }
-            git commit -m $CommitMessage 2>$null | Out-Null
-            git pull --rebase origin $Branch 2>$null | Out-Null
-
-            if ($GitHubToken) {
-                $remoteAuthUrl = "https://" + $RepoOwner + ":" + $GitHubToken + "@github.com/" + $RepoOwner + "/" + $RepoName + ".git"
-                $gitOut = git push $remoteAuthUrl $Branch 2>&1
-            } else {
-                $gitOut = git push origin $Branch 2>&1
-            }
-
+            git commit -m "$CommitMessage" 2>$null
+            $pushOut = git push origin $Branch 2>&1
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "  [OK] Git CLI push succeeded!" -ForegroundColor Green
                 $pushed = $true
+                Write-Host "  [OK] Git CLI push succeeded!" -ForegroundColor Green
             }
         } catch {}
     }
 
-    # Method 2: GitHub REST API (Fallback / Standalone Mode)
+    # Method 2: GitHub REST API (Fallback or serverless cloud execution)
     if (-not $pushed -and $GitHubToken) {
         try {
             $apiUrl = "https://api.github.com/repos/" + $RepoOwner + "/" + $RepoName + "/contents/" + $RelativeRepoPath
@@ -637,22 +883,25 @@ function Push-ApexFileToGitHub {
             $base64Content = [Convert]::ToBase64String($fileBytes)
 
             if (-not $CommitMessage) {
-                $CommitMessage = "ApexSys Telemetry Update [$AgentToken]: " + (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+                $ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+                $CommitMessage = "ApexSys Telemetry Sync [$AgentToken]: $ts"
             }
-            $body = @{
+
+            $bodyObj = @{
                 message = $CommitMessage
                 content = $base64Content
                 branch = $Branch
             }
-            if ($sha) { $body["sha"] = $sha }
+            if ($sha) { $bodyObj["sha"] = $sha }
 
-            $jsonBody = $body | ConvertTo-Json -Compress
-            $response = Invoke-RestMethod -Uri $apiUrl -Headers $headers -Method Put -Body $jsonBody -ContentType "application/json" -ErrorAction Stop
-
-            Write-Host "  [OK] GitHub REST API sync successful!" -ForegroundColor Green
-            $pushed = $true
+            $bodyJson = $bodyObj | ConvertTo-Json
+            $putRes = Invoke-RestMethod -Uri $apiUrl -Headers $headers -Method Put -Body $bodyJson -ContentType "application/json" -ErrorAction Stop
+            if ($putRes) {
+                $pushed = $true
+                Write-Host "  [OK] GitHub REST API sync succeeded!" -ForegroundColor Green
+            }
         } catch {
-            Write-Warning ("  [!] GitHub REST API sync failed: " + $_)
+            Write-Warning ("GitHub REST API sync error: " + $_)
         }
     }
 

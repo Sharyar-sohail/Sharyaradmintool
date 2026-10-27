@@ -4,13 +4,13 @@
   "timestamp": "2026-10-27T11:40:00Z",
   "last_synced": "2026-10-27 16:40:00",
   "status": "ONLINE",
-  "health_score": 90,
+  "health_score": 92,
   "category_scores": {
     "Hardware": 100,
-    "Operating System": 100,
-    "Storage": 100,
-    "Drivers": 50,
-    "Security": 100
+    "Operating System": 95,
+    "Storage": 90,
+    "Drivers": 85,
+    "Security": 90
   },
   "system_info": {
     "hostname": "DESKTOP-RS9M43V",
@@ -22,15 +22,16 @@
     "cpu_cores": 12,
     "total_ram_gb": 24,
     "is_admin": true,
-    "ip_address": "192.168.1.37"
+    "ip_address": "192.168.1.37",
+    "working_dir": "D:\\sharyar\\online master pc"
   },
   "telemetry": {
     "cpu_percent": 14.5,
     "ram_percent": 68.2,
     "ram_used_gb": 16.36,
     "disk_percent": 86.6,
-    "net_latency_ms": 12,
-    "cpu_freq_mhz": 3201
+    "net_latency_ms": 12.0,
+    "cpu_freq_mhz": 3201.0
   },
   "diagnostics": {
     "hardware": {
@@ -46,14 +47,16 @@
           "media_type": "SSD"
         }
       ],
+      "cpu_curr_mhz": 3201,
       "cpu_max_mhz": 3201,
+      "cpu_throttled": false,
       "smart_failures": [],
       "failing_devices": [
         {
           "name": "SAS Controller",
           "code": 28,
           "status": "Error",
-          "error_desc": "Device Configuration Error (Code 28)"
+          "error_desc": "Device Configuration Fault (Code 28)"
         }
       ]
     },
@@ -64,10 +67,129 @@
       "corrupted_files_count": 0,
       "cbs_error_count": 0
     },
+    "antivirus": {
+      "enabled": true,
+      "realtime_protection": true,
+      "signature_version": "1.461.217.0",
+      "last_signature_update": "2026-10-27 10:15:00",
+      "quick_scan_age_days": 1,
+      "threats_count": 0,
+      "active_threats_count": 0,
+      "threats": []
+    },
+    "software": {
+      "winget_available": true,
+      "installed_count": 38,
+      "installed_apps": [
+        {
+          "name": "7-Zip 24.05 (x64)",
+          "version": "24.05",
+          "publisher": "Igor Pavlov"
+        },
+        {
+          "name": "Google Chrome",
+          "version": "128.0.6613.120",
+          "publisher": "Google LLC"
+        },
+        {
+          "name": "Visual Studio Code",
+          "version": "1.93.1",
+          "publisher": "Microsoft Corporation"
+        },
+        {
+          "name": "Git version 2.46.0",
+          "version": "2.46.0",
+          "publisher": "The Git Development Community"
+        },
+        {
+          "name": "Python 3.14.8",
+          "version": "3.14.8",
+          "publisher": "Python Software Foundation"
+        },
+        {
+          "name": "Notepad++ (64-bit x64)",
+          "version": "8.6.9",
+          "publisher": "Notepad++ Team"
+        }
+      ]
+    },
+    "services": {
+      "critical_services": [
+        {
+          "name": "WinDefend",
+          "display_name": "Microsoft Defender Antivirus Service",
+          "status": "Running",
+          "start_type": "Automatic"
+        },
+        {
+          "name": "wuauserv",
+          "display_name": "Windows Update",
+          "status": "Running",
+          "start_type": "Manual"
+        },
+        {
+          "name": "BITS",
+          "display_name": "Background Intelligent Transfer Service",
+          "status": "Running",
+          "start_type": "Automatic"
+        },
+        {
+          "name": "Spooler",
+          "display_name": "Print Spooler",
+          "status": "Running",
+          "start_type": "Automatic"
+        },
+        {
+          "name": "Dhcp",
+          "display_name": "DHCP Client",
+          "status": "Running",
+          "start_type": "Automatic"
+        },
+        {
+          "name": "Dnscache",
+          "display_name": "DNS Client",
+          "status": "Running",
+          "start_type": "Automatic"
+        }
+      ],
+      "startup_items": [
+        {
+          "name": "OneDrive",
+          "command": "OneDrive.exe /background",
+          "location": "HKCU Run",
+          "user": "Sharyar"
+        },
+        {
+          "name": "GoogleDriveFS",
+          "command": "GoogleDriveFS.exe --startup_mode",
+          "location": "HKLM Run",
+          "user": "SYSTEM"
+        }
+      ]
+    },
+    "network": {
+      "adapters": [
+        {
+          "name": "Ethernet",
+          "description": "Intel(R) 82579LM Gigabit Network Connection",
+          "status": "Up",
+          "link_speed": "1 Gbps",
+          "mac": "00:1E:67:D8:1A:F2"
+        }
+      ],
+      "primary_ip": "192.168.1.37",
+      "dns_latency_ms": 12.0
+    },
     "storage": {
       "temp_junk_mb": 420.5,
-      "broken_shortcuts_count": 0,
-      "drives": [
+      "junk_breakdown": {
+        "user_temp_mb": 180.2,
+        "win_temp_mb": 110.1,
+        "prefetch_mb": 45.2,
+        "softwaredist_mb": 85.0,
+        "wer_dumps_mb": 0.0
+      },
+      "partitions": [
         {
           "letter": "C",
           "total_gb": 223.6,
@@ -77,7 +199,6 @@
       ]
     },
     "security": {
-      "corrupt_registry_keys": [],
       "bsod_events_count": 0,
       "latest_bsod_code": null,
       "critical_errors_count": 0
@@ -87,9 +208,9 @@
     {
       "category": "Drivers",
       "severity": "WARNING",
-      "title": "Driver/Device Fault: SAS Controller",
-      "description": "Device Configuration Error (Code 28)",
-      "fix_id": "FIX_DRIVER_RESCAN"
+      "title": "Driver Error: SAS Controller",
+      "description": "Device Configuration Fault (Code 28) (Status: Error)",
+      "fix_id": "ACTION_RESCAN_DEVICES"
     }
   ]
 }

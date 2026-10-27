@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 import unittest
@@ -23,6 +24,40 @@ class TestStateFetcher(unittest.TestCase):
         self.assertIsNotNone(status)
         self.assertEqual(status.get("agent_token"), "APEX-DEMO01")
         self.assertTrue(status.get("health_score") > 0)
+        # Verify local schema
+        local_path = os.path.join(self.repo_root, "clients", "APEX-DEMO01", "status.json")
+        with open(local_path, "r", encoding="utf-8-sig") as f:
+            local_status = json.load(f)
+        diag = local_status.get("diagnostics", {})
+        self.assertIn("antivirus", diag)
+        self.assertIn("software", diag)
+        self.assertIn("services", diag)
+        self.assertTrue(diag["antivirus"].get("enabled"))
+        self.assertTrue(len(diag["software"].get("installed_apps", [])) > 0)
+
+    def test_fetch_demo_commands(self):
+        cmd, src = fetch_isolated_commands("APEX-DEMO01")
+        self.assertIsNotNone(cmd)
+        self.assertEqual(cmd.get("agent_token"), "APEX-DEMO01")
+        self.assertIn("terminal_output", cmd)
+
+    def test_send_and_fetch_isolated_command_with_parameters(self):
+        token_param = "APEX-TEST-PARAMS"
+        param_dir = os.path.join(self.repo_root, "clients", token_param)
+        try:
+            ok, msg = send_isolated_command(
+                agent_token=token_param,
+                action="WINGET_INSTALL",
+                parameters={"package_id": "7zip.7zip"},
+            )
+            self.assertTrue(ok)
+            cmd_data, src = fetch_isolated_commands(token_param)
+            self.assertIsNotNone(cmd_data)
+            self.assertEqual(cmd_data.get("action"), "WINGET_INSTALL")
+            self.assertEqual(cmd_data.get("parameters", {}).get("package_id"), "7zip.7zip")
+        finally:
+            if os.path.exists(param_dir):
+                shutil.rmtree(param_dir, ignore_errors=True)
 
     def test_fetch_nonexistent_token(self):
         status, src = fetch_isolated_status("APEX-NONEXISTENT-99999")

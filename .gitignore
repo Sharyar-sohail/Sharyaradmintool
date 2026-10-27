@@ -40,3 +40,7 @@ venv.bak/
 # OS
 Thumbs.db
 Desktop.ini
+
+# Ephemeral Test Tokens
+clients/APEX-TEST-*/
+clients/APEX-TEST*

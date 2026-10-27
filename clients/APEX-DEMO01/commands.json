@@ -1,0 +1,12 @@
+{
+  "command_id": "CMD-1729990000-DEMO",
+  "agent_token": "APEX-DEMO01",
+  "action": "RUN_VIRUS_SCAN",
+  "parameters": {},
+  "status": "COMPLETED",
+  "requested_at": "2026-10-27 16:35:00",
+  "completed_at": "2026-10-27 16:35:12",
+  "result": "Antivirus quick scan executed.",
+  "freed_mb": 0.0,
+  "terminal_output": "=== MICROSOFT DEFENDER QUICK SCAN ===\nStarted at: 2026-10-27 16:35:00\nScanning core system binaries and active memory...\nQuick scan completed successfully. Zero active threats detected.\nScan time: 11.4 seconds.\nDefinition version: 1.461.217.0\nThreat Engine: 1.1.24080.9\nStatus: CLEAN"
+}
