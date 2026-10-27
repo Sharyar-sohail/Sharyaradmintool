@@ -85,7 +85,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ----------------- Configuration & Parameters -----------------
-from dashboard.fetcher import fetch_isolated_status, get_customized_agent_script
+from dashboard.fetcher import (
+    fetch_isolated_status,
+    fetch_isolated_commands,
+    send_isolated_command,
+    get_customized_agent_script,
+)
 
 DEFAULT_OWNER = os.getenv("GITHUB_REPO_OWNER", "SharyarSoahil")
 DEFAULT_REPO = os.getenv("GITHUB_REPO_NAME", "Sharyaradmintool")
@@ -343,6 +348,116 @@ with tcol3:
 with tcol4:
     st.metric("Gateway Latency", f"{telemetry.get('net_latency_ms', 0)} ms")
 
+# ----------------- Remote Maintenance & Optimization Command Hub -----------------
+st.markdown("---")
+st.markdown("### 🛠️ **Autonomous Remote Maintenance & Storage Optimization**")
+st.markdown(
+    f"Trigger targeted cleanup and remediation directives directly on client `<span class='token-badge'>{current_token}</span>`. "
+    f"Commands are staged to `clients/{current_token}/commands.json` via GitHub state synchronization.",
+    unsafe_allow_html=True,
+)
+
+# Fetch latest command queue status
+cmd_data, cmd_source = fetch_isolated_commands(current_token, repo_owner, repo_name, branch, github_token)
+
+# Show last command status banner if available
+if cmd_data:
+    cmd_status = cmd_data.get("status", "UNKNOWN")
+    cmd_action = cmd_data.get("action", "")
+    cmd_req_time = cmd_data.get("requested_at", "")
+    cmd_comp_time = cmd_data.get("completed_at", "")
+    cmd_result = cmd_data.get("result", "")
+    freed_mb = cmd_data.get("freed_mb", 0)
+
+    if cmd_status == "PENDING":
+        st.warning(f"⏳ **Directive in Queue**: `{cmd_action}` (Queued at {cmd_req_time}). Waiting for agent execution cycle...")
+    elif cmd_status == "COMPLETED":
+        freed_txt = f" — Freed **{freed_mb} MB**" if freed_mb else ""
+        st.success(f"✓ **Last Directive Executed**: `{cmd_action}` at {cmd_comp_time}{freed_txt}. Result: {cmd_result}")
+
+# Action Buttons Grid
+col_act1, col_act2, col_act3 = st.columns(3)
+
+with col_act1:
+    st.markdown("#### 🧹 Deep Junk Purge")
+    st.caption("Safely purge User Temp, Windows Temp, Prefetch, and obsolete SoftwareDistribution cache.")
+    if st.button("🚀 Clean All Deep Junk", key="btn_clean_all", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "CLEAN_ALL_JUNK", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast(f"Directive CLEAN_ALL_JUNK queued for {current_token}!")
+            st.success(msg)
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+
+    st.markdown("---")
+    st.markdown("#### ⚡ Prefetch Cache")
+    st.caption("Remove stale prefetch hash files to resolve application launch conflicts.")
+    if st.button("Purge Prefetch Files", key="btn_clean_prefetch", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "CLEAN_PREFETCH", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast("Directive CLEAN_PREFETCH queued!")
+            st.success(msg)
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+
+with col_act2:
+    st.markdown("#### 🗂️ Temporary Files")
+    st.caption("Clean `%TEMP%` and `C:\\Windows\\Temp` without stopping system services.")
+    if st.button("Purge Temporary Files", key="btn_clean_temp", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "CLEAN_TEMP", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast("Directive CLEAN_TEMP queued!")
+            st.success(msg)
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+
+    st.markdown("---")
+    st.markdown("#### 🌐 Network Stack & DNS")
+    st.caption("Flush Windows DNS resolver cache and reset Winsock catalog sockets.")
+    if st.button("Reset Network Stack", key="btn_reset_net", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "RESET_NETWORK", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast("Directive RESET_NETWORK queued!")
+            st.success(msg)
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+
+with col_act3:
+    st.markdown("#### 📦 Windows Update Cache")
+    st.caption("Stop wuauserv, purge `SoftwareDistribution\\Download`, restart servicing.")
+    if st.button("Purge Update Cache", key="btn_clean_softwaredist", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "CLEAN_SOFTWAREDIST", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast("Directive CLEAN_SOFTWAREDIST queued!")
+            st.success(msg)
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+
+    st.markdown("---")
+    st.markdown("#### 🔄 Force Diagnostic Rescan")
+    st.caption("Force agent to immediately run full DISM, hardware, and event audit.")
+    if st.button("Force Immediate Rescan", key="btn_force_rescan", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "FORCE_RESCAN", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast("Directive FORCE_RESCAN queued!")
+            st.success(msg)
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+
+st.markdown("---")
+
 # Detected Issues Triage
 st.markdown(f"### 📋 Actionable Diagnostic Issues ({len(issues)})")
 if not issues:
@@ -351,14 +466,29 @@ else:
     for idx, iss in enumerate(issues, 1):
         sev = iss.get("severity", "INFO")
         color = "#ff3366" if sev == "CRITICAL" else "#ffaa00" if sev == "WARNING" else "#00f3ff"
-        st.markdown(f"""
-        <div style="border-left: 4px solid {color}; padding: 10px 16px; background: rgba(16,24,39,0.6); margin-bottom: 10px; border-radius: 6px;">
-            <strong style="color: #fff;">[{iss.get('category')}] {iss.get('title')}</strong> 
-            <span style="color: {color}; font-size: 0.8rem; font-weight: 700;">({sev})</span><br>
-            <span style="color: #cbd5e0; font-size: 0.85rem;">{iss.get('description')}</span><br>
-            <span style="color: var(--neon-cyan); font-family: monospace; font-size: 0.78rem;">Fix Directive: {iss.get('fix_id')}</span>
-        </div>
-        """, unsafe_allow_html=True)
+        fix_id = iss.get("fix_id")
+        
+        col_iss_txt, col_iss_btn = st.columns([5, 1])
+        with col_iss_txt:
+            st.markdown(f"""
+            <div style="border-left: 4px solid {color}; padding: 10px 16px; background: rgba(16,24,39,0.6); margin-bottom: 8px; border-radius: 6px;">
+                <strong style="color: #fff;">[{iss.get('category')}] {iss.get('title')}</strong> 
+                <span style="color: {color}; font-size: 0.8rem; font-weight: 700;">({sev})</span><br>
+                <span style="color: #cbd5e0; font-size: 0.85rem;">{iss.get('description')}</span><br>
+                <span style="color: #00f3ff; font-family: monospace; font-size: 0.78rem;">Fix Directive: {fix_id}</span>
+            </div>
+            """, unsafe_allow_html=True)
+        with col_iss_btn:
+            if fix_id:
+                if st.button("⚡ Fix Issue", key=f"fix_btn_{idx}_{fix_id}", use_container_width=True):
+                    ok, msg = send_isolated_command(current_token, fix_id, {}, repo_owner, repo_name, branch, github_token)
+                    if ok:
+                        st.toast(f"Remediation directive {fix_id} dispatched!")
+                        st.success(f"Dispatched {fix_id}")
+                        time.sleep(1)
+                        st.rerun()
+                    else:
+                        st.error(msg)
 
 # Detailed Hardware & OS Audits
 st.markdown("### 🔍 Deep Diagnostic Audits")
