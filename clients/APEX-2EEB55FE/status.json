@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:43:57Z",
-    "last_synced":  "2026-10-28 13:43:57",
+    "timestamp":  "2026-10-28T08:44:04Z",
+    "last_synced":  "2026-10-28 13:44:04",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -33,9 +33,9 @@
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  8.4,
+                                                               "free_pct":  8.5,
                                                                "letter":  "C",
-                                                               "free_gb":  14.7
+                                                               "free_gb":  14.8
                                                            },
                                                            {
                                                                "total_gb":  48.8,
@@ -44,10 +44,10 @@
                                                                "free_gb":  4.9
                                                            }
                                                        ],
-                                        "temp_junk_mb":  281.5,
+                                        "temp_junk_mb":  206.3,
                                         "junk_breakdown":  {
                                                                "prefetch_mb":  0,
-                                                               "user_temp_mb":  263.4,
+                                                               "user_temp_mb":  188.2,
                                                                "win_temp_mb":  3.5,
                                                                "softwaredist_mb":  11.6,
                                                                "wer_dumps_mb":  3
@@ -334,8 +334,8 @@
                       "phase_index":  5,
                       "total_phases":  8,
                       "progress_percent":  62,
-                      "current_activity":  "Calculating recoverable space across Temp, Prefetch, and SoftwareDistribution...",
-                      "last_updated":  "2026-10-28 13:43:57",
+                      "current_activity":  "Storage breakdown computed.",
+                      "last_updated":  "2026-10-28 13:44:04",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -365,7 +365,8 @@
                                           "[13:43:42] CBS error count: 0. Component store status: Healthy",
                                           "[13:43:47] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:43:52] BSOD crashes: 0. Network Gateway Ping: 0.5 ms",
-                                          "[13:43:57] Phase 5/8 started: Calculating recoverable storage junk"
+                                          "[13:43:57] Phase 5/8 started: Calculating recoverable storage junk",
+                                          "[13:44:04] Recoverable junk bloat: 206.3 MB across 5 directories"
                                       ]
                   }
 }
