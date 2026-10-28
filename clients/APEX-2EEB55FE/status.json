@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T04:58:08Z",
-    "last_synced":  "2026-10-28 09:58:08",
+    "timestamp":  "2026-10-28T04:58:32Z",
+    "last_synced":  "2026-10-28 09:58:32",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,10 +26,10 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  11.7,
-                      "ram_percent":  85.6,
-                      "ram_used_gb":  20.51,
-                      "disk_percent":  90.2,
+                      "cpu_percent":  14.8,
+                      "ram_percent":  86.5,
+                      "ram_used_gb":  20.73,
+                      "disk_percent":  90.8,
                       "net_latency_ms":  0,
                       "cpu_freq_mhz":  3201
                   },
@@ -350,7 +350,7 @@
                                                                        "start_type":  "Automatic"
                                                                    },
                                                                    {
-                                                                       "status":  "Running",
+                                                                       "status":  "Stopped",
                                                                        "name":  "wuauserv",
                                                                        "display_name":  "Windows Update",
                                                                        "start_type":  "Manual"
@@ -424,9 +424,9 @@
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  9.8,
+                                                               "free_pct":  9.2,
                                                                "letter":  "C",
-                                                               "free_gb":  17.1
+                                                               "free_gb":  16
                                                            },
                                                            {
                                                                "total_gb":  48.8,
@@ -435,10 +435,10 @@
                                                                "free_gb":  5.1
                                                            }
                                                        ],
-                                        "temp_junk_mb":  136.6,
+                                        "temp_junk_mb":  180.4,
                                         "junk_breakdown":  {
                                                                "prefetch_mb":  0,
-                                                               "user_temp_mb":  129.6,
+                                                               "user_temp_mb":  173.4,
                                                                "win_temp_mb":  2.2,
                                                                "softwaredist_mb":  1.8,
                                                                "wer_dumps_mb":  3
