@@ -721,6 +721,7 @@ function Collect-ApexDiagnostics {
             }
         }
         issues = $issues
+        live_scan = $script:currentStatus.live_scan
     }
 
     Publish-LiveScanState -State "ONLINE" -PhaseIndex 8 -TotalPhases 8 -ActivePhase "System Monitoring Active" -CurrentActivity "Idle - Live monitoring active. Listening for remote directives." -LogMessage "Deep diagnostic audit completed. Dynamic Health Score: $overallScore%" -HealthScore $overallScore
@@ -1146,6 +1147,9 @@ try {
         # 2. Run comprehensive diagnostics (Live publishes all 8 phases)
         $diagData = Collect-ApexDiagnostics
         $diagData.status = "ONLINE"
+        if ($script:currentStatus -and $script:currentStatus.live_scan) {
+            $diagData.live_scan = $script:currentStatus.live_scan
+        }
         $jsonOutput = $diagData | ConvertTo-Json -Depth 6
         $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
         [System.IO.File]::WriteAllText($statusFile, $jsonOutput, $utf8NoBom)
