@@ -242,11 +242,8 @@ with st.expander(f"📥 Client PC Installation & One-Liner Script [{current_toke
 
     st.markdown("---")
     st.markdown("**Instant Admin PowerShell One-Liner (Run directly without prior download):**")
-    one_liner = (
-        f'powershell.exe -ExecutionPolicy Bypass -Command '
-        f'"Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/agent/SharyarAgent.ps1' -OutFile SharyarAgent.ps1; '
-        f'.\\SharyarAgent.ps1 -AgentToken {current_token} -Continuous 1"'
-    )
+    raw_url = f"https://raw.githubusercontent.com/{repo_owner}/{repo_name}/{branch}/agent/SharyarAgent.ps1"
+    one_liner = f'powershell.exe -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri \'{raw_url}\' -OutFile SharyarAgent.ps1; .\\SharyarAgent.ps1 -AgentToken {current_token} -Continuous 1"'
     st.code(one_liner, language="powershell")
 
 
