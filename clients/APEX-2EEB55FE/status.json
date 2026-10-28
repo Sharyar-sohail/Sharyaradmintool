@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:44:04Z",
-    "last_synced":  "2026-10-28 13:44:04",
+    "timestamp":  "2026-10-28T08:44:09Z",
+    "last_synced":  "2026-10-28 13:44:09",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -330,12 +330,12 @@
                ],
     "live_scan":  {
                       "state":  "SCANNING",
-                      "active_phase":  "Phase 5/8: Storage Partitions \u0026 Junk Bloat",
-                      "phase_index":  5,
+                      "active_phase":  "Phase 6/8: Antivirus \u0026 Threat Telemetry",
+                      "phase_index":  6,
                       "total_phases":  8,
-                      "progress_percent":  62,
-                      "current_activity":  "Storage breakdown computed.",
-                      "last_updated":  "2026-10-28 13:44:04",
+                      "progress_percent":  75,
+                      "current_activity":  "Auditing Microsoft Defender real-time protection and active malware threats...",
+                      "last_updated":  "2026-10-28 13:44:09",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -366,7 +366,8 @@
                                           "[13:43:47] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:43:52] BSOD crashes: 0. Network Gateway Ping: 0.5 ms",
                                           "[13:43:57] Phase 5/8 started: Calculating recoverable storage junk",
-                                          "[13:44:04] Recoverable junk bloat: 206.3 MB across 5 directories"
+                                          "[13:44:04] Recoverable junk bloat: 206.3 MB across 5 directories",
+                                          "[13:44:09] Phase 6/8 started: Inspecting antivirus definitions and active threats"
                                       ]
                   }
 }
