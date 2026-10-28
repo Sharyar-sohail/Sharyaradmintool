@@ -1,28 +1,23 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:42:31Z",
-    "last_synced":  "2026-10-28 13:42:31",
-    "status":  "ONLINE",
+    "timestamp":  "2026-10-28T08:43:14Z",
+    "last_synced":  "2026-10-28 13:43:14",
+    "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
-                            "Hardware":  70,
+                            "Hardware":  100,
                             "Operating System":  100,
-                            "Storage":  70,
-                            "Drivers":  25,
+                            "Storage":  100,
+                            "Drivers":  100,
                             "Security":  100
                         },
     "system_info":  {
                         "hostname":  "DESKTOP-RS9M43V",
                         "os_name":  "Microsoft Windows 10 Pro",
-                        "os_version":  "10.0.19045",
                         "os_build":  "19045",
                         "architecture":  "64-bit",
-                        "cpu_model":  "Intel(R) Xeon(R) CPU E5-1650 0 @ 3.20GHz",
-                        "cpu_cores":  12,
-                        "total_ram_gb":  24,
                         "is_admin":  false,
-                        "ip_address":  "192.168.1.37",
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
@@ -34,49 +29,6 @@
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
-                        "hardware":  {
-                                         "smart_drives":  [
-                                                              {
-                                                                  "is_healthy":  true,
-                                                                  "operational_status":  "OK",
-                                                                  "device_id":  "0",
-                                                                  "model":  "KINGSTON SUV400S37240G",
-                                                                  "health_status":  "Healthy",
-                                                                  "size_gb":  223.6,
-                                                                  "bad_sectors":  0,
-                                                                  "media_type":  "SSD"
-                                                              }
-                                                          ],
-                                         "cpu_max_mhz":  3201,
-                                         "smart_failures":  [
-
-                                                            ],
-                                         "failing_devices":  [
-                                                                 {
-                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D6B\u0026SUBSYS_04971028\u0026REV_05\\4\u0026BEF05A1\u00260\u00260088",
-                                                                     "status":  "Error",
-                                                                     "code":  28,
-                                                                     "name":  "SAS Controller",
-                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
-                                                                 },
-                                                                 {
-                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D3A\u0026SUBSYS_04971028\u0026REV_05\\3\u002611583659\u00260\u0026B0",
-                                                                     "status":  "Error",
-                                                                     "code":  28,
-                                                                     "name":  "PCI Simple Communications Controller",
-                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
-                                                                 },
-                                                                 {
-                                                                     "device_id":  "USB\\VID_0000\u0026PID_0002\\6\u00261409469F\u00260\u00263",
-                                                                     "status":  "Error",
-                                                                     "code":  43,
-                                                                     "name":  "Unknown USB Device (Device Descriptor Request Failed)",
-                                                                     "error_desc":  "Driver Configuration Fault (Code 43)"
-                                                                 }
-                                                             ],
-                                         "cpu_curr_mhz":  3201,
-                                         "cpu_throttled":  false
-                                     },
                         "os_integrity":  {
                                              "cbs_error_count":  0,
                                              "sfc_corrupted":  false,
@@ -84,41 +36,6 @@
                                              "corrupted_files_count":  0,
                                              "dism_corrupted":  false
                                          },
-                        "antivirus":  {
-                                          "quick_scan_age_days":  5,
-                                          "signature_version":  "1.463.1.0",
-                                          "threats_count":  3,
-                                          "last_signature_update":  "2026-10-28 00:36:22",
-                                          "active_threats_count":  0,
-                                          "enabled":  true,
-                                          "realtime_protection":  true,
-                                          "threats":  [
-                                                          {
-                                                              "name":  "",
-                                                              "category_id":  0,
-                                                              "action_success":  true,
-                                                              "is_active":  false,
-                                                              "threat_id":  "2147749462",
-                                                              "initial_detection_time":  "2026-10-27 16:22:46"
-                                                          },
-                                                          {
-                                                              "name":  "",
-                                                              "category_id":  0,
-                                                              "action_success":  true,
-                                                              "is_active":  false,
-                                                              "threat_id":  "2147844614",
-                                                              "initial_detection_time":  "2026-10-16 12:45:51"
-                                                          },
-                                                          {
-                                                              "name":  "",
-                                                              "category_id":  0,
-                                                              "action_success":  true,
-                                                              "is_active":  false,
-                                                              "threat_id":  "2147749462",
-                                                              "initial_detection_time":  "2026-10-27 16:22:15"
-                                                          }
-                                                      ]
-                                      },
                         "software":  {
                                          "winget_available":  true,
                                          "installed_apps":  [
@@ -305,106 +222,6 @@
                                                             ],
                                          "installed_count":  31
                                      },
-                        "services":  {
-                                         "critical_services":  [
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "wuauserv",
-                                                                       "display_name":  "Windows Update",
-                                                                       "start_type":  "Manual"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "Spooler",
-                                                                       "display_name":  "Print Spooler",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "BITS",
-                                                                       "display_name":  "Background Intelligent Transfer Service",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "WinDefend",
-                                                                       "display_name":  "Microsoft Defender Antivirus Service",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "LanmanServer",
-                                                                       "display_name":  "Server",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "Dhcp",
-                                                                       "display_name":  "DHCP Client",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "Dnscache",
-                                                                       "display_name":  "DNS Client",
-                                                                       "start_type":  "Automatic"
-                                                                   }
-                                                               ],
-                                         "startup_items":  [
-                                                               {
-                                                                   "user":  "NT AUTHORITY\\SYSTEM",
-                                                                   "command":  "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
-                                                                   "name":  "GoogleDriveFS",
-                                                                   "location":  "HKU\\S-1-5-18\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "DESKTOP-RS9M43V\\Sharyar",
-                                                                   "command":  "\"C:\\Users\\Sharyar\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
-                                                                   "name":  "OneDrive",
-                                                                   "location":  "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "DESKTOP-RS9M43V\\Sharyar",
-                                                                   "command":  "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
-                                                                   "name":  "GoogleDriveFS",
-                                                                   "location":  "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "DESKTOP-RS9M43V\\Sharyar",
-                                                                   "command":  "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --no-startup-window --win-session-start",
-                                                                   "name":  "MicrosoftEdgeAutoLaunch_59A7173B28EE1B2CFACEDF58C84E2B71",
-                                                                   "location":  "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  ".DEFAULT",
-                                                                   "command":  "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
-                                                                   "name":  "GoogleDriveFS",
-                                                                   "location":  "HKU\\.DEFAULT\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "Public",
-                                                                   "command":  "C:\\PROGRA~2\\AnyDesk\\AnyDesk.exe  --control",
-                                                                   "name":  "AnyDesk",
-                                                                   "location":  "Common Startup"
-                                                               },
-                                                               {
-                                                                   "user":  "Public",
-                                                                   "command":  "%windir%\\system32\\SecurityHealthSystray.exe",
-                                                                   "name":  "SecurityHealth",
-                                                                   "location":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "Public",
-                                                                   "command":  "C:\\Program Files\\NVIDIA Corporation\\nview\\nwiz.exe /installquiet",
-                                                                   "name":  "nwiz",
-                                                                   "location":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               }
-                                                           ]
-                                     },
-                        "network":  {
-                                        "primary_ip":  "192.168.1.37",
-                                        "dns_latency_ms":  16
-                                    },
                         "storage":  {
                                         "partitions":  [
                                                            {
@@ -429,43 +246,96 @@
                                                                "wer_dumps_mb":  3
                                                            }
                                     },
-                        "security":  {
-                                         "critical_errors_count":  0,
-                                         "latest_bsod_code":  "None",
-                                         "bsod_events_count":  0
+                        "antivirus":  {
+                                          "quick_scan_age_days":  5,
+                                          "signature_version":  "1.463.1.0",
+                                          "threats_count":  3,
+                                          "last_signature_update":  "2026-10-28 00:36:22",
+                                          "active_threats_count":  0,
+                                          "enabled":  true,
+                                          "realtime_protection":  true,
+                                          "threats":  [
+                                                          {
+                                                              "name":  "",
+                                                              "category_id":  0,
+                                                              "action_success":  true,
+                                                              "is_active":  false,
+                                                              "threat_id":  "2147749462",
+                                                              "initial_detection_time":  "2026-10-27 16:22:46"
+                                                          },
+                                                          {
+                                                              "name":  "",
+                                                              "category_id":  0,
+                                                              "action_success":  true,
+                                                              "is_active":  false,
+                                                              "threat_id":  "2147844614",
+                                                              "initial_detection_time":  "2026-10-16 12:45:51"
+                                                          },
+                                                          {
+                                                              "name":  "",
+                                                              "category_id":  0,
+                                                              "action_success":  true,
+                                                              "is_active":  false,
+                                                              "threat_id":  "2147749462",
+                                                              "initial_detection_time":  "2026-10-27 16:22:15"
+                                                          }
+                                                      ]
+                                      },
+                        "hardware":  {
+                                         "smart_drives":  [
+                                                              {
+                                                                  "is_healthy":  true,
+                                                                  "operational_status":  "OK",
+                                                                  "device_id":  "0",
+                                                                  "model":  "KINGSTON SUV400S37240G",
+                                                                  "health_status":  "Healthy",
+                                                                  "size_gb":  223.6,
+                                                                  "bad_sectors":  0,
+                                                                  "media_type":  "SSD"
+                                                              }
+                                                          ],
+                                         "cpu_max_mhz":  3201,
+                                         "smart_failures":  [
+
+                                                            ],
+                                         "failing_devices":  [
+                                                                 {
+                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D6B\u0026SUBSYS_04971028\u0026REV_05\\4\u0026BEF05A1\u00260\u00260088",
+                                                                     "status":  "Error",
+                                                                     "code":  28,
+                                                                     "name":  "SAS Controller",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
+                                                                 },
+                                                                 {
+                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D3A\u0026SUBSYS_04971028\u0026REV_05\\3\u002611583659\u00260\u0026B0",
+                                                                     "status":  "Error",
+                                                                     "code":  28,
+                                                                     "name":  "PCI Simple Communications Controller",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
+                                                                 },
+                                                                 {
+                                                                     "device_id":  "USB\\VID_0000\u0026PID_0002\\6\u00261409469F\u00260\u00263",
+                                                                     "status":  "Error",
+                                                                     "code":  43,
+                                                                     "name":  "Unknown USB Device (Device Descriptor Request Failed)",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 43)"
+                                                                 }
+                                                             ],
+                                         "cpu_curr_mhz":  3201,
+                                         "cpu_throttled":  false
                                      }
                     },
     "issues":  [
-                   {
-                       "fix_id":  "ACTION_RESCAN_DEVICES",
-                       "title":  "Driver Error: SAS Controller",
-                       "category":  "Drivers",
-                       "description":  "Driver Configuration Fault (Code 28) (Status: Error)",
-                       "severity":  "WARNING"
-                   },
-                   {
-                       "fix_id":  "ACTION_RESCAN_DEVICES",
-                       "title":  "Driver Error: PCI Simple Communications Controller",
-                       "category":  "Drivers",
-                       "description":  "Driver Configuration Fault (Code 28) (Status: Error)",
-                       "severity":  "WARNING"
-                   },
-                   {
-                       "fix_id":  "ACTION_RESCAN_DEVICES",
-                       "title":  "Driver Error: Unknown USB Device (Device Descriptor Request Failed)",
-                       "category":  "Drivers",
-                       "description":  "Driver Configuration Fault (Code 43) (Status: Error)",
-                       "severity":  "WARNING"
-                   }
+
                ],
     "live_scan":  {
-                      "state":  "ONLINE",
-                      "active_phase":  "System Monitoring Active",
-                      "phase_index":  8,
+                      "state":  "SCANNING",
+                      "active_phase":  "Phase 1/8: Processor \u0026 Live Telemetry",
+                      "phase_index":  1,
                       "total_phases":  8,
-                      "progress_percent":  100,
-                      "current_activity":  "Idle - Live monitoring active. Listening for remote directives.",
-                      "last_updated":  "2026-10-28 13:42:31",
+                      "progress_percent":  12,
+                      "current_activity":  "Auditing CPU load, clock throttling, and memory allocation...",
+                      "last_updated":  "2026-10-28 13:43:14",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -486,7 +356,8 @@
                                           "[13:42:16] Phase 7/8 started: Auditing installed software applications",
                                           "[13:42:21] Total installed applications: 31. winget available: True",
                                           "[13:42:26] Phase 8/8 started: Auditing system services and startup applications",
-                                          "[13:42:31] Deep diagnostic audit completed. Dynamic Health Score: 74%"
+                                          "[13:42:31] Deep diagnostic audit completed. Dynamic Health Score: 74%",
+                                          "[13:43:14] Phase 1/8 started: Auditing CPU and memory telemetry"
                                       ]
                   }
 }
