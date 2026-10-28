@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:41:19Z",
-    "last_synced":  "2026-10-28 13:41:19",
+    "timestamp":  "2026-10-28T08:41:26Z",
+    "last_synced":  "2026-10-28 13:41:26",
     "status":  "SCANNING",
     "health_score":  100,
     "category_scores":  {
@@ -29,7 +29,49 @@
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
+                        "hardware":  {
+                                         "smart_drives":  [
+                                                              {
+                                                                  "is_healthy":  true,
+                                                                  "operational_status":  "OK",
+                                                                  "device_id":  "0",
+                                                                  "model":  "KINGSTON SUV400S37240G",
+                                                                  "health_status":  "Healthy",
+                                                                  "size_gb":  223.6,
+                                                                  "bad_sectors":  0,
+                                                                  "media_type":  "SSD"
+                                                              }
+                                                          ],
+                                         "cpu_max_mhz":  3201,
+                                         "smart_failures":  [
 
+                                                            ],
+                                         "failing_devices":  [
+                                                                 {
+                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D6B\u0026SUBSYS_04971028\u0026REV_05\\4\u0026BEF05A1\u00260\u00260088",
+                                                                     "status":  "Error",
+                                                                     "code":  28,
+                                                                     "name":  "SAS Controller",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
+                                                                 },
+                                                                 {
+                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D3A\u0026SUBSYS_04971028\u0026REV_05\\3\u002611583659\u00260\u0026B0",
+                                                                     "status":  "Error",
+                                                                     "code":  28,
+                                                                     "name":  "PCI Simple Communications Controller",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
+                                                                 },
+                                                                 {
+                                                                     "device_id":  "USB\\VID_0000\u0026PID_0002\\6\u00261409469F\u00260\u00263",
+                                                                     "status":  "Error",
+                                                                     "code":  43,
+                                                                     "name":  "Unknown USB Device (Device Descriptor Request Failed)",
+                                                                     "error_desc":  "Driver Configuration Fault (Code 43)"
+                                                                 }
+                                                             ],
+                                         "cpu_curr_mhz":  3201,
+                                         "cpu_throttled":  false
+                                     }
                     },
     "issues":  [
 
@@ -40,8 +82,8 @@
                       "phase_index":  2,
                       "total_phases":  8,
                       "progress_percent":  25,
-                      "current_activity":  "Querying MSStorageDriver FailurePredict and PnP Device Manager...",
-                      "last_updated":  "2026-10-28 13:41:19",
+                      "current_activity":  "Physical drives and drivers audited.",
+                      "last_updated":  "2026-10-28 13:41:26",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -49,7 +91,8 @@
                                           "[13:41:01] Directive RUN_FULL_VIRUS_SCAN completed successfully.",
                                           "[13:41:06] Phase 1/8 started: Auditing CPU and memory telemetry",
                                           "[13:41:14] CPU Load: 49% (3201 MHz), RAM: 22.21 / 24 GB",
-                                          "[13:41:19] Phase 2/8 started: Checking disk SMART health and driver status"
+                                          "[13:41:19] Phase 2/8 started: Checking disk SMART health and driver status",
+                                          "[13:41:26] Drives scanned: 1. Yellow-bang driver faults: 3"
                                       ]
                   }
 }
