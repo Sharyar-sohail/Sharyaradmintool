@@ -1,10 +1,14 @@
 {
-  "command_id": "CMD-1793176394-E501",
-  "agent_token": "APEX-2EEB55FE",
-  "action": "RUN_FULL_VIRUS_SCAN",
-  "parameters": {},
-  "status": "PENDING",
-  "requested_at": "2026-10-28 08:33:14",
-  "completed_at": null,
-  "result": null
+    "command_id":  "CMD-1793176394-E501",
+    "agent_token":  "APEX-2EEB55FE",
+    "action":  "RUN_FULL_VIRUS_SCAN",
+    "parameters":  {
+
+                   },
+    "status":  "COMPLETED",
+    "requested_at":  "2026-10-28 08:33:14",
+    "completed_at":  "2026-10-28 13:40:56",
+    "result":  "Microsoft Defender Full Scan initiated.",
+    "freed_mb":  0,
+    "terminal_output":  "=== MICROSOFT DEFENDER FULL SCAN ===\nStart-MpScan : A scan is already in progress on this device.\r\nAt D:\\sharyar\\online master pc\\agent\\SharyarAgent.ps1:1631 char:20\r\n+             $out = Start-MpScan -ScanType FullScan 2\u003e\u00261 | Out-String\r\n+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : MetadataError: (MSFT_MpScan:ROOT\\Microsoft\\...der\\MSFT_MpScan) [Start-MpScan], CimExcept \r\n   ion\r\n    + FullyQualifiedErrorId : MI RESULT 16,Start-MpScan\r\n \r\n"
 }
