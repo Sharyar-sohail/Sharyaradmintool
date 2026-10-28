@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T06:38:39Z",
-    "last_synced":  "2026-10-28 11:38:39",
+    "timestamp":  "2026-10-28T06:39:03Z",
+    "last_synced":  "2026-10-28 11:39:03",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  9,
-                      "ram_percent":  73.5,
-                      "ram_used_gb":  17.61,
+                      "cpu_percent":  14.4,
+                      "ram_percent":  73.8,
+                      "ram_used_gb":  17.67,
                       "disk_percent":  89.8,
-                      "net_latency_ms":  7.5,
+                      "net_latency_ms":  1,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -350,7 +350,7 @@
                                                                        "start_type":  "Automatic"
                                                                    },
                                                                    {
-                                                                       "status":  "Stopped",
+                                                                       "status":  "Running",
                                                                        "name":  "wuauserv",
                                                                        "display_name":  "Windows Update",
                                                                        "start_type":  "Manual"
@@ -417,7 +417,7 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  7.5,
+                                        "dns_latency_ms":  1,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
@@ -435,11 +435,11 @@
                                                                "free_gb":  5.1
                                                            }
                                                        ],
-                                        "temp_junk_mb":  267.4,
+                                        "temp_junk_mb":  267.6,
                                         "junk_breakdown":  {
                                                                "prefetch_mb":  0,
                                                                "user_temp_mb":  250,
-                                                               "win_temp_mb":  2.8,
+                                                               "win_temp_mb":  3,
                                                                "softwaredist_mb":  11.6,
                                                                "wer_dumps_mb":  3
                                                            }
