@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:49:22Z",
-    "last_synced":  "2026-10-28 13:49:22",
+    "timestamp":  "2026-10-28T08:49:27Z",
+    "last_synced":  "2026-10-28 13:49:27",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -330,14 +330,13 @@
                ],
     "live_scan":  {
                       "state":  "SCANNING",
-                      "active_phase":  "Phase 1/8: Processor \u0026 Live Telemetry",
-                      "phase_index":  1,
+                      "active_phase":  "Phase 2/8: Physical Disks SMART \u0026 Drivers",
+                      "phase_index":  2,
                       "total_phases":  8,
-                      "progress_percent":  12,
-                      "current_activity":  "CPU and RAM telemetry recorded.",
-                      "last_updated":  "2026-10-28 13:49:22",
+                      "progress_percent":  25,
+                      "current_activity":  "Querying MSStorageDriver FailurePredict and PnP Device Manager...",
+                      "last_updated":  "2026-10-28 13:49:27",
                       "recent_logs":  [
-                                          "[13:41:42] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:41:48] BSOD crashes: 0. Network Gateway Ping: 16 ms",
                                           "[13:41:53] Phase 5/8 started: Calculating recoverable storage junk",
                                           "[13:42:00] Recoverable junk bloat: 281.5 MB across 5 directories",
@@ -396,7 +395,8 @@
                                           "[13:48:31] Phase 8/8 started: Auditing system services and startup applications",
                                           "[13:48:35] Deep diagnostic audit completed. Dynamic Health Score: 74%",
                                           "[13:49:15] Phase 1/8 started: Auditing CPU and memory telemetry",
-                                          "[13:49:22] CPU Load: 34.5% (3201 MHz), RAM: 22.06 / 24 GB"
+                                          "[13:49:22] CPU Load: 34.5% (3201 MHz), RAM: 22.06 / 24 GB",
+                                          "[13:49:27] Phase 2/8 started: Checking disk SMART health and driver status"
                                       ]
                   }
 }
