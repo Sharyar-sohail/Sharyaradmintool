@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:51:14Z",
-    "last_synced":  "2026-10-28 13:51:14",
+    "timestamp":  "2026-10-28T08:51:21Z",
+    "last_synced":  "2026-10-28 13:51:21",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -21,9 +21,9 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  34.5,
-                      "ram_percent":  92.1,
-                      "ram_used_gb":  22.06,
+                      "cpu_percent":  30.1,
+                      "ram_percent":  91.6,
+                      "ram_used_gb":  21.95,
                       "disk_percent":  91.5,
                       "net_latency_ms":  1,
                       "cpu_freq_mhz":  3201
@@ -334,10 +334,9 @@
                       "phase_index":  1,
                       "total_phases":  8,
                       "progress_percent":  12,
-                      "current_activity":  "Auditing CPU load, clock throttling, and memory allocation...",
-                      "last_updated":  "2026-10-28 13:51:14",
+                      "current_activity":  "CPU and RAM telemetry recorded.",
+                      "last_updated":  "2026-10-28 13:51:21",
                       "recent_logs":  [
-                                          "[13:43:42] CBS error count: 0. Component store status: Healthy",
                                           "[13:43:47] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:43:52] BSOD crashes: 0. Network Gateway Ping: 0.5 ms",
                                           "[13:43:57] Phase 5/8 started: Calculating recoverable storage junk",
@@ -396,7 +395,8 @@
                                           "[13:50:24] Total installed applications: 31. winget available: True",
                                           "[13:50:29] Phase 8/8 started: Auditing system services and startup applications",
                                           "[13:50:34] Deep diagnostic audit completed. Dynamic Health Score: 74%",
-                                          "[13:51:14] Phase 1/8 started: Auditing CPU and memory telemetry"
+                                          "[13:51:14] Phase 1/8 started: Auditing CPU and memory telemetry",
+                                          "[13:51:21] CPU Load: 30.1% (3201 MHz), RAM: 21.95 / 24 GB"
                                       ]
                   }
 }
