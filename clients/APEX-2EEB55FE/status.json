@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:46:02Z",
-    "last_synced":  "2026-10-28 13:46:02",
+    "timestamp":  "2026-10-28T08:46:08Z",
+    "last_synced":  "2026-10-28 13:46:08",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -334,8 +334,8 @@
                       "phase_index":  5,
                       "total_phases":  8,
                       "progress_percent":  62,
-                      "current_activity":  "Calculating recoverable space across Temp, Prefetch, and SoftwareDistribution...",
-                      "last_updated":  "2026-10-28 13:46:02",
+                      "current_activity":  "Storage breakdown computed.",
+                      "last_updated":  "2026-10-28 13:46:08",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -381,7 +381,8 @@
                                           "[13:45:47] CBS error count: 0. Component store status: Healthy",
                                           "[13:45:52] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:45:57] BSOD crashes: 0. Network Gateway Ping: 7 ms",
-                                          "[13:46:02] Phase 5/8 started: Calculating recoverable storage junk"
+                                          "[13:46:02] Phase 5/8 started: Calculating recoverable storage junk",
+                                          "[13:46:08] Recoverable junk bloat: 206.3 MB across 5 directories"
                                       ]
                   }
 }
