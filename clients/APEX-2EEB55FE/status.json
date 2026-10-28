@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T07:05:24Z",
-    "last_synced":  "2026-10-28 12:05:24",
+    "timestamp":  "2026-10-28T07:05:47Z",
+    "last_synced":  "2026-10-28 12:05:47",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  9.9,
-                      "ram_percent":  87.1,
-                      "ram_used_gb":  20.87,
+                      "cpu_percent":  10,
+                      "ram_percent":  87.4,
+                      "ram_used_gb":  20.94,
                       "disk_percent":  90.7,
-                      "net_latency_ms":  1,
+                      "net_latency_ms":  0,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -417,7 +417,7 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  1,
+                                        "dns_latency_ms":  0,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
@@ -430,9 +430,9 @@
                                                            },
                                                            {
                                                                "total_gb":  48.8,
-                                                               "free_pct":  10.5,
+                                                               "free_pct":  10.2,
                                                                "letter":  "D",
-                                                               "free_gb":  5.1
+                                                               "free_gb":  5
                                                            }
                                                        ],
                                         "temp_junk_mb":  267.8,
