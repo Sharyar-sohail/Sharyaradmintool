@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:57:54Z",
-    "last_synced":  "2026-10-28 13:57:54",
+    "timestamp":  "2026-10-28T08:57:59Z",
+    "last_synced":  "2026-10-28 13:57:59",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -25,7 +25,7 @@
                       "ram_percent":  91.9,
                       "ram_used_gb":  22.01,
                       "disk_percent":  91.5,
-                      "net_latency_ms":  9,
+                      "net_latency_ms":  0.5,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -334,10 +334,9 @@
                       "phase_index":  4,
                       "total_phases":  8,
                       "progress_percent":  50,
-                      "current_activity":  "Parsing Event ID 41 Kernel-Power and Bugcheck 1001 records...",
-                      "last_updated":  "2026-10-28 13:57:54",
+                      "current_activity":  "Event logs and network ping parsed.",
+                      "last_updated":  "2026-10-28 13:57:59",
                       "recent_logs":  [
-                                          "[13:50:14] Defender Real-time: True. Signatures: 1.463.1.0. Active threats: 0",
                                           "[13:50:19] Phase 7/8 started: Auditing installed software applications",
                                           "[13:50:24] Total installed applications: 31. winget available: True",
                                           "[13:50:29] Phase 8/8 started: Auditing system services and startup applications",
@@ -396,7 +395,8 @@
                                           "[13:57:29] Drives scanned: 1. Yellow-bang driver faults: 3",
                                           "[13:57:39] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log",
                                           "[13:57:48] CBS error count: 0. Component store status: Healthy",
-                                          "[13:57:54] Phase 4/8 started: Auditing recent system crash dumps and BSODs"
+                                          "[13:57:54] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
+                                          "[13:57:59] BSOD crashes: 0. Network Gateway Ping: 0.5 ms"
                                       ]
                   }
 }
