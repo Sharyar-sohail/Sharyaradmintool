@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T07:03:19Z",
-    "last_synced":  "2026-10-28 12:03:19",
+    "timestamp":  "2026-10-28T07:03:44Z",
+    "last_synced":  "2026-10-28 12:03:44",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  24.4,
-                      "ram_percent":  79.5,
-                      "ram_used_gb":  19.04,
-                      "disk_percent":  89.4,
-                      "net_latency_ms":  1,
+                      "cpu_percent":  58.4,
+                      "ram_percent":  81.6,
+                      "ram_used_gb":  19.56,
+                      "disk_percent":  90.3,
+                      "net_latency_ms":  20,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -417,16 +417,16 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  1,
+                                        "dns_latency_ms":  20,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  10.6,
+                                                               "free_pct":  9.7,
                                                                "letter":  "C",
-                                                               "free_gb":  18.4
+                                                               "free_gb":  16.9
                                                            },
                                                            {
                                                                "total_gb":  48.8,
@@ -435,10 +435,10 @@
                                                                "free_gb":  5.1
                                                            }
                                                        ],
-                                        "temp_junk_mb":  147.5,
+                                        "temp_junk_mb":  267.9,
                                         "junk_breakdown":  {
                                                                "prefetch_mb":  0,
-                                                               "user_temp_mb":  129.8,
+                                                               "user_temp_mb":  250.2,
                                                                "win_temp_mb":  3.1,
                                                                "softwaredist_mb":  11.6,
                                                                "wer_dumps_mb":  3
