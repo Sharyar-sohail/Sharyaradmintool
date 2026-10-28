@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T06:00:22Z",
-    "last_synced":  "2026-10-28 11:00:22",
+    "timestamp":  "2026-10-28T06:00:46Z",
+    "last_synced":  "2026-10-28 11:00:46",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  16.5,
-                      "ram_percent":  74,
-                      "ram_used_gb":  17.73,
-                      "disk_percent":  89.7,
-                      "net_latency_ms":  0.5,
+                      "cpu_percent":  16.9,
+                      "ram_percent":  72.5,
+                      "ram_used_gb":  17.36,
+                      "disk_percent":  89.6,
+                      "net_latency_ms":  0,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -86,9 +86,9 @@
                                          },
                         "antivirus":  {
                                           "quick_scan_age_days":  4,
-                                          "signature_version":  "1.461.230.0",
+                                          "signature_version":  "1.463.1.0",
                                           "threats_count":  2,
-                                          "last_signature_update":  "2026-10-27 16:32:31",
+                                          "last_signature_update":  "2026-10-28 00:36:22",
                                           "active_threats_count":  0,
                                           "enabled":  true,
                                           "realtime_protection":  true,
@@ -417,16 +417,16 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  0.5,
+                                        "dns_latency_ms":  0,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  10.3,
+                                                               "free_pct":  10.4,
                                                                "letter":  "C",
-                                                               "free_gb":  17.9
+                                                               "free_gb":  18.1
                                                            },
                                                            {
                                                                "total_gb":  48.8,
@@ -435,11 +435,11 @@
                                                                "free_gb":  5.1
                                                            }
                                                        ],
-                                        "temp_junk_mb":  460.8,
+                                        "temp_junk_mb":  267.5,
                                         "junk_breakdown":  {
                                                                "prefetch_mb":  0,
                                                                "user_temp_mb":  250,
-                                                               "win_temp_mb":  195.8,
+                                                               "win_temp_mb":  2.5,
                                                                "softwaredist_mb":  12,
                                                                "wer_dumps_mb":  3
                                                            }
