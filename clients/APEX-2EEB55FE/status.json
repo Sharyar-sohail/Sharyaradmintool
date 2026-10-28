@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:53:23Z",
-    "last_synced":  "2026-10-28 13:53:23",
+    "timestamp":  "2026-10-28T08:53:28Z",
+    "last_synced":  "2026-10-28 13:53:28",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -334,10 +334,9 @@
                       "phase_index":  2,
                       "total_phases":  8,
                       "progress_percent":  25,
-                      "current_activity":  "Querying MSStorageDriver FailurePredict and PnP Device Manager...",
-                      "last_updated":  "2026-10-28 13:53:23",
+                      "current_activity":  "Physical drives and drivers audited.",
+                      "last_updated":  "2026-10-28 13:53:28",
                       "recent_logs":  [
-                                          "[13:45:57] BSOD crashes: 0. Network Gateway Ping: 7 ms",
                                           "[13:46:02] Phase 5/8 started: Calculating recoverable storage junk",
                                           "[13:46:08] Recoverable junk bloat: 206.3 MB across 5 directories",
                                           "[13:46:13] Phase 6/8 started: Inspecting antivirus definitions and active threats",
@@ -396,7 +395,8 @@
                                           "[13:52:32] Deep diagnostic audit completed. Dynamic Health Score: 74%",
                                           "[13:53:11] Phase 1/8 started: Auditing CPU and memory telemetry",
                                           "[13:53:18] CPU Load: 32.1% (3201 MHz), RAM: 21.97 / 24 GB",
-                                          "[13:53:23] Phase 2/8 started: Checking disk SMART health and driver status"
+                                          "[13:53:23] Phase 2/8 started: Checking disk SMART health and driver status",
+                                          "[13:53:28] Drives scanned: 1. Yellow-bang driver faults: 3"
                                       ]
                   }
 }
