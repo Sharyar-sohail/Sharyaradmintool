@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:47:40Z",
-    "last_synced":  "2026-10-28 13:47:40",
+    "timestamp":  "2026-10-28T08:47:45Z",
+    "last_synced":  "2026-10-28 13:47:45",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -334,8 +334,8 @@
                       "phase_index":  3,
                       "total_phases":  8,
                       "progress_percent":  38,
-                      "current_activity":  "Scanning CBS servicing logs for 0x800f081f and system file violations...",
-                      "last_updated":  "2026-10-28 13:47:40",
+                      "current_activity":  "System integrity audit completed.",
+                      "last_updated":  "2026-10-28 13:47:45",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -393,7 +393,8 @@
                                           "[13:47:26] CPU Load: 41.6% (3201 MHz), RAM: 22.29 / 24 GB",
                                           "[13:47:30] Phase 2/8 started: Checking disk SMART health and driver status",
                                           "[13:47:35] Drives scanned: 1. Yellow-bang driver faults: 3",
-                                          "[13:47:40] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log"
+                                          "[13:47:40] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log",
+                                          "[13:47:45] CBS error count: 0. Component store status: Healthy"
                                       ]
                   }
 }
