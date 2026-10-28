@@ -1,10 +1,10 @@
 {
-  "command_id": "CMD-1793173975-1EB7",
+  "command_id": "CMD-1793175665-96B2",
   "agent_token": "APEX-2EEB55FE",
-  "action": "RUN_FULL_VIRUS_SCAN",
+  "action": "ACTION_RESCAN_DEVICES",
   "parameters": {},
   "status": "PENDING",
-  "requested_at": "2026-10-28 07:52:55",
+  "requested_at": "2026-10-28 08:21:05",
   "completed_at": null,
   "result": null
 }
