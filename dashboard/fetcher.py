@@ -18,7 +18,7 @@ import requests
 
 def fetch_isolated_status(
     agent_token: str,
-    owner: str = "SharyarSoahil",
+    owner: str = "Sharyar-sohail",
     repo: str = "Sharyaradmintool",
     branch_name: str = "main",
     token: str = "",
@@ -83,7 +83,7 @@ def fetch_isolated_status(
 
 def fetch_isolated_commands(
     agent_token: str,
-    owner: str = "SharyarSoahil",
+    owner: str = "Sharyar-sohail",
     repo: str = "Sharyaradmintool",
     branch_name: str = "main",
     token: str = "",
@@ -136,7 +136,7 @@ def send_isolated_command(
     agent_token: str,
     action: str,
     parameters: Optional[Dict[str, Any]] = None,
-    owner: str = "SharyarSoahil",
+    owner: str = "Sharyar-sohail",
     repo: str = "Sharyaradmintool",
     branch_name: str = "main",
     token: str = "",
@@ -255,7 +255,7 @@ def get_customized_agent_script(token: str, owner: str, repo: str, branch_name: 
 
     if content:
         content = content.replace('[string]$AgentToken = ""', f'[string]$AgentToken = "{token}"')
-        content = content.replace('[string]$RepoOwner = "SharyarSoahil"', f'[string]$RepoOwner = "{owner}"')
+        content = content.replace('[string]$RepoOwner = "Sharyar-sohail"', f'[string]$RepoOwner = "{owner}"')
         content = content.replace('[string]$RepoName = "Sharyaradmintool"', f'[string]$RepoName = "{repo}"')
         content = content.replace('[string]$Branch = "main"', f'[string]$Branch = "{branch_name}"')
         content = content.replace('$Continuous = $false', '$Continuous = $true')

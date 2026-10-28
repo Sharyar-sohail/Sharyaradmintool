@@ -14,7 +14,7 @@
 
 param(
     [string]$AgentToken = "",
-    [string]$RepoOwner = "SharyarSoahil",
+    [string]$RepoOwner = "Sharyar-sohail",
     [string]$RepoName = "Sharyaradmintool",
     [string]$Branch = "main",
     [string]$GitHubToken = "",
@@ -1010,6 +1010,13 @@ function Purge-SoftwareDistribution {
 function Check-PendingCommands($commandFilePath, $relativeCommandPath) {
     $cmdData = $null
 
+    # 1. Pull latest remote state if inside Git repo
+    $hasGit = Get-Command git -ErrorAction SilentlyContinue
+    if ($hasGit -and (Test-Path ".git")) {
+        git pull --rebase origin $Branch 2>$null
+    }
+
+    # 2. Check local file on disk
     if (Test-Path $commandFilePath) {
         try {
             $raw = Get-Content $commandFilePath -Raw -ErrorAction SilentlyContinue
@@ -1017,24 +1024,40 @@ function Check-PendingCommands($commandFilePath, $relativeCommandPath) {
         } catch {}
     }
 
+    # 3. Check GitHub REST API with fresh cache-buster
     if ((-not $cmdData -or $cmdData.status -ne "PENDING") -and $GitHubToken) {
         try {
-            $apiUrl = "https://api.github.com/repos/$RepoOwner/$RepoName/contents/$relativeCommandPath"
+            $tStamp = [int]([DateTime]::UtcNow - [DateTime]::new(1970,1,1)).TotalSeconds
+            $apiUrl = "https://api.github.com/repos/$RepoOwner/$RepoName/contents/$relativeCommandPath?ref=$Branch&t=$tStamp"
             $headers = @{
-                "Authorization" = ("token " + $GitHubToken)
+                "Authorization" = ("Bearer " + $GitHubToken)
                 "User-Agent" = "SharyarAdminTool-Agent-PowerShell"
                 "Accept" = "application/vnd.github.v3+json"
+                "Cache-Control" = "no-cache, no-store, must-revalidate"
             }
             $apiRes = Invoke-RestMethod -Uri $apiUrl -Headers $headers -Method Get -ErrorAction Stop
             if ($apiRes -and $apiRes.content) {
                 $decoded = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($apiRes.content))
                 $cmdData = $decoded | ConvertFrom-Json
             }
-        } catch {}
+        } catch {
+            # Raw fallback with cache-buster
+            try {
+                $tStamp = [int]([DateTime]::UtcNow - [DateTime]::new(1970,1,1)).TotalSeconds
+                $rawUrl = "https://raw.githubusercontent.com/$RepoOwner/$RepoName/$Branch/$relativeCommandPath?t=$tStamp"
+                $rawRes = Invoke-RestMethod -Uri $rawUrl -Headers @{ "Cache-Control" = "no-cache" } -Method Get -ErrorAction Stop
+                if ($rawRes) { $cmdData = $rawRes }
+            } catch {}
+        }
     }
 
     if ($cmdData -and $cmdData.status -eq "PENDING") {
         $action = $cmdData.action
+        Write-Host "`n[*] PICKED UP REMOTE DIRECTIVE: $action (ID: $($cmdData.command_id))" -ForegroundColor Cyan
+
+        # Notify dashboard immediately that directive execution is active
+        Publish-LiveScanState -State "REPAIRING" -PhaseIndex 1 -TotalPhases 2 -ActivePhase "Executing Directive: $action" -CurrentActivity "Executing $action on workstation..." -LogMessage "Agent picked up directive: $action"
+
         $result = Execute-ApexMaintenance $action $cmdData.parameters
 
         $cmdData.status = "COMPLETED"
@@ -1048,6 +1071,9 @@ function Check-PendingCommands($commandFilePath, $relativeCommandPath) {
         [System.IO.File]::WriteAllText($commandFilePath, $jsonOut, $utf8NoBom)
 
         $null = Push-ApexFileToGitHub -FilePath $commandFilePath -RelativeRepoPath $relativeCommandPath -CommitMessage "Maintenance Completed [$AgentToken]: $action"
+
+        # Update status back to ONLINE
+        Publish-LiveScanState -State "ONLINE" -PhaseIndex 2 -TotalPhases 2 -ActivePhase "Directive Completed: $action" -CurrentActivity "Idle - Live monitoring active." -LogMessage "Directive $action completed successfully."
 
         if ($result.self_destruct -eq $true) {
             Write-Host "`n[!] Self-Destruct initiated. Removing local agent state and terminating..." -ForegroundColor Red
@@ -1077,6 +1103,7 @@ function Push-ApexFileToGitHub {
                 $CommitMessage = "ApexSys Telemetry Sync [$AgentToken]: $ts"
             }
             git commit -m "$CommitMessage" 2>$null
+            git pull --rebase origin $Branch 2>$null
             $pushOut = git push origin $Branch 2>&1
             if ($LASTEXITCODE -ne 0) {
                 # Collision detected: pull --rebase and retry push once
@@ -1095,7 +1122,7 @@ function Push-ApexFileToGitHub {
             try {
                 $apiUrl = "https://api.github.com/repos/$RepoOwner/$RepoName/contents/$RelativeRepoPath"
                 $headers = @{
-                    "Authorization" = ("token " + $GitHubToken)
+                    "Authorization" = ("Bearer " + $GitHubToken)
                     "User-Agent" = "SharyarAdminTool-Agent-PowerShell"
                     "Accept" = "application/vnd.github.v3+json"
                 }

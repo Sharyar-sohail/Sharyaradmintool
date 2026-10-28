@@ -163,7 +163,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-DEFAULT_OWNER = os.getenv("GITHUB_REPO_OWNER", "SharyarSoahil")
+DEFAULT_OWNER = os.getenv("GITHUB_REPO_OWNER", "Sharyar-sohail")
 DEFAULT_REPO = os.getenv("GITHUB_REPO_NAME", "Sharyaradmintool")
 DEFAULT_BRANCH = os.getenv("GITHUB_BRANCH", "main")
 
