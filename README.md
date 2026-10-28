@@ -4,7 +4,7 @@
 ---
 
 ## ⚡ Overview
-**Sharyar Admin Tool** (also known as **Sharyar IT Tool** / **شریار ایڈمن ٹول**) is an enterprise-grade autonomous AI remote IT administration platform pairing a real-time web command dashboard with zero-dependency PowerShell client agents. Built to act as an autonomous **"AI Master IT Doctor"**, it performs multi-layered hardware diagnostics, component store self-healing, Microsoft Defender live antivirus scanning, winget CLI package management, deep storage purging, and one-click AI autonomous system updates across Windows endpoints without requiring any paid cloud servers or database infrastructure.
+**Sharyar Admin Tool** (also known as **Sharyar IT Tool** / **Sharyar Autonomous IT Commander**) is an enterprise-grade autonomous AI remote IT administration platform pairing a real-time web command dashboard with zero-dependency PowerShell client agents. Built to act as an autonomous **"AI Master IT Doctor"**, it performs multi-layered hardware diagnostics, component store self-healing, Microsoft Defender live antivirus scanning, winget CLI package management, deep storage purging, and one-click AI autonomous system updates across Windows endpoints without requiring any paid cloud servers or database infrastructure.
 
 ---
 
