@@ -1,9 +1,9 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:40:45Z",
-    "last_synced":  "2026-10-28 13:40:45",
-    "status":  "REPAIRING",
+    "timestamp":  "2026-10-28T08:40:51Z",
+    "last_synced":  "2026-10-28 13:40:51",
+    "status":  "ONLINE",
     "health_score":  100,
     "category_scores":  {
                             "Hardware":  100,
@@ -35,16 +35,17 @@
 
                ],
     "live_scan":  {
-                      "state":  "REPAIRING",
-                      "active_phase":  "Microsoft Defender Full Scan",
-                      "phase_index":  1,
+                      "state":  "ONLINE",
+                      "active_phase":  "Defender Full Scan Completed",
+                      "phase_index":  2,
                       "total_phases":  2,
-                      "progress_percent":  50,
-                      "current_activity":  "Deep-scanning all local drives for malware...",
-                      "last_updated":  "2026-10-28 13:40:45",
+                      "progress_percent":  100,
+                      "current_activity":  "Idle - Live monitoring active.",
+                      "last_updated":  "2026-10-28 13:40:51",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
-                                          "[13:40:45] Launching Defender Full Scan..."
+                                          "[13:40:45] Launching Defender Full Scan...",
+                                          "[13:40:51] Defender Full Scan finished."
                                       ]
                   }
 }
