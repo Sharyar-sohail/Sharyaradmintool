@@ -160,6 +160,55 @@ st.markdown("""
         font-weight: 800;
         letter-spacing: 0.5px;
     }
+
+    /* ====== CYBERPUNK BUTTON STYLING (Fixes white buttons & invisible text) ====== */
+    div.stButton > button {
+        background: linear-gradient(135deg, #0d1b2a 0%, #16243b 100%) !important;
+        color: #00f3ff !important;
+        border: 1px solid rgba(0, 243, 255, 0.5) !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.5px !important;
+        padding: 8px 18px !important;
+        transition: all 0.25s ease-in-out !important;
+        box-shadow: 0 2px 10px rgba(0, 243, 255, 0.1) !important;
+    }
+    div.stButton > button:hover {
+        background: linear-gradient(135deg, #00f3ff 0%, #00ff88 100%) !important;
+        color: #05070a !important;
+        border: 1px solid #00ff88 !important;
+        box-shadow: 0 4px 20px rgba(0, 243, 255, 0.45) !important;
+        transform: translateY(-1px) !important;
+    }
+    div.stButton > button:active {
+        transform: translateY(1px) !important;
+    }
+    div.stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, #00f3ff 0%, #0088ff 100%) !important;
+        color: #05070a !important;
+        font-weight: 800 !important;
+        border: none !important;
+    }
+    div.stDownloadButton > button {
+        background: linear-gradient(135deg, #0d2818 0%, #0a4020 100%) !important;
+        color: #00ff88 !important;
+        border: 1px solid rgba(0, 255, 136, 0.5) !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        padding: 8px 18px !important;
+    }
+    div.stDownloadButton > button:hover {
+        background: linear-gradient(135deg, #00ff88 0%, #00f3ff 100%) !important;
+        color: #05070a !important;
+        border: 1px solid #00f3ff !important;
+    }
+
+    /* Dataframe and Tables */
+    [data-testid="stDataFrame"], .stTable {
+        background: rgba(13, 19, 33, 0.85) !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(0, 243, 255, 0.25) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -312,8 +361,10 @@ diag = status_data.get("diagnostics", {})
 issues = status_data.get("issues", [])
 last_synced = status_data.get("last_synced", "Unknown")
 
-# Calculate sync latency
+# Calculate sync latency & heartbeat liveness
 age_text = "Just now"
+is_heartbeat_alive = True
+diff_sec = 0
 try:
     ts_str = status_data.get("timestamp")
     if ts_str:
@@ -321,6 +372,9 @@ try:
         sync_time = datetime.datetime.fromisoformat(clean_ts)
         now_time = datetime.datetime.now(datetime.timezone.utc)
         diff_sec = int((now_time - sync_time).total_seconds())
+        # If heartbeat is older than 75 seconds, client agent is offline
+        if diff_sec > 75:
+            is_heartbeat_alive = False
         if diff_sec < 60:
             age_text = f"{diff_sec}s ago"
         elif diff_sec < 3600:
@@ -330,6 +384,9 @@ try:
 except Exception:
     pass
 
+if not is_heartbeat_alive:
+    agent_status = "OFFLINE"
+
 # Top Machine Banner
 col_h1, col_h2 = st.columns([3, 2])
 with col_h1:
@@ -338,11 +395,11 @@ with col_h1:
     st.caption(f"{sys_info.get('os_name')} (Build {sys_info.get('os_build')}, {sys_info.get('architecture')}) | IP: {sys_info.get('ip_address')} | {admin_pill}")
 
 with col_h2:
-    status_badge_html = (
-        f"<span class='status-badge-online'>● ONLINE (Synced: {age_text})</span>"
-        if agent_status == "ONLINE"
-        else f"<span class='status-badge-offline'>■ OFFLINE ({last_synced})</span>"
-    )
+    if is_heartbeat_alive and agent_status in ["ONLINE", "SCANNING", "REPAIRING"]:
+        status_badge_html = f"<span class='status-badge-online'>● LIVE ONLINE ({age_text})</span>"
+    else:
+        status_badge_html = f"<span class='status-badge-offline'>■ OFFLINE (Last seen: {age_text})</span>"
+
     st.markdown(f"""
     <div style="text-align: right; padding-top: 6px;">
         {status_badge_html}
@@ -351,8 +408,29 @@ with col_h2:
     </div>
     """, unsafe_allow_html=True)
 
-if agent_status == "OFFLINE":
-    st.error(f"⚠️ Client agent is offline: Last session ended at {last_synced}. Showing last saved report.")
+if not is_heartbeat_alive or agent_status == "OFFLINE":
+    st.warning(
+        f"⚠️ **Client Agent is Currently OFFLINE** (No heartbeat for {age_text}). "
+        f"Directives sent below will be queued on GitHub and will execute automatically when the agent connects.\n\n"
+        f"**To activate live streaming, launch the agent on the client workstation:**\n"
+        f"```powershell\npowershell.exe -ExecutionPolicy Bypass -File agent/SharyarAgent.ps1 -AgentToken {current_token} -Continuous 1\n```"
+    )
+
+# Universal Directive Dispatcher Function
+def dispatch_directive(action_name: str, parameters: Optional[Dict[str, Any]] = None):
+    ok, msg = send_isolated_command(current_token, action_name, parameters or {}, repo_owner, repo_name, branch, github_token)
+    if ok:
+        st.session_state["active_directive"] = action_name
+        st.session_state["active_directive_time"] = datetime.datetime.now().strftime("%H:%M:%S")
+        st.toast(f"⚡ Directive '{action_name}' dispatched to {current_token}!", icon="🚀")
+        if not is_heartbeat_alive:
+            st.warning(f"⚠️ **Agent Offline**: Directive '{action_name}' is queued on GitHub. It will execute when `{current_token}` connects.")
+        else:
+            st.info(f"🚀 **Directive Transmitted**: `{action_name}` is active. Watching live execution progress below...")
+        time.sleep(1)
+        st.rerun()
+    else:
+        st.error(f"❌ Failed to dispatch directive: {msg}")
 
 # ----------------- 🤖 SHARYAR AI AUTONOMOUS UPDATER HERO CARD -----------------
 st.markdown("""
@@ -372,14 +450,7 @@ st.markdown("""
 ai_btn_col1, ai_btn_col2 = st.columns([3, 1])
 with ai_btn_col1:
     if st.button("🚀 Run Sharyar AI Autonomous System Update & Healing", key="btn_ai_smart_update", use_container_width=True):
-        ok, msg = send_isolated_command(current_token, "AI_SMART_UPDATE", {}, repo_owner, repo_name, branch, github_token)
-        if ok:
-            st.toast("Sharyar AI Update command queued!")
-            st.success(f"✓ AI Autonomous Pipeline Queued: {msg}")
-            time.sleep(1)
-            st.rerun()
-        else:
-            st.error(msg)
+        dispatch_directive("AI_SMART_UPDATE")
 with ai_btn_col2:
     if st.button("📤 Share Health Report", key="btn_quick_share", use_container_width=True):
         st.toast("Jump to Share Report tab below")
@@ -404,6 +475,14 @@ elif scan_state in ["ONLINE", "IDLE"]:
 else:
     state_pill = "<span class='badge-offline'>🔴 WORKSTATION OFFLINE</span>"
 
+if st.session_state.get("active_directive"):
+    st.markdown(f'''
+    <div style="background: rgba(0, 243, 255, 0.12); border-left: 4px solid #00f3ff; padding: 10px 16px; border-radius: 6px; margin-bottom: 12px;">
+        <strong style="color: #00f3ff;">🚀 ACTIVE DIRECTIVE IN FLIGHT:</strong> <code style="color: #00ff88; font-weight: bold;">{st.session_state['active_directive']}</code>
+        <span style="color: #a0aec0; font-size: 0.85rem; margin-left: 12px;">(Dispatched at {st.session_state.get('active_directive_time', 'Just now')})</span>
+    </div>
+    ''', unsafe_allow_html=True)
+
 st.markdown(f'''
 <div class="live-scan-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -425,14 +504,7 @@ with scan_col_bar:
     st.caption(f"🔎 **Current Activity**: {current_activity} | **Heartbeat**: {last_scan_update} ({age_text})")
 with scan_col_act:
     if st.button("🔍 Trigger Live Rescan", key="btn_trigger_rescan", use_container_width=True):
-        ok, msg = send_isolated_command(current_token, "FORCE_RESCAN", {}, repo_owner, repo_name, branch, github_token)
-        if ok:
-            st.toast("Immediate live rescan dispatched to agent!")
-            st.success("✓ Rescan command queued. Agent is initiating Phase 1/8...")
-            time.sleep(1)
-            st.rerun()
-        else:
-            st.error(msg)
+        dispatch_directive("FORCE_RESCAN")
 
 with st.expander("📺 Live Execution & Terminal Log Feed (Streaming from Agent)", expanded=(scan_state in ["SCANNING", "REPAIRING"])):
     if recent_logs:
@@ -808,16 +880,13 @@ with tab_diag:
     os_b1, os_b2, os_b3 = st.columns(3)
     with os_b1:
         if st.button("🛠️ Run SFC System File Repair", key="btn_sfc_tab", use_container_width=True):
-            ok, msg = send_isolated_command(current_token, "RUN_SFC_REPAIR", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("SFC Repair initiated!"); st.success(msg); time.sleep(1); st.rerun()
+            dispatch_directive("RUN_SFC_REPAIR")
     with os_b2:
         if st.button("🏥 Run DISM RestoreHealth", key="btn_dism_tab", use_container_width=True):
-            ok, msg = send_isolated_command(current_token, "RUN_DISM_RESTORE", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("DISM RestoreHealth initiated!"); st.success(msg); time.sleep(1); st.rerun()
+            dispatch_directive("RUN_DISM_RESTORE")
     with os_b3:
         if st.button("🧹 Clean Component Store", key="btn_clean_comp_tab", use_container_width=True):
-            ok, msg = send_isolated_command(current_token, "CLEAN_COMPONENT_STORE", {}, repo_owner, repo_name, branch, github_token)
-            if ok: st.toast("Component cleanup initiated!"); st.success(msg); time.sleep(1); st.rerun()
+            dispatch_directive("CLEAN_COMPONENT_STORE")
 
 # ----------------- TAB 7: Live Terminal Console -----------------
 with tab_term:
@@ -867,12 +936,7 @@ with tab_term:
     st.markdown("#### ⚠️ Zero-Footprint Self-Destruct Protocol")
     st.caption("Terminates agent process, cleans all temporary diagnostic logs, tokens, and purges footprints from the client PC.")
     if st.button("💣 Execute Self-Destruct Protocol", key="btn_self_destruct"):
-        ok, msg = send_isolated_command(current_token, "SELF_DESTRUCT", {}, repo_owner, repo_name, branch, github_token)
-        if ok:
-            st.toast("Self-Destruct directive dispatched!")
-            st.warning("Self-destruct command sent. Agent will clean up and terminate.")
-            time.sleep(1)
-            st.rerun()
+        dispatch_directive("SELF_DESTRUCT")
 
 # ----------------- TAB 8: Share & Report Center -----------------
 with tab_share:
