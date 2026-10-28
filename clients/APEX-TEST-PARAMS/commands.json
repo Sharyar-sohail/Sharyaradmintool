@@ -1,12 +1,12 @@
 {
-  "command_id": "CMD-1793174963-68F3",
+  "command_id": "CMD-1793175009-507B",
   "agent_token": "APEX-TEST-PARAMS",
   "action": "WINGET_INSTALL",
   "parameters": {
     "package_id": "7zip.7zip"
   },
   "status": "PENDING",
-  "requested_at": "2026-10-28 13:09:23",
+  "requested_at": "2026-10-28 13:10:09",
   "completed_at": null,
   "result": null
 }
