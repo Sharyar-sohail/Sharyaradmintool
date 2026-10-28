@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T04:58:32Z",
-    "last_synced":  "2026-10-28 09:58:32",
+    "timestamp":  "2026-10-28T04:58:56Z",
+    "last_synced":  "2026-10-28 09:58:56",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  14.8,
-                      "ram_percent":  86.5,
-                      "ram_used_gb":  20.73,
+                      "cpu_percent":  10.8,
+                      "ram_percent":  85.9,
+                      "ram_used_gb":  20.58,
                       "disk_percent":  90.8,
-                      "net_latency_ms":  0,
+                      "net_latency_ms":  1,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -417,7 +417,7 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  0,
+                                        "dns_latency_ms":  1,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
