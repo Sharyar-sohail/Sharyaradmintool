@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:43:47Z",
-    "last_synced":  "2026-10-28 13:43:47",
+    "timestamp":  "2026-10-28T08:43:52Z",
+    "last_synced":  "2026-10-28 13:43:52",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -25,7 +25,7 @@
                       "ram_percent":  92.5,
                       "ram_used_gb":  22.17,
                       "disk_percent":  91.5,
-                      "net_latency_ms":  16,
+                      "net_latency_ms":  0.5,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -334,8 +334,8 @@
                       "phase_index":  4,
                       "total_phases":  8,
                       "progress_percent":  50,
-                      "current_activity":  "Parsing Event ID 41 Kernel-Power and Bugcheck 1001 records...",
-                      "last_updated":  "2026-10-28 13:43:47",
+                      "current_activity":  "Event logs and network ping parsed.",
+                      "last_updated":  "2026-10-28 13:43:52",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -363,7 +363,8 @@
                                           "[13:43:32] Drives scanned: 1. Yellow-bang driver faults: 3",
                                           "[13:43:37] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log",
                                           "[13:43:42] CBS error count: 0. Component store status: Healthy",
-                                          "[13:43:47] Phase 4/8 started: Auditing recent system crash dumps and BSODs"
+                                          "[13:43:47] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
+                                          "[13:43:52] BSOD crashes: 0. Network Gateway Ping: 0.5 ms"
                                       ]
                   }
 }
