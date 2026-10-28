@@ -1,476 +1,486 @@
 {
-    "client_id":  "DESKTOP-RS9M43V",
-    "agent_token":  "APEX-TEST-LOCAL",
-    "timestamp":  "2026-10-27T12:15:24Z",
-    "last_synced":  "2026-10-27 17:15:24",
-    "status":  "OFFLINE",
-    "health_score":  90,
-    "category_scores":  {
-                            "Hardware":  100,
-                            "Operating System":  100,
-                            "Storage":  100,
-                            "Drivers":  50,
-                            "Security":  100
-                        },
-    "system_info":  {
-                        "hostname":  "DESKTOP-RS9M43V",
-                        "os_name":  "Microsoft Windows 10 Pro",
-                        "os_version":  "10.0.19045",
-                        "os_build":  "19045",
-                        "architecture":  "64-bit",
-                        "cpu_model":  "Intel(R) Xeon(R) CPU E5-1650 0 @ 3.20GHz",
-                        "cpu_cores":  12,
-                        "total_ram_gb":  24,
-                        "is_admin":  false,
-                        "ip_address":  "192.168.1.37",
-                        "working_dir":  "D:\\sharyar\\online master pc"
-                    },
-    "telemetry":  {
-                      "cpu_percent":  12.9,
-                      "ram_percent":  93.6,
-                      "ram_used_gb":  22.43,
-                      "disk_percent":  89.9,
-                      "net_latency_ms":  15,
-                      "cpu_freq_mhz":  3201
-                  },
-    "diagnostics":  {
-                        "hardware":  {
-                                         "smart_drives":  [
-                                                              {
-                                                                  "is_healthy":  true,
-                                                                  "operational_status":  "OK",
-                                                                  "device_id":  "0",
-                                                                  "model":  "KINGSTON SUV400S37240G",
-                                                                  "health_status":  "Healthy",
-                                                                  "size_gb":  223.6,
-                                                                  "bad_sectors":  0,
-                                                                  "media_type":  "SSD"
-                                                              }
-                                                          ],
-                                         "cpu_max_mhz":  3201,
-                                         "smart_failures":  [
-
-                                                            ],
-                                         "failing_devices":  [
-                                                                 {
-                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D6B\u0026SUBSYS_04971028\u0026REV_05\\4\u0026BEF05A1\u00260\u00260088",
-                                                                     "status":  "Error",
-                                                                     "code":  28,
-                                                                     "name":  "SAS Controller",
-                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
-                                                                 },
-                                                                 {
-                                                                     "device_id":  "PCI\\VEN_8086\u0026DEV_1D3A\u0026SUBSYS_04971028\u0026REV_05\\3\u002611583659\u00260\u0026B0",
-                                                                     "status":  "Error",
-                                                                     "code":  28,
-                                                                     "name":  "PCI Simple Communications Controller",
-                                                                     "error_desc":  "Driver Configuration Fault (Code 28)"
-                                                                 },
-                                                                 {
-                                                                     "device_id":  "USB\\VID_0000\u0026PID_0002\\6\u00261409469F\u00260\u00263",
-                                                                     "status":  "Error",
-                                                                     "code":  43,
-                                                                     "name":  "Unknown USB Device (Device Descriptor Request Failed)",
-                                                                     "error_desc":  "Driver Configuration Fault (Code 43)"
-                                                                 }
-                                                             ],
-                                         "cpu_curr_mhz":  3201,
-                                         "cpu_throttled":  false
-                                     },
-                        "os_integrity":  {
-                                             "cbs_error_count":  0,
-                                             "sfc_corrupted":  false,
-                                             "dism_status":  "Healthy",
-                                             "corrupted_files_count":  0,
-                                             "dism_corrupted":  false
-                                         },
-                        "antivirus":  {
-                                          "quick_scan_age_days":  4,
-                                          "signature_version":  "1.461.217.0",
-                                          "threats_count":  2,
-                                          "last_signature_update":  "2026-10-26 21:57:49",
-                                          "active_threats_count":  0,
-                                          "enabled":  true,
-                                          "realtime_protection":  true,
-                                          "threats":  [
-                                                          {
-                                                              "category_id":  34,
-                                                              "is_active":  false,
-                                                              "threat_id":  "2147749462",
-                                                              "name":  "HackTool:PowerShell/ApexToolkit.A",
-                                                              "severity_id":  4
-                                                          },
-                                                          {
-                                                              "category_id":  4,
-                                                              "is_active":  false,
-                                                              "threat_id":  "2147844614",
-                                                              "name":  "TrojanDownloader:MSIL/AsyncRat.CC!MTB",
-                                                              "severity_id":  5
-                                                          }
-                                                      ]
-                                      },
-                        "software":  {
-                                         "winget_available":  true,
-                                         "installed_apps":  [
-                                                                {
-                                                                    "publisher":  "Igor Pavlov",
-                                                                    "name":  "7-Zip 24.05 (x64)",
-                                                                    "version":  "24.05"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Google LLC",
-                                                                    "name":  "Android Studio",
-                                                                    "version":  "2026.1"
-                                                                },
-                                                                {
-                                                                    "publisher":  "BinanceTech",
-                                                                    "name":  "Binance 2.4.1",
-                                                                    "version":  "2.4.1"
-                                                                },
-                                                                {
-                                                                    "publisher":  "The Git Development Community",
-                                                                    "name":  "Git",
-                                                                    "version":  "2.55.0.2"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Notepad++ Team",
-                                                                    "name":  "Notepad++ (64-bit x64)",
-                                                                    "version":  "8.6.7"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Microsoft Office Professional Plus 2021 - en-us",
-                                                                    "version":  "16.0.20326.20232"
-                                                                },
-                                                                {
-                                                                    "publisher":  "win.rar GmbH",
-                                                                    "name":  "WinRAR 7.23 (64-bit)",
-                                                                    "version":  "7.23.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Microsoft Update Health Tools",
-                                                                    "version":  "3.74.0.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Node.js Foundation",
-                                                                    "name":  "Node.js",
-                                                                    "version":  "24.18.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Google LLC",
-                                                                    "name":  "Google Drive",
-                                                                    "version":  "132.0.0.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Microsoft Visual Studio Installer",
-                                                                    "version":  "4.8.60.55523"
-                                                                },
-                                                                {
-                                                                    "publisher":  "WireGuard LLC",
-                                                                    "name":  "WireGuard",
-                                                                    "version":  "1.1"
-                                                                },
-                                                                {
-                                                                    "publisher":  "NVIDIA Corporation",
-                                                                    "name":  "NVIDIA Graphics Driver 353.30",
-                                                                    "version":  "353.30"
-                                                                },
-                                                                {
-                                                                    "publisher":  "NVIDIA Corporation",
-                                                                    "name":  "NVIDIA nView 146.33",
-                                                                    "version":  "146.33"
-                                                                },
-                                                                {
-                                                                    "publisher":  "NVIDIA Corporation",
-                                                                    "name":  "NVIDIA WMI 2.22.0",
-                                                                    "version":  "2.22.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "NVIDIA Corporation",
-                                                                    "name":  "NVIDIA HD Audio Driver 1.3.34.3",
-                                                                    "version":  "1.3.34.3"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Update for x64-based Windows Systems (KB5001716)",
-                                                                    "version":  "8.94.0.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft",
-                                                                    "name":  "Microsoft Build of OpenJDK  17.0.19+10 (x64)",
-                                                                    "version":  "17.0.19.10"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Apple Inc.",
-                                                                    "name":  "Apple Mobile Device Support",
-                                                                    "version":  "19.4.0.10"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Google\\Chrome",
-                                                                    "name":  "Google AI Studio",
-                                                                    "version":  "1.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Google",
-                                                                    "name":  "Antigravity 2.24.0",
-                                                                    "version":  "2.24.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Qoder",
-                                                                    "name":  "Qoder 0.4.11",
-                                                                    "version":  "0.4.11"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Microsoft OneDrive",
-                                                                    "version":  "26.183.0920.0005"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Python Software Foundation",
-                                                                    "name":  "Python 3.14.8",
-                                                                    "version":  "3.14-64"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Tien Do Nam",
-                                                                    "name":  "LocalSend version 1.17.0",
-                                                                    "version":  "1.17.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Python Software Foundation",
-                                                                    "name":  "Python 3.13.16 (64-bit)",
-                                                                    "version":  "3.13.16150.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Shenzhen Aidapu Network Technology Co.,Ltd.",
-                                                                    "name":  "3uTools",
-                                                                    "version":  "9.08.006"
-                                                                },
-                                                                {
-                                                                    "publisher":  "AnyDesk Software GmbH",
-                                                                    "name":  "AnyDesk",
-                                                                    "version":  "ad 9.8.1"
-                                                                },
-                                                                {
-                                                                    "publisher":  "ZKTeco Inc.",
-                                                                    "name":  "Fingerprint Reader Driver 2.3.3.5",
-                                                                    "version":  ""
-                                                                },
-                                                                {
-                                                                    "publisher":  "Google LLC",
-                                                                    "name":  "Google Chrome",
-                                                                    "version":  "156.0.8078.48"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Lazesoft",
-                                                                    "name":  "Lazesoft Recovery Suite 5.2 Home Edition",
-                                                                    "version":  "5.2"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Copilot",
-                                                                    "version":  "156.0.4314.42"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Microsoft Edge",
-                                                                    "version":  "156.0.4314.42"
-                                                                },
-                                                                {
-                                                                    "publisher":  "",
-                                                                    "name":  "ZKTeco",
-                                                                    "version":  ""
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Microsoft Visual C++ v14 Redistributable (x86) - 14.50.35719",
-                                                                    "version":  "14.50.35719.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Microsoft Corporation",
-                                                                    "name":  "Microsoft Visual C++ v14 Redistributable (x64) - 14.50.35719",
-                                                                    "version":  "14.50.35719.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Python Software Foundation",
-                                                                    "name":  "Python Launcher",
-                                                                    "version":  "3.13.16150.0"
-                                                                },
-                                                                {
-                                                                    "publisher":  "Famatech",
-                                                                    "name":  "Advanced IP Scanner 2.5.1",
-                                                                    "version":  "2.5.4594.1"
-                                                                }
-                                                            ],
-                                         "installed_count":  38
-                                     },
-                        "services":  {
-                                         "critical_services":  [
-                                                                   {
-                                                                       "status":  "Stopped",
-                                                                       "name":  "BITS",
-                                                                       "display_name":  "Background Intelligent Transfer Service",
-                                                                       "start_type":  "Manual"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "Dhcp",
-                                                                       "display_name":  "DHCP Client",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "Dnscache",
-                                                                       "display_name":  "DNS Client",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "LanmanServer",
-                                                                       "display_name":  "Server",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "Spooler",
-                                                                       "display_name":  "Print Spooler",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Stopped",
-                                                                       "name":  "W32Time",
-                                                                       "display_name":  "Windows Time",
-                                                                       "start_type":  "Disabled"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Running",
-                                                                       "name":  "WinDefend",
-                                                                       "display_name":  "Microsoft Defender Antivirus Service",
-                                                                       "start_type":  "Automatic"
-                                                                   },
-                                                                   {
-                                                                       "status":  "Stopped",
-                                                                       "name":  "wuauserv",
-                                                                       "display_name":  "Windows Update",
-                                                                       "start_type":  "Manual"
-                                                                   }
-                                                               ],
-                                         "startup_items":  [
-                                                               {
-                                                                   "user":  "NT AUTHORITY\\SYSTEM",
-                                                                   "command":  "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
-                                                                   "name":  "GoogleDriveFS",
-                                                                   "location":  "HKU\\S-1-5-18\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "DESKTOP-RS9M43V\\Sharyar",
-                                                                   "command":  "\"C:\\Users\\Sharyar\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
-                                                                   "name":  "OneDrive",
-                                                                   "location":  "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "DESKTOP-RS9M43V\\Sharyar",
-                                                                   "command":  "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
-                                                                   "name":  "GoogleDriveFS",
-                                                                   "location":  "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "DESKTOP-RS9M43V\\Sharyar",
-                                                                   "command":  "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --no-startup-window --win-session-start",
-                                                                   "name":  "MicrosoftEdgeAutoLaunch_59A7173B28EE1B2CFACEDF58C84E2B71",
-                                                                   "location":  "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  ".DEFAULT",
-                                                                   "command":  "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
-                                                                   "name":  "GoogleDriveFS",
-                                                                   "location":  "HKU\\.DEFAULT\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "Public",
-                                                                   "command":  "C:\\PROGRA~2\\AnyDesk\\AnyDesk.exe  --control",
-                                                                   "name":  "AnyDesk",
-                                                                   "location":  "Common Startup"
-                                                               },
-                                                               {
-                                                                   "user":  "Public",
-                                                                   "command":  "%windir%\\system32\\SecurityHealthSystray.exe",
-                                                                   "name":  "SecurityHealth",
-                                                                   "location":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               },
-                                                               {
-                                                                   "user":  "Public",
-                                                                   "command":  "C:\\Program Files\\NVIDIA Corporation\\nview\\nwiz.exe /installquiet",
-                                                                   "name":  "nwiz",
-                                                                   "location":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-                                                               }
-                                                           ]
-                                     },
-                        "network":  {
-                                        "adapters":  [
-                                                         {
-                                                             "link_speed":  "1 Gbps",
-                                                             "status":  "Up",
-                                                             "description":  "Intel(R) 82579LM Gigabit Network Connection",
-                                                             "name":  "Ethernet",
-                                                             "mac":  "90-B1-1C-A4-69-8B"
-                                                         }
-                                                     ],
-                                        "dns_latency_ms":  15,
-                                        "primary_ip":  "192.168.1.37"
-                                    },
-                        "storage":  {
-                                        "partitions":  [
-                                                           {
-                                                               "total_gb":  174,
-                                                               "free_pct":  10.1,
-                                                               "letter":  "C",
-                                                               "free_gb":  17.5
-                                                           },
-                                                           {
-                                                               "total_gb":  48.8,
-                                                               "free_pct":  11.5,
-                                                               "letter":  "D",
-                                                               "free_gb":  5.6
-                                                           }
-                                                       ],
-                                        "temp_junk_mb":  141.5,
-                                        "junk_breakdown":  {
-                                                               "prefetch_mb":  0,
-                                                               "user_temp_mb":  135.1,
-                                                               "win_temp_mb":  1.1,
-                                                               "softwaredist_mb":  2.3,
-                                                               "wer_dumps_mb":  3
-                                                           }
-                                    },
-                        "security":  {
-                                         "critical_errors_count":  0,
-                                         "latest_bsod_code":  null,
-                                         "bsod_events_count":  0
-                                     }
-                    },
-    "issues":  [
-                   {
-                       "fix_id":  "ACTION_RESCAN_DEVICES",
-                       "title":  "Driver Error: SAS Controller",
-                       "category":  "Drivers",
-                       "description":  "Driver Configuration Fault (Code 28) (Status: Error)",
-                       "severity":  "WARNING"
-                   },
-                   {
-                       "fix_id":  "ACTION_RESCAN_DEVICES",
-                       "title":  "Driver Error: PCI Simple Communications Controller",
-                       "category":  "Drivers",
-                       "description":  "Driver Configuration Fault (Code 28) (Status: Error)",
-                       "severity":  "WARNING"
-                   },
-                   {
-                       "fix_id":  "ACTION_RESCAN_DEVICES",
-                       "title":  "Driver Error: Unknown USB Device (Device Descriptor Request Failed)",
-                       "category":  "Drivers",
-                       "description":  "Driver Configuration Fault (Code 43) (Status: Error)",
-                       "severity":  "WARNING"
-                   }
-               ]
+  "client_id": "DESKTOP-RS9M43V",
+  "agent_token": "APEX-TEST-LOCAL",
+  "timestamp": "2026-10-27T12:15:24Z",
+  "last_synced": "2026-10-27 17:15:24",
+  "status": "OFFLINE",
+  "health_score": 90,
+  "category_scores": {
+    "Hardware": 100,
+    "Operating System": 100,
+    "Storage": 100,
+    "Drivers": 50,
+    "Security": 100
+  },
+  "system_info": {
+    "hostname": "DESKTOP-RS9M43V",
+    "os_name": "Microsoft Windows 10 Pro",
+    "os_version": "10.0.19045",
+    "os_build": "19045",
+    "architecture": "64-bit",
+    "cpu_model": "Intel(R) Xeon(R) CPU E5-1650 0 @ 3.20GHz",
+    "cpu_cores": 12,
+    "total_ram_gb": 24,
+    "is_admin": false,
+    "ip_address": "192.168.1.37",
+    "working_dir": "D:\\sharyar\\online master pc"
+  },
+  "telemetry": {
+    "cpu_percent": 12.9,
+    "ram_percent": 93.6,
+    "ram_used_gb": 22.43,
+    "disk_percent": 89.9,
+    "net_latency_ms": 15,
+    "cpu_freq_mhz": 3201
+  },
+  "diagnostics": {
+    "hardware": {
+      "smart_drives": [
+        {
+          "is_healthy": true,
+          "operational_status": "OK",
+          "device_id": "0",
+          "model": "KINGSTON SUV400S37240G",
+          "health_status": "Healthy",
+          "size_gb": 223.6,
+          "bad_sectors": 0,
+          "media_type": "SSD"
+        }
+      ],
+      "cpu_max_mhz": 3201,
+      "smart_failures": [],
+      "failing_devices": [
+        {
+          "device_id": "PCI\\VEN_8086&DEV_1D6B&SUBSYS_04971028&REV_05\\4&BEF05A1&0&0088",
+          "status": "Error",
+          "code": 28,
+          "name": "SAS Controller",
+          "error_desc": "Driver Configuration Fault (Code 28)"
+        },
+        {
+          "device_id": "PCI\\VEN_8086&DEV_1D3A&SUBSYS_04971028&REV_05\\3&11583659&0&B0",
+          "status": "Error",
+          "code": 28,
+          "name": "PCI Simple Communications Controller",
+          "error_desc": "Driver Configuration Fault (Code 28)"
+        },
+        {
+          "device_id": "USB\\VID_0000&PID_0002\\6&1409469F&0&3",
+          "status": "Error",
+          "code": 43,
+          "name": "Unknown USB Device (Device Descriptor Request Failed)",
+          "error_desc": "Driver Configuration Fault (Code 43)"
+        }
+      ],
+      "cpu_curr_mhz": 3201,
+      "cpu_throttled": false
+    },
+    "os_integrity": {
+      "cbs_error_count": 0,
+      "sfc_corrupted": false,
+      "dism_status": "Healthy",
+      "corrupted_files_count": 0,
+      "dism_corrupted": false
+    },
+    "antivirus": {
+      "quick_scan_age_days": 4,
+      "signature_version": "1.461.217.0",
+      "threats_count": 2,
+      "last_signature_update": "2026-10-26 21:57:49",
+      "active_threats_count": 0,
+      "enabled": true,
+      "realtime_protection": true,
+      "threats": [
+        {
+          "category_id": 34,
+          "is_active": false,
+          "threat_id": "2147749462",
+          "name": "HackTool:PowerShell/ApexToolkit.A",
+          "severity_id": 4
+        },
+        {
+          "category_id": 4,
+          "is_active": false,
+          "threat_id": "2147844614",
+          "name": "TrojanDownloader:MSIL/AsyncRat.CC!MTB",
+          "severity_id": 5
+        }
+      ]
+    },
+    "software": {
+      "winget_available": true,
+      "installed_apps": [
+        {
+          "publisher": "Igor Pavlov",
+          "name": "7-Zip 24.05 (x64)",
+          "version": "24.05"
+        },
+        {
+          "publisher": "Google LLC",
+          "name": "Android Studio",
+          "version": "2026.1"
+        },
+        {
+          "publisher": "BinanceTech",
+          "name": "Binance 2.4.1",
+          "version": "2.4.1"
+        },
+        {
+          "publisher": "The Git Development Community",
+          "name": "Git",
+          "version": "2.55.0.2"
+        },
+        {
+          "publisher": "Notepad++ Team",
+          "name": "Notepad++ (64-bit x64)",
+          "version": "8.6.7"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Microsoft Office Professional Plus 2021 - en-us",
+          "version": "16.0.20326.20232"
+        },
+        {
+          "publisher": "win.rar GmbH",
+          "name": "WinRAR 7.23 (64-bit)",
+          "version": "7.23.0"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Microsoft Update Health Tools",
+          "version": "3.74.0.0"
+        },
+        {
+          "publisher": "Node.js Foundation",
+          "name": "Node.js",
+          "version": "24.18.0"
+        },
+        {
+          "publisher": "Google LLC",
+          "name": "Google Drive",
+          "version": "132.0.0.0"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Microsoft Visual Studio Installer",
+          "version": "4.8.60.55523"
+        },
+        {
+          "publisher": "WireGuard LLC",
+          "name": "WireGuard",
+          "version": "1.1"
+        },
+        {
+          "publisher": "NVIDIA Corporation",
+          "name": "NVIDIA Graphics Driver 353.30",
+          "version": "353.30"
+        },
+        {
+          "publisher": "NVIDIA Corporation",
+          "name": "NVIDIA nView 146.33",
+          "version": "146.33"
+        },
+        {
+          "publisher": "NVIDIA Corporation",
+          "name": "NVIDIA WMI 2.22.0",
+          "version": "2.22.0"
+        },
+        {
+          "publisher": "NVIDIA Corporation",
+          "name": "NVIDIA HD Audio Driver 1.3.34.3",
+          "version": "1.3.34.3"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Update for x64-based Windows Systems (KB5001716)",
+          "version": "8.94.0.0"
+        },
+        {
+          "publisher": "Microsoft",
+          "name": "Microsoft Build of OpenJDK  17.0.19+10 (x64)",
+          "version": "17.0.19.10"
+        },
+        {
+          "publisher": "Apple Inc.",
+          "name": "Apple Mobile Device Support",
+          "version": "19.4.0.10"
+        },
+        {
+          "publisher": "Google\\Chrome",
+          "name": "Google AI Studio",
+          "version": "1.0"
+        },
+        {
+          "publisher": "Google",
+          "name": "Antigravity 2.24.0",
+          "version": "2.24.0"
+        },
+        {
+          "publisher": "Qoder",
+          "name": "Qoder 0.4.11",
+          "version": "0.4.11"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Microsoft OneDrive",
+          "version": "26.183.0920.0005"
+        },
+        {
+          "publisher": "Python Software Foundation",
+          "name": "Python 3.14.8",
+          "version": "3.14-64"
+        },
+        {
+          "publisher": "Tien Do Nam",
+          "name": "LocalSend version 1.17.0",
+          "version": "1.17.0"
+        },
+        {
+          "publisher": "Python Software Foundation",
+          "name": "Python 3.13.16 (64-bit)",
+          "version": "3.13.16150.0"
+        },
+        {
+          "publisher": "Shenzhen Aidapu Network Technology Co.,Ltd.",
+          "name": "3uTools",
+          "version": "9.08.006"
+        },
+        {
+          "publisher": "AnyDesk Software GmbH",
+          "name": "AnyDesk",
+          "version": "ad 9.8.1"
+        },
+        {
+          "publisher": "ZKTeco Inc.",
+          "name": "Fingerprint Reader Driver 2.3.3.5",
+          "version": ""
+        },
+        {
+          "publisher": "Google LLC",
+          "name": "Google Chrome",
+          "version": "156.0.8078.48"
+        },
+        {
+          "publisher": "Lazesoft",
+          "name": "Lazesoft Recovery Suite 5.2 Home Edition",
+          "version": "5.2"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Copilot",
+          "version": "156.0.4314.42"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Microsoft Edge",
+          "version": "156.0.4314.42"
+        },
+        {
+          "publisher": "",
+          "name": "ZKTeco",
+          "version": ""
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Microsoft Visual C++ v14 Redistributable (x86) - 14.50.35719",
+          "version": "14.50.35719.0"
+        },
+        {
+          "publisher": "Microsoft Corporation",
+          "name": "Microsoft Visual C++ v14 Redistributable (x64) - 14.50.35719",
+          "version": "14.50.35719.0"
+        },
+        {
+          "publisher": "Python Software Foundation",
+          "name": "Python Launcher",
+          "version": "3.13.16150.0"
+        },
+        {
+          "publisher": "Famatech",
+          "name": "Advanced IP Scanner 2.5.1",
+          "version": "2.5.4594.1"
+        }
+      ],
+      "installed_count": 38
+    },
+    "services": {
+      "critical_services": [
+        {
+          "status": "Stopped",
+          "name": "BITS",
+          "display_name": "Background Intelligent Transfer Service",
+          "start_type": "Manual"
+        },
+        {
+          "status": "Running",
+          "name": "Dhcp",
+          "display_name": "DHCP Client",
+          "start_type": "Automatic"
+        },
+        {
+          "status": "Running",
+          "name": "Dnscache",
+          "display_name": "DNS Client",
+          "start_type": "Automatic"
+        },
+        {
+          "status": "Running",
+          "name": "LanmanServer",
+          "display_name": "Server",
+          "start_type": "Automatic"
+        },
+        {
+          "status": "Running",
+          "name": "Spooler",
+          "display_name": "Print Spooler",
+          "start_type": "Automatic"
+        },
+        {
+          "status": "Stopped",
+          "name": "W32Time",
+          "display_name": "Windows Time",
+          "start_type": "Disabled"
+        },
+        {
+          "status": "Running",
+          "name": "WinDefend",
+          "display_name": "Microsoft Defender Antivirus Service",
+          "start_type": "Automatic"
+        },
+        {
+          "status": "Stopped",
+          "name": "wuauserv",
+          "display_name": "Windows Update",
+          "start_type": "Manual"
+        }
+      ],
+      "startup_items": [
+        {
+          "user": "NT AUTHORITY\\SYSTEM",
+          "command": "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
+          "name": "GoogleDriveFS",
+          "location": "HKU\\S-1-5-18\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+        },
+        {
+          "user": "DESKTOP-RS9M43V\\Sharyar",
+          "command": "\"C:\\Users\\Sharyar\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
+          "name": "OneDrive",
+          "location": "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+        },
+        {
+          "user": "DESKTOP-RS9M43V\\Sharyar",
+          "command": "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
+          "name": "GoogleDriveFS",
+          "location": "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+        },
+        {
+          "user": "DESKTOP-RS9M43V\\Sharyar",
+          "command": "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --no-startup-window --win-session-start",
+          "name": "MicrosoftEdgeAutoLaunch_59A7173B28EE1B2CFACEDF58C84E2B71",
+          "location": "HKU\\S-1-5-21-3037192266-1484791497-352819908-1001\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+        },
+        {
+          "user": ".DEFAULT",
+          "command": "\"C:\\Program Files\\Google\\Drive File Stream\\132.0.0.0\\GoogleDriveFS.exe\" --startup_mode",
+          "name": "GoogleDriveFS",
+          "location": "HKU\\.DEFAULT\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+        },
+        {
+          "user": "Public",
+          "command": "C:\\PROGRA~2\\AnyDesk\\AnyDesk.exe  --control",
+          "name": "AnyDesk",
+          "location": "Common Startup"
+        },
+        {
+          "user": "Public",
+          "command": "%windir%\\system32\\SecurityHealthSystray.exe",
+          "name": "SecurityHealth",
+          "location": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+        },
+        {
+          "user": "Public",
+          "command": "C:\\Program Files\\NVIDIA Corporation\\nview\\nwiz.exe /installquiet",
+          "name": "nwiz",
+          "location": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+        }
+      ]
+    },
+    "network": {
+      "adapters": [
+        {
+          "link_speed": "1 Gbps",
+          "status": "Up",
+          "description": "Intel(R) 82579LM Gigabit Network Connection",
+          "name": "Ethernet",
+          "mac": "90-B1-1C-A4-69-8B"
+        }
+      ],
+      "dns_latency_ms": 15,
+      "primary_ip": "192.168.1.37"
+    },
+    "storage": {
+      "partitions": [
+        {
+          "total_gb": 174,
+          "free_pct": 10.1,
+          "letter": "C",
+          "free_gb": 17.5
+        },
+        {
+          "total_gb": 48.8,
+          "free_pct": 11.5,
+          "letter": "D",
+          "free_gb": 5.6
+        }
+      ],
+      "temp_junk_mb": 141.5,
+      "junk_breakdown": {
+        "prefetch_mb": 0,
+        "user_temp_mb": 135.1,
+        "win_temp_mb": 1.1,
+        "softwaredist_mb": 2.3,
+        "wer_dumps_mb": 3
+      }
+    },
+    "security": {
+      "critical_errors_count": 0,
+      "latest_bsod_code": null,
+      "bsod_events_count": 0
+    }
+  },
+  "issues": [
+    {
+      "fix_id": "ACTION_RESCAN_DEVICES",
+      "title": "Driver Error: SAS Controller",
+      "category": "Drivers",
+      "description": "Driver Configuration Fault (Code 28) (Status: Error)",
+      "severity": "WARNING"
+    },
+    {
+      "fix_id": "ACTION_RESCAN_DEVICES",
+      "title": "Driver Error: PCI Simple Communications Controller",
+      "category": "Drivers",
+      "description": "Driver Configuration Fault (Code 28) (Status: Error)",
+      "severity": "WARNING"
+    },
+    {
+      "fix_id": "ACTION_RESCAN_DEVICES",
+      "title": "Driver Error: Unknown USB Device (Device Descriptor Request Failed)",
+      "category": "Drivers",
+      "description": "Driver Configuration Fault (Code 43) (Status: Error)",
+      "severity": "WARNING"
+    }
+  ],
+  "live_scan": {
+    "state": "ONLINE",
+    "active_phase": "System Monitoring Active",
+    "phase_index": 8,
+    "total_phases": 8,
+    "progress_percent": 100,
+    "current_activity": "Idle - Live monitoring active.",
+    "last_updated": "2026-10-27 17:15:24",
+    "recent_logs": [
+      "[12:00:00] Real-time diagnostic audit complete. Health Score: 95%"
+    ]
+  }
 }

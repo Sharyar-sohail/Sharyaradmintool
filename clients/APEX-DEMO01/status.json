@@ -212,5 +212,25 @@
       "description": "Device Configuration Fault (Code 28) (Status: Error)",
       "fix_id": "ACTION_RESCAN_DEVICES"
     }
-  ]
+  ],
+  "live_scan": {
+    "state": "ONLINE",
+    "active_phase": "System Monitoring Active",
+    "phase_index": 8,
+    "total_phases": 8,
+    "progress_percent": 100,
+    "current_activity": "Idle - Live monitoring active. Listening for remote directives.",
+    "last_updated": "2026-10-27 16:40:00",
+    "recent_logs": [
+      "[12:00:01] Phase 1/8: Processor & RAM telemetry audited (CPU: 14.5%, RAM: 16.36/24 GB)",
+      "[12:00:03] Phase 2/8: Physical SMART Disks verified (KINGSTON SSD Healthy, 0 bad sectors)",
+      "[12:00:06] Phase 3/8: Windows Component Store (DISM) and SFC integrity validated",
+      "[12:00:08] Phase 4/8: Windows Event Log checked (0 recent BSODs, DNS Latency: 12ms)",
+      "[12:00:10] Phase 5/8: Storage partitions and junk bloat audited (Recoverable: 450 MB)",
+      "[12:00:12] Phase 6/8: Microsoft Defender verified (Real-time active, signatures current)",
+      "[12:00:14] Phase 7/8: Installed software and winget package ecosystem verified",
+      "[12:00:16] Phase 8/8: Windows services audited. Dynamic Health Score: 92%",
+      "[12:00:18] Real-time monitoring active. Standing by for remote directives."
+    ]
+  }
 }

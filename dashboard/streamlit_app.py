@@ -116,6 +116,50 @@ st.markdown("""
         padding: 16px;
         margin-top: 10px;
     }
+    .live-scan-card {
+        background: linear-gradient(135deg, rgba(13, 27, 42, 0.95) 0%, rgba(5, 7, 10, 0.98) 100%);
+        border: 1px solid rgba(0, 243, 255, 0.4);
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 14px;
+        box-shadow: 0 0 25px rgba(0, 243, 255, 0.12);
+    }
+    .badge-scanning {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        background: #ffaa00;
+        color: #000;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+    }
+    .badge-repairing {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        background: #00f3ff;
+        color: #000;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+    }
+    .badge-online {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        background: #00ff88;
+        color: #000;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+    }
+    .badge-offline {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        background: #ff3366;
+        color: #fff;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -206,8 +250,10 @@ with st.sidebar.expander("⚙️ Repository & Credential Settings", expanded=Fal
     branch = st.text_input("Branch", value=DEFAULT_BRANCH)
     github_token = st.text_input("Personal Access Token (Optional)", value=DEFAULT_TOKEN, type="password")
 
-refresh_rate = st.sidebar.slider("Auto-Refresh Rate (Seconds)", min_value=5, max_value=60, value=15)
-if st.sidebar.button("🔄 Refresh Telemetry Now", use_container_width=True):
+st.sidebar.markdown("### 🔄 Live Telemetry Auto-Sync")
+auto_refresh = st.sidebar.toggle("🟢 Real-Time Auto-Refresh", value=True)
+refresh_rate = st.sidebar.slider("Polling Frequency (Seconds)", min_value=3, max_value=30, value=5)
+if st.sidebar.button("⚡ Force Instant Refresh", use_container_width=True):
     st.rerun()
 
 # Fetch isolated telemetry
@@ -337,6 +383,63 @@ with ai_btn_col1:
 with ai_btn_col2:
     if st.button("📤 Share Health Report", key="btn_quick_share", use_container_width=True):
         st.toast("Jump to Share Report tab below")
+
+# ----------------- ⚡ REAL-TIME LIVE-SCANNING & MONITORING MONITOR -----------------
+live_scan = status_data.get("live_scan", {})
+scan_state = str(live_scan.get("state", agent_status)).upper()
+active_phase = live_scan.get("active_phase", "System Monitoring Active")
+phase_idx = live_scan.get("phase_index", 8)
+total_phases = live_scan.get("total_phases", 8)
+progress_pct = live_scan.get("progress_percent", 100)
+current_activity = live_scan.get("current_activity", "Idle - Live monitoring active.")
+recent_logs = live_scan.get("recent_logs", [])
+last_scan_update = live_scan.get("last_updated", last_synced)
+
+if scan_state == "SCANNING":
+    state_pill = "<span class='badge-scanning'>🟡 LIVE DIAGNOSTIC SCAN IN PROGRESS</span>"
+elif scan_state == "REPAIRING":
+    state_pill = "<span class='badge-repairing'>🔧 AUTONOMOUS REPAIR / AI UPDATE IN PROGRESS</span>"
+elif scan_state in ["ONLINE", "IDLE"]:
+    state_pill = "<span class='badge-online'>🟢 REAL-TIME MONITORING ACTIVE & ONLINE</span>"
+else:
+    state_pill = "<span class='badge-offline'>🔴 WORKSTATION OFFLINE</span>"
+
+st.markdown(f'''
+<div class="live-scan-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div>
+            <h4 style="margin: 0; color: #00f3ff; font-weight: 700;">⚡ Real-Time Live-Scanning & Progress Monitor</h4>
+            <span style="font-size: 0.85rem; color: #a0aec0;">Phase {phase_idx} of {total_phases}: <strong>{active_phase}</strong></span>
+        </div>
+        <div>
+            {state_pill}
+        </div>
+    </div>
+</div>
+''', unsafe_allow_html=True)
+
+scan_col_bar, scan_col_act = st.columns([3, 1])
+with scan_col_bar:
+    prog_val = min(1.0, max(0.0, float(progress_pct) / 100.0))
+    st.progress(prog_val, text=f"Active Phase: {active_phase} ({progress_pct}%)")
+    st.caption(f"🔎 **Current Activity**: {current_activity} | **Heartbeat**: {last_scan_update} ({age_text})")
+with scan_col_act:
+    if st.button("🔍 Trigger Live Rescan", key="btn_trigger_rescan", use_container_width=True):
+        ok, msg = send_isolated_command(current_token, "FORCE_RESCAN", {}, repo_owner, repo_name, branch, github_token)
+        if ok:
+            st.toast("Immediate live rescan dispatched to agent!")
+            st.success("✓ Rescan command queued. Agent is initiating Phase 1/8...")
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error(msg)
+
+with st.expander("📺 Live Execution & Terminal Log Feed (Streaming from Agent)", expanded=(scan_state in ["SCANNING", "REPAIRING"])):
+    if recent_logs:
+        term_content = "\n".join(recent_logs)
+        st.markdown(f'<div class="terminal-box">{term_content}</div>', unsafe_allow_html=True)
+    else:
+        st.caption("Waiting for streaming log frames from client agent...")
 
 st.markdown("---")
 
@@ -718,9 +821,18 @@ with tab_diag:
 
 # ----------------- TAB 7: Live Terminal Console -----------------
 with tab_term:
-    st.markdown("### 💻 Live Remote Execution Terminal Output")
-    st.caption(f"Real-time command execution output from client machine `{current_token}`:")
+    st.markdown("### 💻 Live Remote Execution & Streaming Terminal Output")
+    st.caption(f"Real-time telemetry and execution output streamed from client machine `{current_token}`:")
 
+    st.markdown("#### 📡 Real-Time Diagnostic Scanning Logs (Streaming from Agent)")
+    if recent_logs:
+        term_stream = "\n".join(recent_logs)
+        st.markdown(f'<div class="terminal-box">{term_stream}</div>', unsafe_allow_html=True)
+    else:
+        st.info("No active live-scan logs yet. Click '🔍 Trigger Live Rescan' above to start a real-time scan.")
+
+    st.markdown("---")
+    st.markdown("#### ⚡ Remote Directive & Command Execution Log")
     if not cmd_data:
         st.info("No remote commands executed in this session yet. Click any action button across the tabs to view live logs.")
     else:
@@ -872,6 +984,7 @@ Live Dashboard: https://sharyaradmintool.streamlit.app/?token={current_token}"""
             use_container_width=True,
         )
 
-# ----------------- Auto-Refresh Loop -----------------
-time.sleep(refresh_rate)
-st.rerun()
+# ----------------- Real-Time Auto-Refresh Loop -----------------
+if auto_refresh:
+    time.sleep(refresh_rate)
+    st.rerun()
