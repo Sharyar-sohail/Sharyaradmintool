@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:42:05Z",
-    "last_synced":  "2026-10-28 13:42:05",
+    "timestamp":  "2026-10-28T08:42:11Z",
+    "last_synced":  "2026-10-28 13:42:11",
     "status":  "SCANNING",
     "health_score":  100,
     "category_scores":  {
@@ -60,6 +60,41 @@
                                                                "wer_dumps_mb":  3
                                                            }
                                     },
+                        "antivirus":  {
+                                          "quick_scan_age_days":  5,
+                                          "signature_version":  "1.463.1.0",
+                                          "threats_count":  3,
+                                          "last_signature_update":  "2026-10-28 00:36:22",
+                                          "active_threats_count":  0,
+                                          "enabled":  true,
+                                          "realtime_protection":  true,
+                                          "threats":  [
+                                                          {
+                                                              "name":  "",
+                                                              "category_id":  0,
+                                                              "action_success":  true,
+                                                              "is_active":  false,
+                                                              "threat_id":  "2147749462",
+                                                              "initial_detection_time":  "2026-10-27 16:22:46"
+                                                          },
+                                                          {
+                                                              "name":  "",
+                                                              "category_id":  0,
+                                                              "action_success":  true,
+                                                              "is_active":  false,
+                                                              "threat_id":  "2147844614",
+                                                              "initial_detection_time":  "2026-10-16 12:45:51"
+                                                          },
+                                                          {
+                                                              "name":  "",
+                                                              "category_id":  0,
+                                                              "action_success":  true,
+                                                              "is_active":  false,
+                                                              "threat_id":  "2147749462",
+                                                              "initial_detection_time":  "2026-10-27 16:22:15"
+                                                          }
+                                                      ]
+                                      },
                         "hardware":  {
                                          "smart_drives":  [
                                                               {
@@ -113,8 +148,8 @@
                       "phase_index":  6,
                       "total_phases":  8,
                       "progress_percent":  75,
-                      "current_activity":  "Auditing Microsoft Defender real-time protection and active malware threats...",
-                      "last_updated":  "2026-10-28 13:42:05",
+                      "current_activity":  "Antivirus telemetry recorded.",
+                      "last_updated":  "2026-10-28 13:42:11",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -130,7 +165,8 @@
                                           "[13:41:48] BSOD crashes: 0. Network Gateway Ping: 16 ms",
                                           "[13:41:53] Phase 5/8 started: Calculating recoverable storage junk",
                                           "[13:42:00] Recoverable junk bloat: 281.5 MB across 5 directories",
-                                          "[13:42:05] Phase 6/8 started: Inspecting antivirus definitions and active threats"
+                                          "[13:42:05] Phase 6/8 started: Inspecting antivirus definitions and active threats",
+                                          "[13:42:11] Defender Real-time: True. Signatures: 1.463.1.0. Active threats: 0"
                                       ]
                   }
 }
