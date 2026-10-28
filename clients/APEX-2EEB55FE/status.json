@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:43:14Z",
-    "last_synced":  "2026-10-28 13:43:14",
+    "timestamp":  "2026-10-28T08:43:21Z",
+    "last_synced":  "2026-10-28 13:43:21",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -21,9 +21,9 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  49,
-                      "ram_percent":  92.7,
-                      "ram_used_gb":  22.21,
+                      "cpu_percent":  48.3,
+                      "ram_percent":  92.5,
+                      "ram_used_gb":  22.17,
                       "disk_percent":  91.5,
                       "net_latency_ms":  16,
                       "cpu_freq_mhz":  3201
@@ -334,8 +334,8 @@
                       "phase_index":  1,
                       "total_phases":  8,
                       "progress_percent":  12,
-                      "current_activity":  "Auditing CPU load, clock throttling, and memory allocation...",
-                      "last_updated":  "2026-10-28 13:43:14",
+                      "current_activity":  "CPU and RAM telemetry recorded.",
+                      "last_updated":  "2026-10-28 13:43:21",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -357,7 +357,8 @@
                                           "[13:42:21] Total installed applications: 31. winget available: True",
                                           "[13:42:26] Phase 8/8 started: Auditing system services and startup applications",
                                           "[13:42:31] Deep diagnostic audit completed. Dynamic Health Score: 74%",
-                                          "[13:43:14] Phase 1/8 started: Auditing CPU and memory telemetry"
+                                          "[13:43:14] Phase 1/8 started: Auditing CPU and memory telemetry",
+                                          "[13:43:21] CPU Load: 48.3% (3201 MHz), RAM: 22.17 / 24 GB"
                                       ]
                   }
 }
