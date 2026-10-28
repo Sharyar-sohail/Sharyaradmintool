@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T05:45:45Z",
-    "last_synced":  "2026-10-28 10:45:45",
+    "timestamp":  "2026-10-28T05:46:09Z",
+    "last_synced":  "2026-10-28 10:46:09",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,9 +26,9 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  4.5,
+                      "cpu_percent":  8.9,
                       "ram_percent":  85.9,
-                      "ram_used_gb":  20.58,
+                      "ram_used_gb":  20.59,
                       "disk_percent":  90.7,
                       "net_latency_ms":  0,
                       "cpu_freq_mhz":  3201
@@ -308,10 +308,10 @@
                         "services":  {
                                          "critical_services":  [
                                                                    {
-                                                                       "status":  "Stopped",
+                                                                       "status":  "Running",
                                                                        "name":  "BITS",
                                                                        "display_name":  "Background Intelligent Transfer Service",
-                                                                       "start_type":  "Manual"
+                                                                       "start_type":  "Automatic"
                                                                    },
                                                                    {
                                                                        "status":  "Running",
