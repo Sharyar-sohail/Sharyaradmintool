@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T06:04:50Z",
-    "last_synced":  "2026-10-28 11:04:50",
+    "timestamp":  "2026-10-28T06:05:14Z",
+    "last_synced":  "2026-10-28 11:05:14",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,10 +26,10 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  10.6,
-                      "ram_percent":  72.8,
-                      "ram_used_gb":  17.44,
-                      "disk_percent":  89.6,
+                      "cpu_percent":  8.6,
+                      "ram_percent":  73,
+                      "ram_used_gb":  17.48,
+                      "disk_percent":  89.5,
                       "net_latency_ms":  1,
                       "cpu_freq_mhz":  3201
                   },
@@ -424,9 +424,9 @@
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  10.4,
+                                                               "free_pct":  10.5,
                                                                "letter":  "C",
-                                                               "free_gb":  18.1
+                                                               "free_gb":  18.2
                                                            },
                                                            {
                                                                "total_gb":  48.8,
@@ -435,10 +435,10 @@
                                                                "free_gb":  5.1
                                                            }
                                                        ],
-                                        "temp_junk_mb":  267.5,
+                                        "temp_junk_mb":  147.1,
                                         "junk_breakdown":  {
                                                                "prefetch_mb":  0,
-                                                               "user_temp_mb":  250,
+                                                               "user_temp_mb":  129.6,
                                                                "win_temp_mb":  2.5,
                                                                "softwaredist_mb":  12,
                                                                "wer_dumps_mb":  3
