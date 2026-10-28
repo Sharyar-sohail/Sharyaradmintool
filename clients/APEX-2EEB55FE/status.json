@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:50:07Z",
-    "last_synced":  "2026-10-28 13:50:07",
+    "timestamp":  "2026-10-28T08:50:14Z",
+    "last_synced":  "2026-10-28 13:50:14",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -334,10 +334,9 @@
                       "phase_index":  6,
                       "total_phases":  8,
                       "progress_percent":  75,
-                      "current_activity":  "Auditing Microsoft Defender real-time protection and active malware threats...",
-                      "last_updated":  "2026-10-28 13:50:07",
+                      "current_activity":  "Antivirus telemetry recorded.",
+                      "last_updated":  "2026-10-28 13:50:14",
                       "recent_logs":  [
-                                          "[13:42:31] Deep diagnostic audit completed. Dynamic Health Score: 74%",
                                           "[13:43:14] Phase 1/8 started: Auditing CPU and memory telemetry",
                                           "[13:43:21] CPU Load: 48.3% (3201 MHz), RAM: 22.17 / 24 GB",
                                           "[13:43:26] Phase 2/8 started: Checking disk SMART health and driver status",
@@ -396,7 +395,8 @@
                                           "[13:49:52] BSOD crashes: 0. Network Gateway Ping: 1 ms",
                                           "[13:49:56] Phase 5/8 started: Calculating recoverable storage junk",
                                           "[13:50:02] Recoverable junk bloat: 206.3 MB across 5 directories",
-                                          "[13:50:07] Phase 6/8 started: Inspecting antivirus definitions and active threats"
+                                          "[13:50:07] Phase 6/8 started: Inspecting antivirus definitions and active threats",
+                                          "[13:50:14] Defender Real-time: True. Signatures: 1.463.1.0. Active threats: 0"
                                       ]
                   }
 }
