@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:55:56Z",
-    "last_synced":  "2026-10-28 13:55:56",
+    "timestamp":  "2026-10-28T08:56:01Z",
+    "last_synced":  "2026-10-28 13:56:01",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -33,9 +33,9 @@
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  8.6,
+                                                               "free_pct":  8.5,
                                                                "letter":  "C",
-                                                               "free_gb":  14.9
+                                                               "free_gb":  14.8
                                                            },
                                                            {
                                                                "total_gb":  48.8,
@@ -334,10 +334,9 @@
                       "phase_index":  5,
                       "total_phases":  8,
                       "progress_percent":  62,
-                      "current_activity":  "Calculating recoverable space across Temp, Prefetch, and SoftwareDistribution...",
-                      "last_updated":  "2026-10-28 13:55:56",
+                      "current_activity":  "Storage breakdown computed.",
+                      "last_updated":  "2026-10-28 13:56:01",
                       "recent_logs":  [
-                                          "[13:48:26] Total installed applications: 31. winget available: True",
                                           "[13:48:31] Phase 8/8 started: Auditing system services and startup applications",
                                           "[13:48:35] Deep diagnostic audit completed. Dynamic Health Score: 74%",
                                           "[13:49:15] Phase 1/8 started: Auditing CPU and memory telemetry",
@@ -396,7 +395,8 @@
                                           "[13:55:41] CBS error count: 0. Component store status: Healthy",
                                           "[13:55:46] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:55:51] BSOD crashes: 0. Network Gateway Ping: 9 ms",
-                                          "[13:55:56] Phase 5/8 started: Calculating recoverable storage junk"
+                                          "[13:55:56] Phase 5/8 started: Calculating recoverable storage junk",
+                                          "[13:56:01] Recoverable junk bloat: 161.1 MB across 5 directories"
                                       ]
                   }
 }
