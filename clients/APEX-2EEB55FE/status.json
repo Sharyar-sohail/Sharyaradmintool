@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:41:26Z",
-    "last_synced":  "2026-10-28 13:41:26",
+    "timestamp":  "2026-10-28T08:41:31Z",
+    "last_synced":  "2026-10-28 13:41:31",
     "status":  "SCANNING",
     "health_score":  100,
     "category_scores":  {
@@ -78,12 +78,12 @@
                ],
     "live_scan":  {
                       "state":  "SCANNING",
-                      "active_phase":  "Phase 2/8: Physical Disks SMART \u0026 Drivers",
-                      "phase_index":  2,
+                      "active_phase":  "Phase 3/8: Windows Component Store (DISM / SFC)",
+                      "phase_index":  3,
                       "total_phases":  8,
-                      "progress_percent":  25,
-                      "current_activity":  "Physical drives and drivers audited.",
-                      "last_updated":  "2026-10-28 13:41:26",
+                      "progress_percent":  38,
+                      "current_activity":  "Scanning CBS servicing logs for 0x800f081f and system file violations...",
+                      "last_updated":  "2026-10-28 13:41:31",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -92,7 +92,8 @@
                                           "[13:41:06] Phase 1/8 started: Auditing CPU and memory telemetry",
                                           "[13:41:14] CPU Load: 49% (3201 MHz), RAM: 22.21 / 24 GB",
                                           "[13:41:19] Phase 2/8 started: Checking disk SMART health and driver status",
-                                          "[13:41:26] Drives scanned: 1. Yellow-bang driver faults: 3"
+                                          "[13:41:26] Drives scanned: 1. Yellow-bang driver faults: 3",
+                                          "[13:41:31] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log"
                                       ]
                   }
 }
