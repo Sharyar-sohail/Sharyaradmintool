@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:46:13Z",
-    "last_synced":  "2026-10-28 13:46:13",
+    "timestamp":  "2026-10-28T08:46:18Z",
+    "last_synced":  "2026-10-28 13:46:18",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -334,8 +334,8 @@
                       "phase_index":  6,
                       "total_phases":  8,
                       "progress_percent":  75,
-                      "current_activity":  "Auditing Microsoft Defender real-time protection and active malware threats...",
-                      "last_updated":  "2026-10-28 13:46:13",
+                      "current_activity":  "Antivirus telemetry recorded.",
+                      "last_updated":  "2026-10-28 13:46:18",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -383,7 +383,8 @@
                                           "[13:45:57] BSOD crashes: 0. Network Gateway Ping: 7 ms",
                                           "[13:46:02] Phase 5/8 started: Calculating recoverable storage junk",
                                           "[13:46:08] Recoverable junk bloat: 206.3 MB across 5 directories",
-                                          "[13:46:13] Phase 6/8 started: Inspecting antivirus definitions and active threats"
+                                          "[13:46:13] Phase 6/8 started: Inspecting antivirus definitions and active threats",
+                                          "[13:46:18] Defender Real-time: True. Signatures: 1.463.1.0. Active threats: 0"
                                       ]
                   }
 }
