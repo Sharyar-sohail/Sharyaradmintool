@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:58:59Z",
-    "last_synced":  "2026-10-28 13:58:59",
+    "timestamp":  "2026-10-28T09:00:04Z",
+    "last_synced":  "2026-10-28 14:00:04",
     "status":  "REPAIRING",
     "health_score":  74,
     "category_scores":  {
@@ -330,14 +330,13 @@
                ],
     "live_scan":  {
                       "state":  "REPAIRING",
-                      "active_phase":  "[AI Phase 1/5] Updating Defender Threat Signatures",
-                      "phase_index":  1,
+                      "active_phase":  "[AI Phase 2/5] Intelligent Package Upgrades (winget)",
+                      "phase_index":  2,
                       "total_phases":  5,
-                      "progress_percent":  20,
-                      "current_activity":  "Downloading latest malware signatures from Microsoft...",
-                      "last_updated":  "2026-10-28 13:58:59",
+                      "progress_percent":  40,
+                      "current_activity":  "Running winget upgrade --all --silent...",
+                      "last_updated":  "2026-10-28 14:00:04",
                       "recent_logs":  [
-                                          "[13:51:46] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:51:51] BSOD crashes: 0. Network Gateway Ping: 8.5 ms",
                                           "[13:51:56] Phase 5/8 started: Calculating recoverable storage junk",
                                           "[13:52:01] Recoverable junk bloat: 161.1 MB across 5 directories",
@@ -396,7 +395,8 @@
                                           "[13:58:34] Phase 8/8 started: Auditing system services and startup applications",
                                           "[13:58:39] Deep diagnostic audit completed. Dynamic Health Score: 74%",
                                           "[13:58:54] Agent picked up directive: AI_SMART_UPDATE",
-                                          "[13:58:59] AI Repair [1/5]: Updating Microsoft Defender threat intelligence..."
+                                          "[13:58:59] AI Repair [1/5]: Updating Microsoft Defender threat intelligence...",
+                                          "[14:00:04] AI Repair [2/5]: Upgrading installed application ecosystem..."
                                       ]
                   }
 }
