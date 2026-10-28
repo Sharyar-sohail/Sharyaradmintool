@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T06:26:40Z",
-    "last_synced":  "2026-10-28 11:26:40",
+    "timestamp":  "2026-10-28T06:27:04Z",
+    "last_synced":  "2026-10-28 11:27:04",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  9.2,
-                      "ram_percent":  72.7,
-                      "ram_used_gb":  17.41,
-                      "disk_percent":  89.5,
-                      "net_latency_ms":  0,
+                      "cpu_percent":  7.8,
+                      "ram_percent":  73.1,
+                      "ram_used_gb":  17.52,
+                      "disk_percent":  89.7,
+                      "net_latency_ms":  1,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -417,16 +417,16 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  0,
+                                        "dns_latency_ms":  1,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  10.5,
+                                                               "free_pct":  10.3,
                                                                "letter":  "C",
-                                                               "free_gb":  18.3
+                                                               "free_gb":  17.9
                                                            },
                                                            {
                                                                "total_gb":  48.8,
