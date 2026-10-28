@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T05:06:28Z",
-    "last_synced":  "2026-10-28 10:06:28",
+    "timestamp":  "2026-10-28T05:06:52Z",
+    "last_synced":  "2026-10-28 10:06:52",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,9 +26,9 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  10.2,
-                      "ram_percent":  85.4,
-                      "ram_used_gb":  20.46,
+                      "cpu_percent":  1.4,
+                      "ram_percent":  85.9,
+                      "ram_used_gb":  20.57,
                       "disk_percent":  90.8,
                       "net_latency_ms":  1,
                       "cpu_freq_mhz":  3201
@@ -350,7 +350,7 @@
                                                                        "start_type":  "Automatic"
                                                                    },
                                                                    {
-                                                                       "status":  "Stopped",
+                                                                       "status":  "Running",
                                                                        "name":  "wuauserv",
                                                                        "display_name":  "Windows Update",
                                                                        "start_type":  "Manual"
