@@ -1,1 +1,49 @@
-{"status": "ONLINE", "test_canonical": true}
+{
+    "client_id":  "DESKTOP-RS9M43V",
+    "agent_token":  "APEX-2EEB55FE",
+    "timestamp":  "2026-10-28T08:39:19Z",
+    "last_synced":  "2026-10-28 13:39:19",
+    "status":  "REPAIRING",
+    "health_score":  100,
+    "category_scores":  {
+                            "Hardware":  100,
+                            "Operating System":  100,
+                            "Storage":  100,
+                            "Drivers":  100,
+                            "Security":  100
+                        },
+    "system_info":  {
+                        "hostname":  "DESKTOP-RS9M43V",
+                        "os_name":  "Microsoft Windows 10 Pro",
+                        "os_build":  "19045",
+                        "architecture":  "64-bit",
+                        "is_admin":  false,
+                        "working_dir":  "D:\\sharyar\\online master pc"
+                    },
+    "telemetry":  {
+                      "cpu_percent":  0,
+                      "ram_percent":  0,
+                      "ram_used_gb":  0,
+                      "disk_percent":  0,
+                      "net_latency_ms":  0,
+                      "cpu_freq_mhz":  0
+                  },
+    "diagnostics":  {
+
+                    },
+    "issues":  [
+
+               ],
+    "live_scan":  {
+                      "state":  "REPAIRING",
+                      "active_phase":  "Executing Directive: RUN_FULL_VIRUS_SCAN",
+                      "phase_index":  1,
+                      "total_phases":  2,
+                      "progress_percent":  50,
+                      "current_activity":  "Executing RUN_FULL_VIRUS_SCAN on workstation...",
+                      "last_updated":  "2026-10-28 13:39:19",
+                      "recent_logs":  [
+                                          "[13:39:19] Agent picked up directive: RUN_FULL_VIRUS_SCAN"
+                                      ]
+                  }
+}
