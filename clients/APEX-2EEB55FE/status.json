@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:47:26Z",
-    "last_synced":  "2026-10-28 13:47:26",
+    "timestamp":  "2026-10-28T08:47:30Z",
+    "last_synced":  "2026-10-28 13:47:30",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -330,12 +330,12 @@
                ],
     "live_scan":  {
                       "state":  "SCANNING",
-                      "active_phase":  "Phase 1/8: Processor \u0026 Live Telemetry",
-                      "phase_index":  1,
+                      "active_phase":  "Phase 2/8: Physical Disks SMART \u0026 Drivers",
+                      "phase_index":  2,
                       "total_phases":  8,
-                      "progress_percent":  12,
-                      "current_activity":  "CPU and RAM telemetry recorded.",
-                      "last_updated":  "2026-10-28 13:47:26",
+                      "progress_percent":  25,
+                      "current_activity":  "Querying MSStorageDriver FailurePredict and PnP Device Manager...",
+                      "last_updated":  "2026-10-28 13:47:30",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -390,7 +390,8 @@
                                           "[13:46:33] Phase 8/8 started: Auditing system services and startup applications",
                                           "[13:46:38] Deep diagnostic audit completed. Dynamic Health Score: 74%",
                                           "[13:47:19] Phase 1/8 started: Auditing CPU and memory telemetry",
-                                          "[13:47:26] CPU Load: 41.6% (3201 MHz), RAM: 22.29 / 24 GB"
+                                          "[13:47:26] CPU Load: 41.6% (3201 MHz), RAM: 22.29 / 24 GB",
+                                          "[13:47:30] Phase 2/8 started: Checking disk SMART health and driver status"
                                       ]
                   }
 }
