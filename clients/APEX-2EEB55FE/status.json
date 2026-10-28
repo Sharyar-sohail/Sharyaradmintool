@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T06:27:04Z",
-    "last_synced":  "2026-10-28 11:27:04",
+    "timestamp":  "2026-10-28T06:27:28Z",
+    "last_synced":  "2026-10-28 11:27:28",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  7.8,
-                      "ram_percent":  73.1,
-                      "ram_used_gb":  17.52,
-                      "disk_percent":  89.7,
-                      "net_latency_ms":  1,
+                      "cpu_percent":  4.7,
+                      "ram_percent":  73,
+                      "ram_used_gb":  17.48,
+                      "disk_percent":  89.8,
+                      "net_latency_ms":  0,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -270,7 +270,7 @@
                                                                 {
                                                                     "publisher":  "Microsoft Corporation",
                                                                     "name":  "Copilot",
-                                                                    "version":  "156.0.4314.42"
+                                                                    "version":  "156.0.4314.50"
                                                                 },
                                                                 {
                                                                     "publisher":  "Microsoft Corporation",
@@ -417,16 +417,16 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  1,
+                                        "dns_latency_ms":  0,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
                                         "partitions":  [
                                                            {
                                                                "total_gb":  174,
-                                                               "free_pct":  10.3,
+                                                               "free_pct":  10.2,
                                                                "letter":  "C",
-                                                               "free_gb":  17.9
+                                                               "free_gb":  17.7
                                                            },
                                                            {
                                                                "total_gb":  48.8,
