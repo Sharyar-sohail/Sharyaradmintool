@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T06:09:12Z",
-    "last_synced":  "2026-10-28 11:09:12",
+    "timestamp":  "2026-10-28T06:09:35Z",
+    "last_synced":  "2026-10-28 11:09:35",
     "status":  "ONLINE",
     "health_score":  90,
     "category_scores":  {
@@ -26,11 +26,11 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  6.3,
-                      "ram_percent":  72.6,
-                      "ram_used_gb":  17.39,
+                      "cpu_percent":  11.3,
+                      "ram_percent":  72.8,
+                      "ram_used_gb":  17.45,
                       "disk_percent":  89.5,
-                      "net_latency_ms":  7,
+                      "net_latency_ms":  1,
                       "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
@@ -417,7 +417,7 @@
                                                              "mac":  "90-B1-1C-A4-69-8B"
                                                          }
                                                      ],
-                                        "dns_latency_ms":  7,
+                                        "dns_latency_ms":  1,
                                         "primary_ip":  "192.168.1.37"
                                     },
                         "storage":  {
@@ -435,11 +435,11 @@
                                                                "free_gb":  5.1
                                                            }
                                                        ],
-                                        "temp_junk_mb":  147.1,
+                                        "temp_junk_mb":  147.3,
                                         "junk_breakdown":  {
                                                                "prefetch_mb":  0,
                                                                "user_temp_mb":  129.6,
-                                                               "win_temp_mb":  2.5,
+                                                               "win_temp_mb":  2.7,
                                                                "softwaredist_mb":  12,
                                                                "wer_dumps_mb":  3
                                                            }
