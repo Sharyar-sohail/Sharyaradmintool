@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:44:14Z",
-    "last_synced":  "2026-10-28 13:44:14",
+    "timestamp":  "2026-10-28T08:44:20Z",
+    "last_synced":  "2026-10-28 13:44:20",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -330,12 +330,12 @@
                ],
     "live_scan":  {
                       "state":  "SCANNING",
-                      "active_phase":  "Phase 6/8: Antivirus \u0026 Threat Telemetry",
-                      "phase_index":  6,
+                      "active_phase":  "Phase 7/8: Software Inventory \u0026 winget Packages",
+                      "phase_index":  7,
                       "total_phases":  8,
-                      "progress_percent":  75,
-                      "current_activity":  "Antivirus telemetry recorded.",
-                      "last_updated":  "2026-10-28 13:44:14",
+                      "progress_percent":  88,
+                      "current_activity":  "Auditing installed 64-bit and 32-bit software packages and winget CLI...",
+                      "last_updated":  "2026-10-28 13:44:20",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -368,7 +368,8 @@
                                           "[13:43:57] Phase 5/8 started: Calculating recoverable storage junk",
                                           "[13:44:04] Recoverable junk bloat: 206.3 MB across 5 directories",
                                           "[13:44:09] Phase 6/8 started: Inspecting antivirus definitions and active threats",
-                                          "[13:44:14] Defender Real-time: True. Signatures: 1.463.1.0. Active threats: 0"
+                                          "[13:44:14] Defender Real-time: True. Signatures: 1.463.1.0. Active threats: 0",
+                                          "[13:44:20] Phase 7/8 started: Auditing installed software applications"
                                       ]
                   }
 }
