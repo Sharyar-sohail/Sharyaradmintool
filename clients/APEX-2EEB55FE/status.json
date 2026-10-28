@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:48:06Z",
-    "last_synced":  "2026-10-28 13:48:06",
+    "timestamp":  "2026-10-28T08:48:11Z",
+    "last_synced":  "2026-10-28 13:48:11",
     "status":  "SCANNING",
     "health_score":  74,
     "category_scores":  {
@@ -330,14 +330,13 @@
                ],
     "live_scan":  {
                       "state":  "SCANNING",
-                      "active_phase":  "Phase 5/8: Storage Partitions \u0026 Junk Bloat",
-                      "phase_index":  5,
+                      "active_phase":  "Phase 6/8: Antivirus \u0026 Threat Telemetry",
+                      "phase_index":  6,
                       "total_phases":  8,
-                      "progress_percent":  62,
-                      "current_activity":  "Storage breakdown computed.",
-                      "last_updated":  "2026-10-28 13:48:06",
+                      "progress_percent":  75,
+                      "current_activity":  "Auditing Microsoft Defender real-time protection and active malware threats...",
+                      "last_updated":  "2026-10-28 13:48:11",
                       "recent_logs":  [
-                                          "[13:40:51] Defender Full Scan finished.",
                                           "[13:41:01] Directive RUN_FULL_VIRUS_SCAN completed successfully.",
                                           "[13:41:06] Phase 1/8 started: Auditing CPU and memory telemetry",
                                           "[13:41:14] CPU Load: 49% (3201 MHz), RAM: 22.21 / 24 GB",
@@ -396,7 +395,8 @@
                                           "[13:47:50] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
                                           "[13:47:55] BSOD crashes: 0. Network Gateway Ping: 0 ms",
                                           "[13:48:00] Phase 5/8 started: Calculating recoverable storage junk",
-                                          "[13:48:06] Recoverable junk bloat: 206.3 MB across 5 directories"
+                                          "[13:48:06] Recoverable junk bloat: 206.3 MB across 5 directories",
+                                          "[13:48:11] Phase 6/8 started: Inspecting antivirus definitions and active threats"
                                       ]
                   }
 }
