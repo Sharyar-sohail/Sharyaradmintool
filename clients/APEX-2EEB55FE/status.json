@@ -1,9 +1,9 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:41:01Z",
-    "last_synced":  "2026-10-28 13:41:01",
-    "status":  "ONLINE",
+    "timestamp":  "2026-10-28T08:41:06Z",
+    "last_synced":  "2026-10-28 13:41:06",
+    "status":  "SCANNING",
     "health_score":  100,
     "category_scores":  {
                             "Hardware":  100,
@@ -35,18 +35,19 @@
 
                ],
     "live_scan":  {
-                      "state":  "ONLINE",
-                      "active_phase":  "Directive Completed: RUN_FULL_VIRUS_SCAN",
-                      "phase_index":  2,
-                      "total_phases":  2,
-                      "progress_percent":  100,
-                      "current_activity":  "Idle - Live monitoring active.",
-                      "last_updated":  "2026-10-28 13:41:01",
+                      "state":  "SCANNING",
+                      "active_phase":  "Phase 1/8: Processor \u0026 Live Telemetry",
+                      "phase_index":  1,
+                      "total_phases":  8,
+                      "progress_percent":  12,
+                      "current_activity":  "Auditing CPU load, clock throttling, and memory allocation...",
+                      "last_updated":  "2026-10-28 13:41:06",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
                                           "[13:40:51] Defender Full Scan finished.",
-                                          "[13:41:01] Directive RUN_FULL_VIRUS_SCAN completed successfully."
+                                          "[13:41:01] Directive RUN_FULL_VIRUS_SCAN completed successfully.",
+                                          "[13:41:06] Phase 1/8 started: Auditing CPU and memory telemetry"
                                       ]
                   }
 }
