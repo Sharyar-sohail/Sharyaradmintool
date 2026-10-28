@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:41:06Z",
-    "last_synced":  "2026-10-28 13:41:06",
+    "timestamp":  "2026-10-28T08:41:14Z",
+    "last_synced":  "2026-10-28 13:41:14",
     "status":  "SCANNING",
     "health_score":  100,
     "category_scores":  {
@@ -21,12 +21,12 @@
                         "working_dir":  "D:\\sharyar\\online master pc"
                     },
     "telemetry":  {
-                      "cpu_percent":  0,
-                      "ram_percent":  0,
-                      "ram_used_gb":  0,
+                      "cpu_percent":  49,
+                      "ram_percent":  92.7,
+                      "ram_used_gb":  22.21,
                       "disk_percent":  0,
                       "net_latency_ms":  0,
-                      "cpu_freq_mhz":  0
+                      "cpu_freq_mhz":  3201
                   },
     "diagnostics":  {
 
@@ -40,14 +40,15 @@
                       "phase_index":  1,
                       "total_phases":  8,
                       "progress_percent":  12,
-                      "current_activity":  "Auditing CPU load, clock throttling, and memory allocation...",
-                      "last_updated":  "2026-10-28 13:41:06",
+                      "current_activity":  "CPU and RAM telemetry recorded.",
+                      "last_updated":  "2026-10-28 13:41:14",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
                                           "[13:40:51] Defender Full Scan finished.",
                                           "[13:41:01] Directive RUN_FULL_VIRUS_SCAN completed successfully.",
-                                          "[13:41:06] Phase 1/8 started: Auditing CPU and memory telemetry"
+                                          "[13:41:06] Phase 1/8 started: Auditing CPU and memory telemetry",
+                                          "[13:41:14] CPU Load: 49% (3201 MHz), RAM: 22.21 / 24 GB"
                                       ]
                   }
 }
