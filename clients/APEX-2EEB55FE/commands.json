@@ -1,10 +1,10 @@
 {
-  "command_id": "CMD-1793177926-6C2C",
+  "command_id": "CMD-1793177935-357E",
   "agent_token": "APEX-2EEB55FE",
-  "action": "CLEAN_COMPONENT_STORE",
+  "action": "AI_SMART_UPDATE",
   "parameters": {},
   "status": "PENDING",
-  "requested_at": "2026-10-28 08:58:46",
+  "requested_at": "2026-10-28 08:58:55",
   "completed_at": null,
   "result": null
 }
