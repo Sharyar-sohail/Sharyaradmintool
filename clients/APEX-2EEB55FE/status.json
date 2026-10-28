@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:41:31Z",
-    "last_synced":  "2026-10-28 13:41:31",
+    "timestamp":  "2026-10-28T08:41:37Z",
+    "last_synced":  "2026-10-28 13:41:37",
     "status":  "SCANNING",
     "health_score":  100,
     "category_scores":  {
@@ -71,7 +71,14 @@
                                                              ],
                                          "cpu_curr_mhz":  3201,
                                          "cpu_throttled":  false
-                                     }
+                                     },
+                        "os_integrity":  {
+                                             "cbs_error_count":  0,
+                                             "sfc_corrupted":  false,
+                                             "dism_status":  "Healthy",
+                                             "corrupted_files_count":  0,
+                                             "dism_corrupted":  false
+                                         }
                     },
     "issues":  [
 
@@ -82,8 +89,8 @@
                       "phase_index":  3,
                       "total_phases":  8,
                       "progress_percent":  38,
-                      "current_activity":  "Scanning CBS servicing logs for 0x800f081f and system file violations...",
-                      "last_updated":  "2026-10-28 13:41:31",
+                      "current_activity":  "System integrity audit completed.",
+                      "last_updated":  "2026-10-28 13:41:37",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -93,7 +100,8 @@
                                           "[13:41:14] CPU Load: 49% (3201 MHz), RAM: 22.21 / 24 GB",
                                           "[13:41:19] Phase 2/8 started: Checking disk SMART health and driver status",
                                           "[13:41:26] Drives scanned: 1. Yellow-bang driver faults: 3",
-                                          "[13:41:31] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log"
+                                          "[13:41:31] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log",
+                                          "[13:41:37] CBS error count: 0. Component store status: Healthy"
                                       ]
                   }
 }
