@@ -1,8 +1,8 @@
 {
     "client_id":  "DESKTOP-RS9M43V",
     "agent_token":  "APEX-2EEB55FE",
-    "timestamp":  "2026-10-28T08:41:48Z",
-    "last_synced":  "2026-10-28 13:41:48",
+    "timestamp":  "2026-10-28T08:41:53Z",
+    "last_synced":  "2026-10-28 13:41:53",
     "status":  "SCANNING",
     "health_score":  100,
     "category_scores":  {
@@ -85,12 +85,12 @@
                ],
     "live_scan":  {
                       "state":  "SCANNING",
-                      "active_phase":  "Phase 4/8: Event Logs \u0026 BSOD Crash Analysis",
-                      "phase_index":  4,
+                      "active_phase":  "Phase 5/8: Storage Partitions \u0026 Junk Bloat",
+                      "phase_index":  5,
                       "total_phases":  8,
-                      "progress_percent":  50,
-                      "current_activity":  "Event logs and network ping parsed.",
-                      "last_updated":  "2026-10-28 13:41:48",
+                      "progress_percent":  62,
+                      "current_activity":  "Calculating recoverable space across Temp, Prefetch, and SoftwareDistribution...",
+                      "last_updated":  "2026-10-28 13:41:53",
                       "recent_logs":  [
                                           "[13:40:39] Agent picked up directive: RUN_FULL_VIRUS_SCAN",
                                           "[13:40:45] Launching Defender Full Scan...",
@@ -103,7 +103,8 @@
                                           "[13:41:31] Phase 3/8 started: Auditing Windows system integrity \u0026 CBS log",
                                           "[13:41:37] CBS error count: 0. Component store status: Healthy",
                                           "[13:41:42] Phase 4/8 started: Auditing recent system crash dumps and BSODs",
-                                          "[13:41:48] BSOD crashes: 0. Network Gateway Ping: 16 ms"
+                                          "[13:41:48] BSOD crashes: 0. Network Gateway Ping: 16 ms",
+                                          "[13:41:53] Phase 5/8 started: Calculating recoverable storage junk"
                                       ]
                   }
 }
